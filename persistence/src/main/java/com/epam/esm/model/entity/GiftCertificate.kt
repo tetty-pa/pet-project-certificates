@@ -15,33 +15,32 @@ import javax.validation.constraints.Size
 @EntityListeners(
     EntityAuditListener::class
 )
-data class GiftCertificate() : RepresentationModel<GiftCertificate>() {
-
+data class GiftCertificate(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0
+    var id: Long? = 0,
 
     @Column(length = 80, nullable = false)
-    var name: @Size(min = 1, max = 80, message = "gift-certificate.invalidName") String = ""
+    var name: @Size(min = 1, max = 80, message = "gift-certificate.invalidName") String? = "",
 
     @Column(length = 250, nullable = false)
-    var description: @Size(min = 1, max = 250, message = "gift-certificate.invalidDescription") String = ""
+    var description: @Size(min = 1, max = 250, message = "gift-certificate.invalidDescription") String? = "",
 
     @Column(nullable = false)
-    var price: @Min(value = 1, message = "gift-certificate.invalidPrice") BigDecimal = BigDecimal.ZERO
+    var price: @Min(value = 1, message = "gift-certificate.invalidPrice") BigDecimal? = BigDecimal.ZERO,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     @Column(name = "create_date", nullable = false, updatable = false)
-    var createDate: ZonedDateTime? = null
+    var createDate: ZonedDateTime? = null,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     @Column(name = "last_updated_date", nullable = false)
-    var lastUpdatedDate: ZonedDateTime? = null
+    var lastUpdatedDate: ZonedDateTime? = null,
 
     @Column(nullable = false)
-    var duration: @Min(value = 1, message = "gift-certificate.invalidDuration") Int = 0
+    var duration: @Min(value = 1, message = "gift-certificate.invalidDuration") Int? = 0,
 
 
     @JoinTable(
@@ -50,28 +49,9 @@ data class GiftCertificate() : RepresentationModel<GiftCertificate>() {
         inverseJoinColumns = [JoinColumn(name = "tag_id", referencedColumnName = "ID")]
     )
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var tagList: MutableList<Tag> = mutableListOf()
+    var tagList: MutableList<Tag>? = mutableListOf()
 
-
-    constructor()
-    constructor(
-        id: Long,
-        name: String,
-        description: String,
-        price: BigDecimal,
-        createDate: ZonedDateTime?,
-        lastUpdatedDate: ZonedDateTime?,
-        duration: Int
-    ) {
-        this.id = id
-        this.name = name
-        this.description = description
-        this.price = price
-        this.createDate = createDate
-        this.lastUpdatedDate = lastUpdatedDate
-        this.duration = duration
-    }
-
+) : RepresentationModel<GiftCertificate>() {
 
 
 }

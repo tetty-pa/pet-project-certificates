@@ -9,25 +9,20 @@ import javax.persistence.*
 @EntityListeners(
     EntityAuditListener::class
 )
-class Role : RepresentationModel<Role> {
+class Role(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
+
+    @Column(name = "name", length = 60, unique = true)
+    var name: String = ""
+) : RepresentationModel<Role>() {
     enum class RoleType {
         GUEST,
         USER,
         ADMIN
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0
-
-    @Column(name = "name", length = 60, unique = true)
-    var name: String = ""
-
-    constructor()
-    constructor(id: Long, name: String) {
-        this.id = id
-        this.name = name
-    }
 
     companion object {
         fun getRole(roleId: Long): RoleType {

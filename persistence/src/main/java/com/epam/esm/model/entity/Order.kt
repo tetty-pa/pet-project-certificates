@@ -13,41 +13,29 @@ import javax.persistence.*
 @EntityListeners(
     EntityAuditListener::class
 )
-class Order : RepresentationModel<Order> {
+data class Order(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0
+    var id: Long = 0,
 
     @Column(nullable = false)
-    var cost: BigDecimal = BigDecimal.ZERO
+    var cost: BigDecimal = BigDecimal.ZERO,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     @Column(name = "order_date", nullable = false, updatable = false)
-    var orderDate: ZonedDateTime? = null
+    var orderDate: ZonedDateTime? = null,
 
     @ManyToOne
     @JoinColumn(name = "gift_certificate_id")
-    var giftCertificate: GiftCertificate? = null
+    var giftCertificate: GiftCertificate? = null,
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     var user: User? = null
 
-    constructor()
-    constructor(
-        id: Long,
-        cost: BigDecimal,
-        orderDate: ZonedDateTime?,
-        giftCertificate: GiftCertificate?,
-        user: User?
-    ) {
-        this.id = id
-        this.cost = cost
-        this.orderDate = orderDate
-        this.giftCertificate = giftCertificate
-        this.user = user
-    }
+) : RepresentationModel<Order>() {
+
 
     @PrePersist
     fun onCreate() {
