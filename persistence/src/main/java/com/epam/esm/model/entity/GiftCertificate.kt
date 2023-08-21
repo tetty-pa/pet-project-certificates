@@ -51,4 +51,5 @@ data class GiftCertificate(
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var tagList: MutableList<Tag>? = mutableListOf()
 
-) : RepresentationModel<GiftCertificate>()
+) : RepresentationModel<GiftCertificate>(){
+}
