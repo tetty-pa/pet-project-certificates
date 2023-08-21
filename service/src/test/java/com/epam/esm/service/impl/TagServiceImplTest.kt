@@ -62,7 +62,7 @@ class TagServiceImplTest {
 
     @Test
     fun createShouldThrowDuplicateEntityException() {
-         whenever(tagRepository.findByName(FIRST_TEST_TAG.name)).thenReturn(Optional.of(FIRST_TEST_TAG))
+        whenever(tagRepository.findByName(FIRST_TEST_TAG.name)).thenReturn(Optional.of(FIRST_TEST_TAG))
         assertThrows<DuplicateEntityException> { tagService.create(FIRST_TEST_TAG) }
     }
 
@@ -87,7 +87,11 @@ class TagServiceImplTest {
     @Test
     fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
         whenever(userRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_USER))
-        whenever(tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_TAG))
+        whenever(tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(TEST_ID)).thenReturn(
+            Optional.of(
+                FIRST_TEST_TAG
+            )
+        )
         val actual = tagService.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(TEST_ID)
         assertEquals(FIRST_TEST_TAG, actual)
     }

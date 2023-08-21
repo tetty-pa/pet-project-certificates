@@ -12,8 +12,7 @@ import com.epam.esm.service.impl.util.Constants.PAGE_NUM
 import com.epam.esm.service.impl.util.Constants.PAGE_SIZE
 import com.epam.esm.service.impl.util.Constants.SECOND_TEST_ORDER
 import com.epam.esm.service.impl.util.Constants.TEST_ID
-import com.epam.esm.service.impl.util.Constants.THIRD_TEST_GIFT_CERTIFICATE
-import com.epam.esm.service.impl.util.Constants.THIRD_TEST_ORDER
+
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -32,9 +31,6 @@ class OrderServiceImplTest {
 
     @Mock
     private lateinit var userRepository: UserRepository
-
-    @Mock
-    private lateinit var giftCertificateRepository: GiftCertificateRepository
 
     @InjectMocks
     private lateinit var orderService: OrderServiceImpl
@@ -55,16 +51,6 @@ class OrderServiceImplTest {
         whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
         assertThrows<EntityNotFoundException> { orderService.getAllByUserId(NOT_EXIST_ID, PAGE_NUM, PAGE_SIZE) }
     }
-
-    /*@Test
-    fun create() {
-        whenever(userRepository.findById(FIRST_TEST_USER.id)).thenReturn(Optional.of(FIRST_TEST_USER))
-        whenever(giftCertificateRepository.findById(3L)).thenReturn(Optional.of(THIRD_TEST_GIFT_CERTIFICATE))
-        whenever(orderRepository.save(THIRD_TEST_ORDER)).thenReturn(THIRD_TEST_ORDER)
-
-        val actual = orderService.create(FIRST_TEST_USER.id, THIRD_TEST_GIFT_CERTIFICATE.id ?:3)
-        assertEquals(THIRD_TEST_ORDER, actual)
-    }*/
 
     @Test
     fun createShouldThrowEntityNotFoundException() {

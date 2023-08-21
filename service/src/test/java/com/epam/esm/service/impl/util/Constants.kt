@@ -50,7 +50,7 @@ object Constants {
         Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime().atZone(ZoneId.of("Europe/Kiev")), 1
     )
     @JvmField
-    val FIRST_TEST_USER = User()
+    val FIRST_TEST_USER = User(1, "1", "1", "1", mutableListOf())
     @JvmField
     val SECOND_TEST_USER = User()
     @JvmField
@@ -70,7 +70,7 @@ object Constants {
     )
     @JvmField
     val THIRD_TEST_ORDER = Order(
-        1, BigDecimal(3),
+        3, BigDecimal(3),
         null,
         THIRD_TEST_GIFT_CERTIFICATE, FIRST_TEST_USER
     )
