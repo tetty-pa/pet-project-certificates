@@ -99,18 +99,21 @@ class GiftCertificateServiceImpl(
 
     @Transactional
     override fun create(giftCertificate: GiftCertificate): GiftCertificate {
-        val isCertificateExist = giftCertificateRepository.findByName(giftCertificate.name).isPresent
-        if (isCertificateExist) throw DuplicateEntityException("gift-certificate.already.exist")
+        val isCertificateExist = giftCertificate.name?.let { giftCertificateRepository.findByName(it).isPresent }
+        if (isCertificateExist == true) throw DuplicateEntityException("gift-certificate.already.exist")
 
-        val tagsToPersist = giftCertificate.tagList.filter { tag ->
+       /* val tagsToPersist = giftCertificate.tagList?.filter { tag ->
             val tagOptional = tagRepository.findByName(tag.name)
             tagOptional.isEmpty || tag.id != tagOptional.get().id
         } ?: emptyList()
+*/
+
+
 
         giftCertificate.apply {
             createDate = LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev"))
             lastUpdatedDate = LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev"))
-            tagList = tagsToPersist.toMutableList()
+            //tagList = tagsToPersist.toMutableList()
         }
 
         return giftCertificateRepository.save(giftCertificate)
@@ -126,7 +129,7 @@ class GiftCertificateServiceImpl(
 
         findUpdatedFields(oldGiftCertificate, giftCertificate)
         val tagList = oldGiftCertificate.tagList
-        oldGiftCertificate.tagList = updateTags(tagList).toMutableList()
+        oldGiftCertificate.tagList = tagList?.let { updateTags(it).toMutableList() }
         giftCertificate.lastUpdatedDate = LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev"))
         return giftCertificateRepository.save(giftCertificate)
     }

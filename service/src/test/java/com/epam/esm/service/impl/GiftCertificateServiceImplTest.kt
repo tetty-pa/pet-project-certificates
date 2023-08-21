@@ -1,113 +1,104 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.impl
 
-import com.epam.esm.exception.DuplicateEntityException;
-import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.exception.InvalidDataException;
-import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.entity.util.QueryParameters;
-import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.TagRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageImpl;
+import com.epam.esm.exception.DuplicateEntityException
+import com.epam.esm.exception.EntityNotFoundException
+import com.epam.esm.exception.InvalidDataException
+import com.epam.esm.model.entity.GiftCertificate
+import com.epam.esm.model.entity.util.QueryParameters
+import com.epam.esm.repository.GiftCertificateRepository
+import com.epam.esm.repository.TagRepository
+import com.epam.esm.service.impl.util.Constants
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageImpl
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.assertThrows
+import java.util.*
+import org.mockito.Mockito.`when` as whenever
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static com.epam.esm.service.impl.util.Constants.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension::class)
 class GiftCertificateServiceImplTest {
 
     @Mock
-    private GiftCertificateRepository giftCertificateRepository;
+    private lateinit var giftCertificateRepository: GiftCertificateRepository
 
     @Mock
-    private TagRepository tagRepository;
+    private lateinit var tagRepository: TagRepository
 
     @InjectMocks
-    private GiftCertificateServiceImpl giftCertificateService;
+    private lateinit var giftCertificateService: GiftCertificateServiceImpl
 
     @Test
-    void getAll() {
-        List<GiftCertificate> expected = Arrays.asList(FIRST_TEST_GIFT_CERTIFICATE, SECOND_TEST_GIFT_CERTIFICATE, THIRD_TEST_GIFT_CERTIFICATE);
-        when(giftCertificateRepository.findAll(PAGE)).thenReturn(new PageImpl<>(expected));
-        List<GiftCertificate> actual = giftCertificateService.getAll(PAGE_NUM, PAGE_SIZE);
-
-        assertEquals(actual, expected);
+    fun getAll() {
+        val expected = listOf(Constants.FIRST_TEST_GIFT_CERTIFICATE, Constants.SECOND_TEST_GIFT_CERTIFICATE, Constants.THIRD_TEST_GIFT_CERTIFICATE)
+        whenever(giftCertificateRepository.findAll(Constants.PAGE)).thenReturn(PageImpl(expected))
+        val actual = giftCertificateService.getAll(Constants.PAGE_NUM, Constants.PAGE_SIZE)
+        assertEquals(actual, expected)
     }
 
     @Test
-    void getGiftCertificatesByParameters() {
-        QueryParameters parameters = new QueryParameters("1", "", new ArrayList<>(), null, null);
-        List<GiftCertificate> actual = giftCertificateService.getGiftCertificatesByParameters(parameters, PAGE_NUM, PAGE_SIZE);
-
-        assertEquals(new ArrayList<>(), actual);
-    }
-
-
-    @Test
-    void getById() {
-        when(giftCertificateRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_GIFT_CERTIFICATE));
-        GiftCertificate actual = giftCertificateService.getById(TEST_ID);
-        assertEquals(FIRST_TEST_GIFT_CERTIFICATE, actual);
+    fun getGiftCertificatesByParameters() {
+        val parameters = QueryParameters("1", "", emptyList(), null, null)
+        val actual = giftCertificateService.getGiftCertificatesByParameters(parameters, Constants.PAGE_NUM, Constants.PAGE_SIZE)
+        assertEquals(emptyList<GiftCertificate>(), actual)
     }
 
     @Test
-    void getByIdShouldThrowEntityNotFoundException() {
-        when(giftCertificateRepository.findById(NOT_EXIST_ID)).thenThrow(new EntityNotFoundException());
-        assertThrows(EntityNotFoundException.class, () -> giftCertificateService.getById(NOT_EXIST_ID));
-    }
-
-
-    @Test
-    void create() {
-        when(giftCertificateRepository.save(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(GIFT_CERTIFICATE_TO_CREATE);
-        when(giftCertificateRepository.findByName(GIFT_CERTIFICATE_TO_CREATE.getName())).thenReturn(Optional.empty())
-                .thenReturn(Optional.of(GIFT_CERTIFICATE_TO_CREATE));
-        GiftCertificate actual = giftCertificateService.create(GIFT_CERTIFICATE_TO_CREATE);
-        assertEquals(GIFT_CERTIFICATE_TO_CREATE, actual);
+    fun getById() {
+        whenever(giftCertificateRepository.findById(Constants.TEST_ID)).thenReturn(Optional.of(Constants.FIRST_TEST_GIFT_CERTIFICATE))
+        val actual = giftCertificateService.getById(Constants.TEST_ID)
+        assertEquals(Constants.FIRST_TEST_GIFT_CERTIFICATE, actual)
     }
 
     @Test
-    void createShouldThrowInvalidDataException() {
-        when(giftCertificateRepository.save(INVALID_GIFT_CERTIFICATE)).thenThrow(new InvalidDataException());
-        assertThrows(InvalidDataException.class, () -> giftCertificateService.create(INVALID_GIFT_CERTIFICATE));
-    }
-
-
-    @Test
-    void createShouldThrowDuplicateEntityException() {
-        when(giftCertificateRepository.findByName(FIRST_TEST_GIFT_CERTIFICATE.getName())).thenReturn(Optional.of(FIRST_TEST_GIFT_CERTIFICATE));
-        assertThrows(DuplicateEntityException.class, () -> giftCertificateService.create(FIRST_TEST_GIFT_CERTIFICATE));
+    fun getByIdShouldThrowEntityNotFoundException() {
+        whenever(giftCertificateRepository.findById(Constants.NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        assertThrows<EntityNotFoundException> { giftCertificateService.getById(Constants.NOT_EXIST_ID) }
     }
 
     @Test
-    void update() {
-        when(giftCertificateRepository.save(UPDATED_GIFT_CERTIFICATE)).thenReturn(UPDATED_GIFT_CERTIFICATE);
-        when(giftCertificateRepository.findById(UPDATED_GIFT_CERTIFICATE.getId())).thenReturn(Optional.of(FIRST_TEST_GIFT_CERTIFICATE));
-        GiftCertificate actual = giftCertificateService.update(UPDATED_GIFT_CERTIFICATE);
-        assertEquals(UPDATED_GIFT_CERTIFICATE, actual);
+    fun create() {
+        whenever(giftCertificateRepository.save(Constants.GIFT_CERTIFICATE_TO_CREATE)).thenReturn(Constants.GIFT_CERTIFICATE_TO_CREATE)
+        whenever(Constants.GIFT_CERTIFICATE_TO_CREATE.name?.let { giftCertificateRepository.findByName(it) }).thenReturn(
+                Optional.empty(),
+                Optional.of(Constants.GIFT_CERTIFICATE_TO_CREATE)
+        )
+        val actual = giftCertificateService.create(Constants.GIFT_CERTIFICATE_TO_CREATE)
+        assertEquals(Constants.GIFT_CERTIFICATE_TO_CREATE, actual)
     }
 
     @Test
-    void updateShouldThrowInvalidDataException() {
-        when(giftCertificateRepository.findById(INVALID_GIFT_CERTIFICATE.getId())).thenReturn(Optional.of(INVALID_GIFT_CERTIFICATE));
-        when(giftCertificateRepository.save(INVALID_GIFT_CERTIFICATE)).thenThrow(new InvalidDataException());
-        assertThrows(InvalidDataException.class, () -> giftCertificateService.update(UPDATED_GIFT_CERTIFICATE));
+    fun createShouldThrowInvalidDataException() {
+        whenever(giftCertificateRepository.save(Constants.INVALID_GIFT_CERTIFICATE)).thenThrow(InvalidDataException())
+        assertThrows<InvalidDataException> { giftCertificateService.create(Constants.INVALID_GIFT_CERTIFICATE) }
     }
 
+    @Test
+    fun createShouldThrowDuplicateEntityException() {
+        whenever(Constants.FIRST_TEST_GIFT_CERTIFICATE.name?.let { giftCertificateRepository.findByName(it) }).thenReturn(Optional.of(Constants.FIRST_TEST_GIFT_CERTIFICATE))
+        assertThrows<DuplicateEntityException> { giftCertificateService.create(Constants.FIRST_TEST_GIFT_CERTIFICATE) }
+    }
 
     @Test
-    void deleteByIdShouldThrowEntityNotFoundException() {
-        assertThrows(EntityNotFoundException.class, () -> giftCertificateService.deleteById(NOT_EXIST_ID));
+    fun update() {
+        whenever(giftCertificateRepository.save(Constants.UPDATED_GIFT_CERTIFICATE)).thenReturn(Constants.UPDATED_GIFT_CERTIFICATE)
+        whenever(giftCertificateRepository.findById(Constants.UPDATED_GIFT_CERTIFICATE.id)).thenReturn(Optional.of(Constants.FIRST_TEST_GIFT_CERTIFICATE))
+        val actual = giftCertificateService.update(Constants.UPDATED_GIFT_CERTIFICATE)
+        assertEquals(Constants.UPDATED_GIFT_CERTIFICATE, actual)
+    }
+
+    @Test
+    fun updateShouldThrowInvalidDataException() {
+        whenever(giftCertificateRepository.findById(Constants.INVALID_GIFT_CERTIFICATE.id)).thenReturn(Optional.of(Constants.INVALID_GIFT_CERTIFICATE))
+        whenever(giftCertificateRepository.save(Constants.INVALID_GIFT_CERTIFICATE)).thenThrow(InvalidDataException())
+        assertThrows<InvalidDataException> { giftCertificateService.update(Constants.INVALID_GIFT_CERTIFICATE) }
+    }
+
+    @Test
+    fun deleteByIdShouldThrowEntityNotFoundException() {
+        assertThrows<EntityNotFoundException> { giftCertificateService.deleteById(Constants.NOT_EXIST_ID) }
     }
 }

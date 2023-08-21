@@ -29,7 +29,7 @@ class OrderServiceImpl(private val orderRepository: OrderRepository, private val
         val giftCertificate = giftCertificateRepository.findById(certificateId).orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
 
         order.giftCertificate = giftCertificate
-        order.cost = giftCertificate.price
+        order.cost = giftCertificate.price!!
         return orderRepository.save(order)
 
     }
