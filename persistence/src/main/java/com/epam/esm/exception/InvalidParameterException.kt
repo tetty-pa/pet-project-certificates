@@ -1,6 +1,3 @@
 package com.epam.esm.exception
 
-class InvalidParameterException : RuntimeException {
-    constructor() : super()
-    constructor(message: String?) : super(message)
-}
+class InvalidParameterException(message: String) : RuntimeException(message)

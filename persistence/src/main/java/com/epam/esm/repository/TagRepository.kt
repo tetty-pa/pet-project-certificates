@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query
 import java.util.*
 
 interface TagRepository : JpaRepository<Tag, Long> {
-
     /**
      * Gets Tag by column name.
      *

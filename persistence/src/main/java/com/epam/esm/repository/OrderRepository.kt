@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface OrderRepository : JpaRepository<Order, Long> {
-
     /**
      * Gets list of Orderby user ID.
      *
@@ -14,5 +13,4 @@ interface OrderRepository : JpaRepository<Order, Long> {
      * @return list of orders
      */
     fun getAllByUserId(userId: Long, pageable: Pageable): List<Order>
-
 }

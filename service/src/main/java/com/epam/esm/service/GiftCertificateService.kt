@@ -45,10 +45,10 @@ interface GiftCertificateService {
     /**
      * Updates    Gift Certificates.
      *
-     * @param giftCertificate Gift Certificate that needs to be updated
+     * @param updatedGiftCertificate Gift Certificate that needs to be updated
      * @return updated GiftCertificate
      */
-    fun update(giftCertificate: GiftCertificate): GiftCertificate
+    fun update(updatedGiftCertificate: GiftCertificate): GiftCertificate
 
     /**
      * Deletes Gift Certificates.

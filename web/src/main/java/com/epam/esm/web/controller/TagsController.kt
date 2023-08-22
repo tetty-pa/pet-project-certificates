@@ -16,7 +16,6 @@ class TagsController(
     private val tagService: TagService,
     private val tagLinkAdder: TagLinkAdder
 ) {
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
@@ -29,19 +28,15 @@ class TagsController(
         return all
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
-        @RequestBody @Valid tag: Tag,
-        bindingResult: BindingResult?
+        @Valid @RequestBody tag: Tag,
+        bindingResult: BindingResult
     ): Tag {
-        bindingResult?.let {
             if (bindingResult.hasErrors()) {
                 throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage)
             }
-        }
-
         tagService.create(tag)
         tagLinkAdder.addLinks(tag)
         return tag

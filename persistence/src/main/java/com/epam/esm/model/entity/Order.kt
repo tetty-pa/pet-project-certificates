@@ -33,14 +33,10 @@ data class Order(
     @ManyToOne
     @JoinColumn(name = "user_id")
     var user: User? = null
-
 ) : RepresentationModel<Order>() {
-
 
     @PrePersist
     fun onCreate() {
         orderDate = ZonedDateTime.now()
     }
-
-
 }

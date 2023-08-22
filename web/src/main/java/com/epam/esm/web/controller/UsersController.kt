@@ -31,5 +31,4 @@ class UsersController(
         userLinkAdder.addLinks(user)
         return user
     }
-
 }

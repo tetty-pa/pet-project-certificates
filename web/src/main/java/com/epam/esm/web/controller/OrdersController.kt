@@ -12,8 +12,6 @@ class OrdersController(
     private val orderService: OrderService,
     private val ordersLinkAdder: OrdersLinkAdder
 ) {
-
-
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
@@ -26,7 +24,6 @@ class OrdersController(
         all.forEach(ordersLinkAdder::addLinks)
         return all
     }
-
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun create(
@@ -38,7 +35,6 @@ class OrdersController(
         ordersLinkAdder.addLinks(order)
         return order
     }
-
     @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable orderId: Long): Order {

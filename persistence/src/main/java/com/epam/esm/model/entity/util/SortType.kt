@@ -8,12 +8,11 @@ enum class SortType {
 
     companion object {
         fun findSortType(sortType: String): SortType {
-            val sortType1: SortType = try {
+            return try {
                 valueOf(sortType.uppercase())
             } catch (e: Exception) {
                 throw InvalidParameterException("invalid-sortparameter")
             }
-            return sortType1
         }
     }
 }

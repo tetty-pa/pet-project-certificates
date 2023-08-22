@@ -17,7 +17,6 @@ interface GiftCertificateRepository : JpaRepository<GiftCertificate, Long> {
      * @param tagList Gift Certificate`s list of tags to find
      * @return List of Gift Certificates
      */
-
     fun getGiftCertificatesByNameLikeAndDescriptionLikeAndTagListIn(
         name: String,
         description: String,
@@ -33,5 +32,4 @@ interface GiftCertificateRepository : JpaRepository<GiftCertificate, Long> {
      * @return Optional<GiftCertificate> Certificate if founded or Empty if not
      */
     fun findByName(name: String): Optional<GiftCertificate>
-
 }

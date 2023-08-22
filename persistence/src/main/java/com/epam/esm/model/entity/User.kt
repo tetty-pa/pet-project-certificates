@@ -8,12 +8,14 @@ import javax.validation.constraints.Size
 @Entity
 @Table(name = "users")
 @EntityListeners(EntityAuditListener::class)
-class User(
+data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    var name: @Size(min = 1, max = 80, message = "user.invalidName") String = "",
+    @Column(length = 80, nullable = false)
+    @Size(min = 1, max = 80, message = "user.invalidName")
+    var name: String = "",
 
     @Column(length = 80, nullable = false)
     var email: String = "",
@@ -21,13 +23,10 @@ class User(
     @Column(length = 80, nullable = false)
     var password: String = "",
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    /*@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     val orders: List<Order> = ArrayList(),
-
+*/
     @OneToOne
     @JoinColumn(name = "role_id", nullable = false)
-    var role: Role? = null
-) : RepresentationModel<User>() {
-
-
-}
+    var role: Role? = Role(2)
+) : RepresentationModel<User>()

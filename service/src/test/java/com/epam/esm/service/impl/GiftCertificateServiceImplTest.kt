@@ -6,6 +6,7 @@ import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.model.entity.util.QueryParameters
 import com.epam.esm.repository.GiftCertificateRepository
+import com.epam.esm.repository.TagRepository
 import com.epam.esm.service.impl.util.Constants
 import com.epam.esm.service.impl.util.Constants.FIRST_TEST_GIFT_CERTIFICATE
 import com.epam.esm.service.impl.util.Constants.GIFT_CERTIFICATE_TO_CREATE
@@ -24,6 +25,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import java.util.*
 import org.mockito.Mockito.`when` as whenever
@@ -33,10 +35,12 @@ class GiftCertificateServiceImplTest {
 
     @Mock
     private lateinit var giftCertificateRepository: GiftCertificateRepository
-
+    @Mock
+    private lateinit var tagRepository: TagRepository
 
     @InjectMocks
     private lateinit var giftCertificateService: GiftCertificateServiceImpl
+
 
     @Test
     fun getAll() {
@@ -66,14 +70,14 @@ class GiftCertificateServiceImplTest {
 
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
-        whenever(giftCertificateRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        whenever(giftCertificateRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
         assertThrows<EntityNotFoundException> { giftCertificateService.getById(NOT_EXIST_ID) }
     }
 
     @Test
     fun create() {
         whenever(giftCertificateRepository.save(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(GIFT_CERTIFICATE_TO_CREATE)
-        whenever(GIFT_CERTIFICATE_TO_CREATE.name?.let { giftCertificateRepository.findByName(it) }).thenReturn(
+        whenever(GIFT_CERTIFICATE_TO_CREATE.name.let { giftCertificateRepository.findByName(it) }).thenReturn(
             Optional.empty(),
             Optional.of(GIFT_CERTIFICATE_TO_CREATE)
         )
@@ -83,13 +87,13 @@ class GiftCertificateServiceImplTest {
 
     @Test
     fun createShouldThrowInvalidDataException() {
-        whenever(giftCertificateRepository.save(INVALID_GIFT_CERTIFICATE)).thenThrow(InvalidDataException())
+        whenever(giftCertificateRepository.save(INVALID_GIFT_CERTIFICATE)).thenThrow(InvalidDataException(""))
         assertThrows<InvalidDataException> { giftCertificateService.create(INVALID_GIFT_CERTIFICATE) }
     }
 
     @Test
     fun createShouldThrowDuplicateEntityException() {
-        whenever(FIRST_TEST_GIFT_CERTIFICATE.name?.let { giftCertificateRepository.findByName(it) }).thenReturn(
+        whenever( giftCertificateRepository.findByName(FIRST_TEST_GIFT_CERTIFICATE.name) ).thenReturn(
             Optional.of(
                 FIRST_TEST_GIFT_CERTIFICATE
             )
@@ -116,7 +120,7 @@ class GiftCertificateServiceImplTest {
                 INVALID_GIFT_CERTIFICATE
             )
         )
-        whenever(giftCertificateRepository.save(INVALID_GIFT_CERTIFICATE)).thenThrow(InvalidDataException())
+        whenever(giftCertificateRepository.save(INVALID_GIFT_CERTIFICATE)).thenThrow(InvalidDataException(""))
         assertThrows<InvalidDataException> { giftCertificateService.update(INVALID_GIFT_CERTIFICATE) }
     }
 

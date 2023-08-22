@@ -53,7 +53,7 @@ class UserServiceImplTest {
 
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
-        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
         assertThrows<EntityNotFoundException> { userService.getById(NOT_EXIST_ID) }
     }
 

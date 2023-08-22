@@ -13,6 +13,5 @@ interface UserRepository : JpaRepository<User, Long> {
      * @return Optional<User> user if founded or Empty if not
      */
     fun findByName(name: String): Optional<User>
-
 }
 

@@ -11,13 +11,10 @@ import javax.validation.constraints.Size
 @EntityListeners(
     EntityAuditListener::class
 )
-class Tag(
+data class Tag(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
     var name: @Size(min = 1, max = 80, message = "tag.invalidName") String = ""
-) : RepresentationModel<Tag>() {
-
-
-}
+) : RepresentationModel<Tag>()

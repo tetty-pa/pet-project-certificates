@@ -28,8 +28,6 @@ class AuthenticationController(
     private val userService: UserService,
     private val userLinkAdder: UserLinkAdder
 ) {
-
-
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.OK)
     fun login(@RequestBody authenticationRequest: AuthenticationRequest): String? {
@@ -42,20 +40,20 @@ class AuthenticationController(
         } catch (e: BadCredentialsException) {
             throw EntityNotFoundException("user.notfoundById")
         }
-        val userDetails = authenticationRequest.userName?.let { personUserDetailsService.loadUserByUsername(it) }
-        return userDetails?.let { jwtUtil.generateToken(it) }
+        val userDetails = personUserDetailsService.loadUserByUsername(authenticationRequest.userName)
+        return jwtUtil.generateToken(userDetails)
     }
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     fun signup(
-        @RequestBody user: @Valid User?,
+        @RequestBody user: @Valid User,
         bindingResult: BindingResult
     ): User {
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage)
         }
-        userService.create(user!!)
+        userService.create(user)
         userLinkAdder.addLinks(user)
         return user
     }

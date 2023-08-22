@@ -32,6 +32,9 @@ class OrderServiceImplTest {
     @Mock
     private lateinit var userRepository: UserRepository
 
+    @Mock
+    private lateinit var giftCertificateRepository: GiftCertificateRepository
+
     @InjectMocks
     private lateinit var orderService: OrderServiceImpl
 
@@ -48,13 +51,13 @@ class OrderServiceImplTest {
 
     @Test
     fun getAllByUserIdShouldThrowEntityNotFoundException() {
-        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
         assertThrows<EntityNotFoundException> { orderService.getAllByUserId(NOT_EXIST_ID, PAGE_NUM, PAGE_SIZE) }
     }
 
     @Test
     fun createShouldThrowEntityNotFoundException() {
-        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
         assertThrows<EntityNotFoundException> { orderService.create(NOT_EXIST_ID, NOT_EXIST_ID) }
     }
 
@@ -67,7 +70,7 @@ class OrderServiceImplTest {
 
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
-        whenever(orderRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        whenever(orderRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
         assertThrows<EntityNotFoundException> { orderService.getById(NOT_EXIST_ID) }
     }
 }

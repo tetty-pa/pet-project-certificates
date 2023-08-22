@@ -9,7 +9,7 @@ import javax.persistence.*
 @EntityListeners(
     EntityAuditListener::class
 )
-class Role(
+data class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
@@ -22,8 +22,6 @@ class Role(
         USER,
         ADMIN
     }
-
-
     companion object {
         fun getRole(roleId: Long): RoleType {
             return RoleType.entries[roleId.toInt()]

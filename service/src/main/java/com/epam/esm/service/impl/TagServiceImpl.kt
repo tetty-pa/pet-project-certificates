@@ -13,36 +13,32 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-open class TagServiceImpl(private val tagRepository: TagRepository, private val userRepository: UserRepository) : TagService {
-    override fun getAll(page: Int, size: Int): List<Tag> {
-        val pageRequest: Pageable = PageRequest.of(page, size)
-        return tagRepository.findAll(pageRequest).content
-    }
+class TagServiceImpl(private val tagRepository: TagRepository, private val userRepository: UserRepository) :
+    TagService {
+    override fun getAll(page: Int, size: Int): List<Tag> =
+        tagRepository.findAll(PageRequest.of(page, size)).content
 
     @Transactional
     override fun create(tag: Tag): Tag {
-        if (tagRepository.findByName(tag.name).isPresent) {
+        if (tagRepository.findByName(tag.name).isPresent)
             throw DuplicateEntityException("tag.already.exist")
-        }
         return tagRepository.save(tag)
     }
 
-    override fun getById(id: Long): Tag {
-        return tagRepository.findById(id)
-                .orElseThrow { EntityNotFoundException("tag.notfoundById") }
-    }
+    override fun getById(id: Long): Tag =
+        tagRepository.findById(id)
+            .orElseThrow { EntityNotFoundException("tag.notfoundById") }
 
-    @Transactional
     override fun deleteById(id: Long) {
         tagRepository.findById(id)
-                .orElseThrow { EntityNotFoundException("tag.notfoundById") }
+            .orElseThrow { EntityNotFoundException("tag.notfoundById") }
         tagRepository.deleteById(id)
     }
 
     override fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: Long): Tag {
         userRepository.findById(userId)
-                .orElseThrow { EntityNotFoundException("user.notfoundById") }
+            .orElseThrow { EntityNotFoundException("user.notfoundById") }
         return tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
-                .orElseThrow { EntityNotFoundException("order.notfoundById") }
+            .orElseThrow { EntityNotFoundException("order.notfoundById") }
     }
 }

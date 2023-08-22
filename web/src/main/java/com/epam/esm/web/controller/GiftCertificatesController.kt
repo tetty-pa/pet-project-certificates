@@ -7,19 +7,21 @@ import com.epam.esm.model.entity.util.SortType
 import com.epam.esm.service.GiftCertificateService
 import com.epam.esm.web.link.GiftCertificateLinkAdder
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.util.StringUtils
 import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/gift-certificates")
+@Validated
 class GiftCertificatesController(
     private val giftCertificateService: GiftCertificateService,
     private val giftCertificateLinkAdder: GiftCertificateLinkAdder
 ) {
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
@@ -43,22 +45,25 @@ class GiftCertificatesController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
-        @RequestBody @Valid giftCertificate: GiftCertificate,
-        bindingResult: BindingResult?
+        @Valid @RequestBody giftCertificate: GiftCertificate,
+        bindingResult: BindingResult
     ): GiftCertificate {
-        bindingResult?.let {
-            if (bindingResult.hasErrors()) {
-                throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage);
-            }
+
+        if (bindingResult.hasErrors()) {
+            throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage);
         }
-        require(bindingResult?.hasErrors() == false) {
+        /*require(bindingResult?.hasErrors() == false) {
             bindingResult?.fieldError?.defaultMessage ?: ""
-        }
+        }*/
         giftCertificateService.create(giftCertificate)
         giftCertificateLinkAdder.addLinks(giftCertificate)
         return giftCertificate
     }
-
+       /* : ResponseEntity<GiftCertificate> {
+        giftCertificateService.create(giftCertificate)
+        giftCertificateLinkAdder.addLinks(giftCertificate)
+        return ResponseEntity.ok(giftCertificate)*/
+    /*}*/
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteById(@PathVariable("id") id: Long) {
@@ -68,7 +73,7 @@ class GiftCertificatesController(
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     fun update(
-        @RequestBody @Valid giftCertificate: GiftCertificate,
+        @Valid @RequestBody giftCertificate: GiftCertificate,
         bindingResult: BindingResult
     ): GiftCertificate {
         if (bindingResult.hasErrors()) {
@@ -107,9 +112,7 @@ class GiftCertificatesController(
                 ), page, size
             )
 
-
         giftCertificatesByParameters.forEach(giftCertificateLinkAdder::addLinks)
         return giftCertificatesByParameters
     }
-
 }

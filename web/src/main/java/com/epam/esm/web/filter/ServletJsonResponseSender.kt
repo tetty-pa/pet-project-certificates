@@ -16,7 +16,6 @@ class ServletJsonResponseSender {
         httpServletResponse.writer.write(json)
         httpServletResponse.flushBuffer()
     }
-
     companion object {
         private const val RESPONSE_CHAR_ENCODING = "UTF-8"
         private const val RESPONSE_CONTENT_TYPE = "application/json"

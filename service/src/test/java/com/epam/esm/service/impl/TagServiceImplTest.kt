@@ -56,7 +56,7 @@ class TagServiceImplTest {
 
     @Test
     fun createShouldThrowInvalidDataException() {
-        whenever(tagRepository.save(INVALID_TAG)).thenThrow(InvalidDataException())
+        whenever(tagRepository.save(INVALID_TAG)).thenThrow(InvalidDataException(""))
         assertThrows<InvalidDataException> { tagService.create(INVALID_TAG) }
     }
 
@@ -75,7 +75,7 @@ class TagServiceImplTest {
 
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
-        whenever(tagRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException())
+        whenever(tagRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
         assertThrows<EntityNotFoundException> { tagService.getById(NOT_EXIST_ID) }
     }
 

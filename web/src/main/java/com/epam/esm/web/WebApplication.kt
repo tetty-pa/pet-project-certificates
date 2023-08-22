@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan("com.epam.esm")
 @EnableJpaRepositories("com.epam.esm.repository")
 class WebApplication
-fun main(args:Array<String>){
-        runApplication<WebApplication>(*args)
+fun main(args: Array<String>) {
+    runApplication<WebApplication>(*args)
 }
