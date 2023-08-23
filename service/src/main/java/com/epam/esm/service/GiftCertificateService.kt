@@ -1,7 +1,6 @@
 package com.epam.esm.service
 
 import com.epam.esm.model.entity.GiftCertificate
-import com.epam.esm.model.entity.util.QueryParameters
 
 /**
  * Service interface for Gift Certificate
@@ -15,16 +14,6 @@ interface GiftCertificateService {
      * @return List of all Gift Certificates
      */
     fun getAll(page: Int, size: Int): List<GiftCertificate>
-
-    /**
-     * Gets all Gift Certificates with parameters.
-     *
-     * @param queryParameters Parameters to search
-     * @param page   page number for pagination
-     * @param size   page size for pagination
-     * @return List of Gift Certificates
-     */
-    fun getGiftCertificatesByParameters(queryParameters: QueryParameters, page: Int, size: Int): List<GiftCertificate>
 
     /**
      * Gets Gift Certificate by id.
@@ -55,5 +44,5 @@ interface GiftCertificateService {
      *
      * @param id Gift Certificate id to delete
      */
-    fun deleteById(id: Long);
+    fun deleteById(id: Long)
 }

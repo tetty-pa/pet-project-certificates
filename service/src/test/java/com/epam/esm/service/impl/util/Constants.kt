@@ -1,6 +1,9 @@
 package com.epam.esm.service.impl.util
 
-import com.epam.esm.model.entity.*
+import com.epam.esm.model.entity.GiftCertificate
+import com.epam.esm.model.entity.Order
+import com.epam.esm.model.entity.Tag
+import com.epam.esm.model.entity.User
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import java.math.BigDecimal
@@ -11,7 +14,6 @@ import java.time.ZoneId
 object Constants {
     const val TEST_ID: Long = 1
     const val NOT_EXIST_ID: Long = 100
-    const val TEST_NAME = "1"
 
     @JvmField
     val FIRST_TEST_GIFT_CERTIFICATE = GiftCertificate(
@@ -50,12 +52,12 @@ object Constants {
         Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime().atZone(ZoneId.of("Europe/Kiev")), 1
     )
     @JvmField
-    val FIRST_TEST_USER = User(1, "1", "1", "1", mutableListOf())
+    val FIRST_TEST_USER = User(1, "1", "1", "1")
     @JvmField
     val SECOND_TEST_USER = User()
     @JvmField
-    val USER_TO_CREATE = User(1, "1", "1", "1", mutableListOf())
-    val INVALID_USER = User(1, "", "1", "1", mutableListOf(), Role(1, Role.RoleType.ADMIN.name))
+    val USER_TO_CREATE = User(1, "1", "1", "1")
+
     @JvmField
     val FIRST_TEST_ORDER = Order(
         1, BigDecimal(1),
@@ -68,12 +70,7 @@ object Constants {
         LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev")),
         SECOND_TEST_GIFT_CERTIFICATE, FIRST_TEST_USER
     )
-    @JvmField
-    val THIRD_TEST_ORDER = Order(
-        3, BigDecimal(3),
-        null,
-        THIRD_TEST_GIFT_CERTIFICATE, FIRST_TEST_USER
-    )
+
     @JvmField
     val FIRST_TEST_TAG = Tag(1, "1")
     @JvmField

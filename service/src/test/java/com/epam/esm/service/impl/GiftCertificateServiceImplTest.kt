@@ -3,8 +3,6 @@ package com.epam.esm.service.impl
 import com.epam.esm.exception.DuplicateEntityException
 import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.exception.InvalidDataException
-import com.epam.esm.model.entity.GiftCertificate
-import com.epam.esm.model.entity.util.QueryParameters
 import com.epam.esm.repository.GiftCertificateRepository
 import com.epam.esm.repository.TagRepository
 import com.epam.esm.service.impl.util.Constants
@@ -34,8 +32,6 @@ class GiftCertificateServiceImplTest {
 
     @Mock
     private lateinit var giftCertificateRepository: GiftCertificateRepository
-    @Mock
-    private lateinit var tagRepository: TagRepository
 
     @InjectMocks
     private lateinit var giftCertificateService: GiftCertificateServiceImpl
@@ -49,12 +45,6 @@ class GiftCertificateServiceImplTest {
         assertEquals(actual, expected)
     }
 
-    @Test
-    fun getGiftCertificatesByParameters() {
-        val parameters = QueryParameters("1", "", emptyList(), null, null)
-        val actual = giftCertificateService.getGiftCertificatesByParameters(parameters, PAGE_NUM, PAGE_SIZE)
-        assertEquals(emptyList<GiftCertificate>(), actual)
-    }
 
     @Test
     fun getById() {
