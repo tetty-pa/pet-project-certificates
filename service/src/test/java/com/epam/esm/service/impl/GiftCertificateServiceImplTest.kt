@@ -4,7 +4,6 @@ import com.epam.esm.exception.DuplicateEntityException
 import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.repository.GiftCertificateRepository
-import com.epam.esm.repository.TagRepository
 import com.epam.esm.service.impl.util.Constants
 import com.epam.esm.service.impl.util.Constants.FIRST_TEST_GIFT_CERTIFICATE
 import com.epam.esm.service.impl.util.Constants.GIFT_CERTIFICATE_TO_CREATE
@@ -16,14 +15,14 @@ import com.epam.esm.service.impl.util.Constants.PAGE_SIZE
 import com.epam.esm.service.impl.util.Constants.SECOND_TEST_GIFT_CERTIFICATE
 import com.epam.esm.service.impl.util.Constants.THIRD_TEST_GIFT_CERTIFICATE
 import com.epam.esm.service.impl.util.Constants.UPDATED_GIFT_CERTIFICATE
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.assertThrows
 import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
@@ -82,7 +81,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     fun createShouldThrowDuplicateEntityException() {
-        whenever( giftCertificateRepository.findByName(FIRST_TEST_GIFT_CERTIFICATE.name) ).thenReturn(
+        whenever(giftCertificateRepository.findByName(FIRST_TEST_GIFT_CERTIFICATE.name)).thenReturn(
             Optional.of(
                 FIRST_TEST_GIFT_CERTIFICATE
             )

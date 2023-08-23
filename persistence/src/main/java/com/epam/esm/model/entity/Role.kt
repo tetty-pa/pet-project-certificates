@@ -13,22 +13,21 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "roles")
-@EntityListeners(
-    EntityAuditListener::class
-)
+@EntityListeners(EntityAuditListener::class)
 data class Role(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long = 0,
 
-    @Column(name = "name", length = 60, unique = true)
-    var name: String = ""
+        @Column(name = "name", length = 60, unique = true)
+        var name: String = ""
 ) : RepresentationModel<Role>() {
     enum class RoleType {
         GUEST,
         USER,
         ADMIN
     }
+
     companion object {
         fun getRole(roleId: Long): RoleType {
             return RoleType.entries[roleId.toInt()]

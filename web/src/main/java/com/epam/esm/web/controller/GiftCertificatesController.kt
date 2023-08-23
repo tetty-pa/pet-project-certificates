@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-
-import java.util.Objects
 import javax.validation.Valid
 
 @RestController
@@ -52,24 +50,19 @@ class GiftCertificatesController(
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
         @Valid @RequestBody giftCertificate: GiftCertificate,
-        bindingResult: BindingResult
+        bindingResult: BindingResult?
     ): GiftCertificate {
 
-        if (bindingResult.hasErrors()) {
-            throw InvalidDataException(bindingResult.fieldError.defaultMessage)
+        if (bindingResult?.hasErrors() == true) {
+            throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        /*require(bindingResult?.hasErrors() == false) {
-            bindingResult?.fieldError?.defaultMessage ?: ""
-        }*/
+
         giftCertificateService.create(giftCertificate)
         giftCertificateLinkAdder.addLinks(giftCertificate)
         return giftCertificate
     }
-       /* : ResponseEntity<GiftCertificate> {
-        giftCertificateService.create(giftCertificate)
-        giftCertificateLinkAdder.addLinks(giftCertificate)
-        return ResponseEntity.ok(giftCertificate)*/
-    /*}*/
+
+
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteById(@PathVariable("id") id: Long) {

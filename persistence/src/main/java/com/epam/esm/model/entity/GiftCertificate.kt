@@ -24,46 +24,44 @@ import javax.persistence.FetchType
 
 @Entity
 @Table(name = "gift_certificates")
-@EntityListeners(
-    EntityAuditListener::class
-)
+@EntityListeners(EntityAuditListener::class)
 class GiftCertificate(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = 0,
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long? = 0,
 
-    @Column(length = 80, nullable = false)
-    @Size(min = 1, max = 80, message = "gift-certificate.invalidName")
-    var name: String = "",
+        @Column(length = 80, nullable = false)
+        @Size(min = 1, max = 80, message = "gift-certificate.invalidName")
+        var name: String = "",
 
-    @Column(length = 250, nullable = false)
-    @field: Size(min = 1, max = 250, message = "gift-certificate.invalidDescription")
-    var description: String = "",
+        @Column(length = 250, nullable = false)
+        @field: Size(min = 1, max = 250, message = "gift-certificate.invalidDescription")
+        var description: String = "",
 
-    @Column(nullable = false)
-    @field:Min(value = 1, message = "gift-certificate.invalidPrice")
-    var price: BigDecimal = BigDecimal.ZERO,
+        @Column(nullable = false)
+        @field:Min(value = 1, message = "gift-certificate.invalidPrice")
+        var price: BigDecimal = BigDecimal.ZERO,
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    @Column(name = "create_date", nullable = false, updatable = false)
-    var createDate: ZonedDateTime? = null,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        @Column(name = "create_date", nullable = false, updatable = false)
+        var createDate: ZonedDateTime? = null,
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    @Column(name = "last_updated_date", nullable = false)
-    var lastUpdatedDate: ZonedDateTime? = null,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        @Column(name = "last_updated_date", nullable = false)
+        var lastUpdatedDate: ZonedDateTime? = null,
 
-    @Column(nullable = false)
-    @field:Min(value = 1, message = "gift-certificate.invalidDuration")
-    var duration: Int = 0,
+        @Column(nullable = false)
+        @field:Min(value = 1, message = "gift-certificate.invalidDuration")
+        var duration: Int = 0,
 
-    @JoinTable(
-        name = "gift_certificate_has_tag",
-        joinColumns = [JoinColumn(name = "gift_certificate_id", referencedColumnName = "ID")],
-        inverseJoinColumns = [JoinColumn(name = "tag_id", referencedColumnName = "ID")]
-    )
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var tagList: MutableList<Tag> = mutableListOf()
+        @JoinTable(
+                name = "gift_certificate_has_tag",
+                joinColumns = [JoinColumn(name = "gift_certificate_id", referencedColumnName = "ID")],
+                inverseJoinColumns = [JoinColumn(name = "tag_id", referencedColumnName = "ID")]
+        )
+        @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+        var tagList: MutableList<Tag> = mutableListOf()
 ) : RepresentationModel<GiftCertificate>()
 

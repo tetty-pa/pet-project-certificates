@@ -5,16 +5,21 @@ import com.epam.esm.web.controller.OrdersController
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.stereotype.Component
 
+
 @Component
-class OrdersLinkAdder(private val giftCertificateLinkAdder: GiftCertificateLinkAdder, private val userLinkAdder: UserLinkAdder) : LinkAdder<Order> {
+class OrdersLinkAdder : LinkAdder<Order> {
     override fun addLinks(entity: Order) {
-        entity.add(WebMvcLinkBuilder.linkTo(entity.id?.let {
+        entity.add(WebMvcLinkBuilder.linkTo(entity.id.let {
             WebMvcLinkBuilder.methodOn(OrdersController::class.java).getById(
                 it
             )
         }).withSelfRel())
-        /*entity.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrdersController::class.java).create(entity.user!!.id, entity.giftCertificate!!.id)).withRel("create"))
-*/
+        entity.add(
+            WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(OrdersController::class.java)
+                    .create(entity.user?.id ?: 0, entity.giftCertificate?.id ?: 0)
+            ).withRel("create")
+        )
     }
 }
 

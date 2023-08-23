@@ -4,6 +4,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class AuthenticationRequest(
-    val userName: String = "",
-    val password: String = ""
+        val userName: String = "",
+        val password: String = ""
 )

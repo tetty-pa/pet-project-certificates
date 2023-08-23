@@ -20,20 +20,20 @@ import javax.servlet.http.HttpServletResponse
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig(
-    var userDetailsService: PersonUserDetailsService,
-    /* var jwtRequestFilter: JwtRequestFilter,*/
-    var handler: RestResponseEntityExceptionHandler,
-    var jsonResponseSender: ServletJsonResponseSender
+        var userDetailsService: PersonUserDetailsService,
+        /* var jwtRequestFilter: JwtRequestFilter,*/
+        var handler: RestResponseEntityExceptionHandler,
+        var jsonResponseSender: ServletJsonResponseSender
 ) : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
-            .csrf().disable()
-            .httpBasic().disable() /*
+                .csrf().disable()
+                .httpBasic().disable() /*
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
 */
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().authorizeRequests() /*
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests() /*
 
                 .antMatchers(GET, "/gift-certificates/ **").permitAll()
                 .antMatchers(POST, "/authenticate", "/signup").permitAll()
@@ -41,13 +41,13 @@ class SecurityConfig(
                 .antMatchers("/orders/ **").hasAnyRole(USER, ADMIN)
                 .antMatchers(GET, "/users/ **", "/tags/ **").hasRole( ADMIN)
 */
-            .anyRequest().permitAll() /*.hasRole(ADMIN)
+                .anyRequest().permitAll() /*.hasRole(ADMIN)
                 */
-            .and()
-            .exceptionHandling() /*                .authenticationEntryPoint(
+                .and()
+                .exceptionHandling() /*                .authenticationEntryPoint(
                         (request, response, ex) -> handleNoJwt(request, response)
                 )*/
-            .and().formLogin()
+                .and().formLogin()
     }
 
     @Throws(IOException::class)

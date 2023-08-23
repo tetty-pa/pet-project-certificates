@@ -10,7 +10,7 @@ import java.util.function.Function
 
 @Component
 class JwtUtil {
-    private val SECRET_KEY = "secret"
+    val secret = "secret"
     fun exactUsername(token: String): String {
         return extractClaim(token) { obj: Claims -> obj.subject }
     }
@@ -25,7 +25,7 @@ class JwtUtil {
     }
 
     private fun extractAllClaims(token: String): Claims {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).body
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body
     }
 
     private fun isTokenExpired(token: String): Boolean {
@@ -39,12 +39,16 @@ class JwtUtil {
 
     private fun createToken(claims: Map<String, Any>, subject: String): String {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact()
+                .setExpiration(Date(System.currentTimeMillis() + TIME))
+                .signWith(SignatureAlgorithm.HS256, secret).compact()
     }
 
     fun validateToken(token: String?, userDetails: UserDetails): Boolean {
         val username = token?.let { exactUsername(it) }
         return username == userDetails.username && !token?.let { isTokenExpired(it) }!!
+    }
+
+    companion object {
+        private const val TIME = 1000 * 60 * 60 * 10
     }
 }

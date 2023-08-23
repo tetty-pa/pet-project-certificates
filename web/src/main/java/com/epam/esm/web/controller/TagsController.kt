@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.util.Objects
 import javax.validation.Valid
 
 @RestController
@@ -40,11 +39,11 @@ class TagsController(
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
         @Valid @RequestBody tag: Tag,
-        bindingResult: BindingResult
+        bindingResult: BindingResult?
     ): Tag {
-            if (bindingResult.hasErrors()) {
-                throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage)
-            }
+        if (bindingResult?.hasErrors() == true) {
+            throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
+        }
         tagService.create(tag)
         tagLinkAdder.addLinks(tag)
         return tag

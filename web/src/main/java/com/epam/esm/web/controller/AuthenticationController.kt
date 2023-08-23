@@ -22,20 +22,20 @@ import javax.validation.Valid
 
 @RestController
 class AuthenticationController(
-    private val authenticationManager: AuthenticationManager,
-    private val personUserDetailsService: PersonUserDetailsService,
-    private val jwtUtil: JwtUtil,
-    private val userService: UserService,
-    private val userLinkAdder: UserLinkAdder
+        private val authenticationManager: AuthenticationManager,
+        private val personUserDetailsService: PersonUserDetailsService,
+        private val jwtUtil: JwtUtil,
+        private val userService: UserService,
+        private val userLinkAdder: UserLinkAdder
 ) {
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.OK)
     fun login(@RequestBody authenticationRequest: AuthenticationRequest): String? {
         try {
             authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                    authenticationRequest.userName, authenticationRequest.password
-                )
+                    UsernamePasswordAuthenticationToken(
+                            authenticationRequest.userName, authenticationRequest.password
+                    )
             )
         } catch (e: BadCredentialsException) {
             throw EntityNotFoundException("user.notfoundById")
@@ -47,8 +47,8 @@ class AuthenticationController(
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     fun signup(
-        @RequestBody user: @Valid User,
-        bindingResult: BindingResult
+            @RequestBody user: @Valid User,
+            bindingResult: BindingResult
     ): User {
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage)

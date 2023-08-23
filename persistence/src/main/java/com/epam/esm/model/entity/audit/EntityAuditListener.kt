@@ -10,8 +10,9 @@ import javax.persistence.PreUpdate
 @Component
 class EntityAuditListener {
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(EntityAuditListener ::class.java)
+        private val LOGGER: Logger = LoggerFactory.getLogger(EntityAuditListener::class.java)
     }
+
     @PrePersist
     private fun onPrePersist(entity: Any) {
         LOGGER.info("persist object: {}", entity)

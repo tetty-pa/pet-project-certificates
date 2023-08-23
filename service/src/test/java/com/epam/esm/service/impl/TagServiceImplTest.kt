@@ -16,14 +16,14 @@ import com.epam.esm.service.impl.util.Constants.SECOND_TEST_TAG
 import com.epam.esm.service.impl.util.Constants.TAG_TO_CREATE
 import com.epam.esm.service.impl.util.Constants.TEST_ID
 import com.epam.esm.service.impl.util.Constants.THIRD_TEST_TAG
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.assertThrows
 import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
