@@ -3,3 +3,16 @@
 /model/target/
 /service/target/
 /target/
+
+
+# Ignore specific files
+service/service.iml
+persistence/persistence.iml
+web/web.iml
+Rest-api-basics-task.iml
+
+# Ignore directories and their contents
+persistence/target/
+web/target/
+service/target/
+.idea/

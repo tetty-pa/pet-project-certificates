@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface OrderRepository : JpaRepository<Order, Long> {
     /**
-     * Gets list of Orderby user ID.
+     * Gets list of Order by user ID.
      *
      * @param userId ID of user
      * @param pageable object with pagination info(page number, page size)

@@ -3,7 +3,7 @@ package com.epam.esm.repository
 import com.epam.esm.model.entity.Tag
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import java.util.*
+import java.util.Optional
 
 interface TagRepository : JpaRepository<Tag, Long> {
     /**

@@ -3,9 +3,6 @@ package com.epam.esm.web.security
 import com.epam.esm.model.entity.Role
 import com.epam.esm.service.security.PersonUserDetailsService
 import com.epam.esm.web.exception.RestResponseEntityExceptionHandler
-/*
-import com.epam.esm.web.filter.JwtRequestFilter
-*/
 import com.epam.esm.web.filter.ServletJsonResponseSender
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager

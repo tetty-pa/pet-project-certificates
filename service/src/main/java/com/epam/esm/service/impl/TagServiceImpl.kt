@@ -6,9 +6,7 @@ import com.epam.esm.model.entity.Tag
 import com.epam.esm.repository.TagRepository
 import com.epam.esm.repository.UserRepository
 import com.epam.esm.service.TagService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

@@ -1,12 +1,16 @@
 package com.epam.esm.web.exception
 
-import com.epam.esm.exception.*
+import com.epam.esm.exception.DuplicateEntityException
+import com.epam.esm.exception.EntityNotFoundException
+import com.epam.esm.exception.InvalidDataException
+import com.epam.esm.exception.InvalidJwtException
+import com.epam.esm.exception.InvalidParameterException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import java.util.*
+import java.util.Locale
 
 @RestControllerAdvice
 class RestResponseEntityExceptionHandler(private val messageSource: MessageConfig){

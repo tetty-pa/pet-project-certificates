@@ -3,8 +3,13 @@ package com.epam.esm.model.entity
 import com.epam.esm.model.entity.audit.EntityAuditListener
 import org.springframework.hateoas.RepresentationModel
 
-import javax.persistence.*
 import javax.validation.constraints.Size
+import javax.persistence.Entity
+import javax.persistence.EntityListeners
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "tags")
