@@ -16,10 +16,13 @@ class PersonUserDetails : UserDetails {
         name = user.name
         password = user.password
         authorities = listOf<GrantedAuthority>(
-                SimpleGrantedAuthority("ROLE_" +
+            SimpleGrantedAuthority(
+                "ROLE_" +
                         Role.getRole((user.role?.id ?: 1) - 1)
-                                .name
-                                .uppercase()))
+                            .name
+                            .uppercase()
+            )
+        )
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> {

@@ -43,5 +43,4 @@ class JwtRequestFilter(private val personUserDetailsService: PersonUserDetailsSe
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse)
     }
-
 }*/

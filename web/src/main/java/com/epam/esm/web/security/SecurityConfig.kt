@@ -3,9 +3,6 @@ package com.epam.esm.web.security
 import com.epam.esm.model.entity.Role
 import com.epam.esm.service.security.PersonUserDetailsService
 import com.epam.esm.web.exception.RestResponseEntityExceptionHandler
-/*
-import com.epam.esm.web.filter.JwtRequestFilter
-*/
 import com.epam.esm.web.filter.ServletJsonResponseSender
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
@@ -22,11 +19,12 @@ import javax.servlet.http.HttpServletResponse
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig (var userDetailsService: PersonUserDetailsService,
-                     /* var jwtRequestFilter: JwtRequestFilter,*/
-                      var handler: RestResponseEntityExceptionHandler,
-                      var jsonResponseSender: ServletJsonResponseSender)
-    : WebSecurityConfigurerAdapter() {
+class SecurityConfig(
+        var userDetailsService: PersonUserDetailsService,
+        /* var jwtRequestFilter: JwtRequestFilter,*/
+        var handler: RestResponseEntityExceptionHandler,
+        var jsonResponseSender: ServletJsonResponseSender
+) : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
@@ -73,5 +71,4 @@ class SecurityConfig (var userDetailsService: PersonUserDetailsService,
         val USER = Role.RoleType.USER.name
         val ADMIN = Role.RoleType.ADMIN.name
     }
-    
-    }
+}

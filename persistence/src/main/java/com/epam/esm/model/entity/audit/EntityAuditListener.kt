@@ -1,5 +1,6 @@
 package com.epam.esm.model.entity.audit
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import javax.persistence.PrePersist
@@ -8,19 +9,22 @@ import javax.persistence.PreUpdate
 
 @Component
 class EntityAuditListener {
-    private val LOGGER = LoggerFactory.getLogger(EntityAuditListener::class.java)
+    companion object {
+        private val LOGGER: Logger = LoggerFactory.getLogger(EntityAuditListener::class.java)
+    }
+
     @PrePersist
-    private fun onPrePersist(`object`: Any) {
-        LOGGER.info("persist object: $`object`")
+    private fun onPrePersist(entity: Any) {
+        LOGGER.info("persist object: {}", entity)
     }
 
     @PreUpdate
-    private fun onPreUpdate(`object`: Any) {
-        LOGGER.info("update object: $`object`")
+    private fun onPreUpdate(entity: Any) {
+        LOGGER.info("update object: {}", entity)
     }
 
     @PreRemove
-    fun onPreRemove(`object`: Any) {
-        LOGGER.info("remove object: $`object`")
+    fun onPreRemove(entity: Any) {
+        LOGGER.info("remove object: {}", entity)
     }
 }

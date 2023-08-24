@@ -9,17 +9,15 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/orders")
 class OrdersController(
-    private val orderService: OrderService,
-    private val ordersLinkAdder: OrdersLinkAdder
+        private val orderService: OrderService,
+        private val ordersLinkAdder: OrdersLinkAdder
 ) {
-
-
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
-        @PathVariable userId: Long,
-        @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
-        @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
+            @PathVariable userId: Long,
+            @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
+            @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
     ): List<Order> {
 
         val all = orderService.getAllByUserId(userId, page, size)
@@ -30,8 +28,8 @@ class OrdersController(
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun create(
-        @PathVariable userId: Long,
-        @RequestParam certificateId: Long
+            @PathVariable userId: Long,
+            @RequestParam certificateId: Long
     ): Order {
 
         val order = orderService.create(userId, certificateId)

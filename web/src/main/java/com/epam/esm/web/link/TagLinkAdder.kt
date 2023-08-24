@@ -8,8 +8,14 @@ import org.springframework.stereotype.Component
 @Component
 class TagLinkAdder : LinkAdder<Tag> {
     override fun addLinks(entity: Tag) {
-        entity.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagsController::class.java).getById(entity.id)).withSelfRel())
-        entity.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagsController::class.java).create(entity, null)).withRel("create"))
+        entity.add(
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagsController::class.java).getById(entity.id))
+                        .withSelfRel()
+        )
+        entity.add(
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagsController::class.java).create(entity, null))
+                        .withRel("create")
+        )
         entity.add(WebMvcLinkBuilder.linkTo(TagsController::class.java).slash(entity.id).withRel("delete"))
     }
 }

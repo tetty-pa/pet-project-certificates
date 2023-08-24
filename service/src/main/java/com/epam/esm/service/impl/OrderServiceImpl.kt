@@ -11,7 +11,11 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
-class OrderServiceImpl(private val orderRepository: OrderRepository, private val userRepository: UserRepository, private val giftCertificateRepository: GiftCertificateRepository) : OrderService {
+class OrderServiceImpl(
+    private val orderRepository: OrderRepository,
+    private val userRepository: UserRepository,
+    private val giftCertificateRepository: GiftCertificateRepository
+) : OrderService {
 
     override fun getAllByUserId(userId: Long, page: Int, size: Int): List<Order> {
         userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
@@ -22,20 +26,18 @@ class OrderServiceImpl(private val orderRepository: OrderRepository, private val
 
     override fun create(userId: Long, certificateId: Long): Order {
         val order = Order()
-        val userO = userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
 
-        order.user = userO
+        val user = userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
+        order.user = user
 
-        val giftCertificate = giftCertificateRepository.findById(certificateId).orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
-
+        val giftCertificate = giftCertificateRepository.findById(certificateId)
+            .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
         order.giftCertificate = giftCertificate
+
         order.cost = giftCertificate.price
         return orderRepository.save(order)
-
     }
 
-    override fun getById(orderId: Long): Order {
-        return orderRepository.findById(orderId).orElseThrow { EntityNotFoundException("order.notfoundById") }
-
-    }
+    override fun getById(orderId: Long): Order =
+        orderRepository.findById(orderId).orElseThrow { EntityNotFoundException("order.notfoundById") }
 }

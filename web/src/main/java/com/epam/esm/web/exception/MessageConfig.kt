@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ResourceBundleMessageSource
 
 @Configuration
- class MessageConfig {
+class MessageConfig {
     @Bean
-     fun messageSource(): MessageSource {
+    fun messageSource(): MessageSource {
         val source = ResourceBundleMessageSource()
         source.setBasename("errors-messages")
         source.setUseCodeAsDefaultMessage(true)

@@ -10,12 +10,26 @@ import org.springframework.stereotype.Component
 @Component
 class GiftCertificateLinkAdder : LinkAdder<GiftCertificate> {
     override fun addLinks(entity: GiftCertificate) {
-        entity.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificatesController::class.java).getById(entity.id)).withSelfRel())
-        entity.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificatesController::class.java).create(entity, null)).withRel("create"))
+        entity.id?.let {
+            WebMvcLinkBuilder.methodOn(GiftCertificatesController::class.java).getById(
+                    it
+            )
+        }?.let { WebMvcLinkBuilder.linkTo(it).withSelfRel() }?.let { entity.add(it) }
+        entity.add(
+                WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(GiftCertificatesController::class.java).create(entity, null)
+                ).withRel("create")
+        )
         entity.add(WebMvcLinkBuilder.linkTo(GiftCertificatesController::class.java).slash(entity.id).withRel("update"))
         entity.add(WebMvcLinkBuilder.linkTo(GiftCertificatesController::class.java).slash(entity.id).withRel("delete"))
         entity.tagList.stream()
-            .filter { t: Tag -> t.links.isEmpty }
-                .forEach { tag: Tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagsController::class.java).getById(tag.id)).withSelfRel()) }
+                .filter { t: Tag -> t.links.isEmpty }
+                .forEach { tag: Tag ->
+                    tag.add(
+                            WebMvcLinkBuilder.linkTo(
+                                    WebMvcLinkBuilder.methodOn(TagsController::class.java).getById(tag.id)
+                            ).withSelfRel()
+                    )
+                }
     }
 }

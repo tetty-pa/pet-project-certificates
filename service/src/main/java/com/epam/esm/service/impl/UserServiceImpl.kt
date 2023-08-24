@@ -10,25 +10,21 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder) : UserService {
-    override fun getAll(page: Int, size: Int): MutableList<User> {
-        val pageRequest = PageRequest.of(page, size)
-        return userRepository.findAll(pageRequest).content
-    }
+class UserServiceImpl(private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder) :
+    UserService {
+    override fun getAll(page: Int, size: Int): MutableList<User> =
+        userRepository.findAll(PageRequest.of(page, size)).content
 
-    override fun getById(id: Long): User {
-        return userRepository.findById(id)
-                .orElseThrow { EntityNotFoundException("user.notfoundById") }
-    }
+    override fun getById(id: Long): User =
+        userRepository.findById(id)
+            .orElseThrow { EntityNotFoundException("user.notfoundById") }
 
     override fun create(user: User): User {
-
-        if (userRepository.findByName(user.name).isPresent) {
+        if (userRepository.findByName(user.name).isPresent)
             throw DuplicateEntityException("user.already.exist")
-        }
-        val encodedPassword = passwordEncoder.encode(user?.password)
+
+        val encodedPassword = passwordEncoder.encode(user.password)
         user.password = encodedPassword
         return userRepository.save(user)
     }
-
 }

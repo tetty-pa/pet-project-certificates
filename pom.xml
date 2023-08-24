@@ -30,7 +30,7 @@
 
         <!--
                  <sonar.login>admin</sonar.login>
-                <sonar.password>Gbdj1715</sonar.password>
+                <sonar.password></sonar.password>
                 <sonar.host.url>http://localhost:9000</sonar.host.url>
                 <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
         -->
@@ -58,10 +58,36 @@
             <version>${kotlin.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.0.Final</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
         </dependency>
 
         <dependency>
@@ -103,12 +129,7 @@
             <artifactId>kotlin-maven-allopen</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.codehaus.sonar-plugins.java/sonar-jacoco-plugin -->
-        <dependency>
-            <groupId>org.codehaus.sonar-plugins.java</groupId>
-            <artifactId>sonar-jacoco-plugin</artifactId>
-            <version>2.3</version>
-        </dependency>
+
 
     </dependencies>
 
@@ -210,19 +231,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-jar-plugin</artifactId>
-                 <version>2.6</version>
-                 <configuration>
-                     <archive>
-                         <manifest>
-                             <addClasspath>true</addClasspath>
-                             <mainClass>${main.class}</mainClass>
-                         </manifest>
-                     </archive>
-                 </configuration>
-             </plugin>-->
+
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>

@@ -6,8 +6,15 @@ import com.epam.esm.service.TagService
 import com.epam.esm.web.link.TagLinkAdder
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
@@ -16,7 +23,6 @@ class TagsController(
     private val tagService: TagService,
     private val tagLinkAdder: TagLinkAdder
 ) {
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
@@ -29,19 +35,15 @@ class TagsController(
         return all
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
-        @RequestBody @Valid tag: Tag,
+        @Valid @RequestBody tag: Tag,
         bindingResult: BindingResult?
     ): Tag {
-        bindingResult?.let {
-            if (bindingResult.hasErrors()) {
-                throw InvalidDataException(Objects.requireNonNull(bindingResult.fieldError).defaultMessage)
-            }
+        if (bindingResult?.hasErrors() == true) {
+            throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-
         tagService.create(tag)
         tagLinkAdder.addLinks(tag)
         return tag
