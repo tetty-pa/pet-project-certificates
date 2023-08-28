@@ -3,15 +3,19 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.9.10"
-    //spring plugin
+    id("org.springframework.boot") version "3.1.3"
+    id("io.spring.dependency-management") version "1.1.3"
+    `java-library`
+    kotlin("jvm") version "1.9.0"
+    kotlin("plugin.allopen") version "1.9.10"
+    kotlin("plugin.spring") version "1.9.10"
 }
 
 repositories {
     mavenCentral()
-       maven {
-           url = uri("https://repo.maven.apache.org/maven2/")
-       }
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2/")
+    }
 }
 
 
@@ -21,10 +25,19 @@ version = "1.0-SNAPSHOT"
 subprojects {
     repositories {
         mavenCentral()
-           maven {
-               url = uri("https://repo.maven.apache.org/maven2/")
-           }
+        maven {
+            url = uri("https://repo.maven.apache.org/maven2/")
+        }
     }
-//    java.sourceCompatibility = JavaVersion.VERSION_17
-
+    //java.sourceCompatibility = JavaVersion.VERSION_17
 }
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
