@@ -29,7 +29,7 @@ data class Order(
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    @Column(name = "order_date", nullable = false, updatable = false)
+    @Column(name = "order_date", updatable = false)
     var orderDate: ZonedDateTime? = null,
 
     @ManyToOne

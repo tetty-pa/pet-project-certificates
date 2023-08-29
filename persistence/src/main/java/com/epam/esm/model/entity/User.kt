@@ -21,17 +21,17 @@ data class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    @Column(length = 80, nullable = false)
-    @Size(min = 1, max = 80, message = "user.invalidName")
+    @Column(length = 80)
+    @field:Size(min = 1, max = 80, message = "user.invalidName")
     var name: String = "",
 
-    @Column(length = 80, nullable = false)
+    @Column(length = 80)
     var email: String = "",
 
-    @Column(length = 80, nullable = false)
+    @Column(length = 80)
     var password: String = "",
 
     @OneToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     var role: Role? = Role(2)
 ) : RepresentationModel<User>()
