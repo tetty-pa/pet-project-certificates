@@ -21,7 +21,6 @@ import org.springframework.hateoas.RepresentationModel
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
-
 @Entity
 @Table(name = "gift_certificates")
 @EntityListeners(EntityAuditListener::class)
@@ -31,7 +30,7 @@ class GiftCertificate(
     var id: Long? = 0,
 
     @Column(length = 80, nullable = false)
-    @Size(min = 1, max = 80, message = "gift-certificate.invalidName")
+    @field:Size(min = 1, max = 80, message = "gift-certificate.invalidName")
     var name: String = "",
 
     @Column(length = 250, nullable = false)

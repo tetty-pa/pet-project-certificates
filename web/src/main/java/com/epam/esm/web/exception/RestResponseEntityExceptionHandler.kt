@@ -13,19 +13,20 @@ import java.util.*
 @RestControllerAdvice
 class RestResponseEntityExceptionHandler(private val messageSource: MessageConfig) {
     private fun buildErrorResponse(
-        message: String?, code: Int,
+        message: String?,
+        code: Int,
         status: HttpStatus
     ): ResponseEntity<ExceptionResponse> {
-        val response = ExceptionResponse(message!!, code)
+        val response = message?.let { ExceptionResponse(it, code) }
         return ResponseEntity(response, status)
     }
 
-    private fun resolveResourceBundle(key: String, locale: Locale): String {
-        var locale = locale
+    private fun resolveResourceBundle(key: String?, localeU: Locale): String? {
+        var locale = localeU
         if (!AVAILABLE_LOCALES.contains(locale.toString())) {
             locale = DEFAULT_LOCALE
         }
-        return messageSource.messageSource().getMessage(key, null, locale)
+        return key?.let { messageSource.messageSource().getMessage(it, null, locale) }
     }
 
     @ExceptionHandler(EntityNotFoundException::class)
@@ -34,7 +35,7 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
         locale: Locale
     ): ResponseEntity<ExceptionResponse> =
         buildErrorResponse(
-            resolveResourceBundle(e.message!!, locale),
+            resolveResourceBundle(e.message, locale),
             CODE_ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND
         )
 
@@ -43,7 +44,7 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
         e: InvalidDataException, locale: Locale
     ): ResponseEntity<ExceptionResponse> =
         buildErrorResponse(
-            resolveResourceBundle(e.message!!, locale),
+            resolveResourceBundle(e.message, locale),
             CODE_INVALID_DATA, HttpStatus.BAD_REQUEST
         )
 
@@ -52,14 +53,13 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
         e: DuplicateEntityException, locale: Locale
     ): ResponseEntity<ExceptionResponse> =
         buildErrorResponse(
-            resolveResourceBundle(e.message!!, locale),
+            resolveResourceBundle(e.message, locale),
             CODE_DUPLICATE_ENTITY, HttpStatus.NOT_FOUND
         )
 
-
     @ExceptionHandler(Exception::class)
     fun handleOtherExceptions(e: Exception): ResponseEntity<ExceptionResponse> =
-        buildErrorResponse(e.message!!, CODE_OTHER, HttpStatus.INTERNAL_SERVER_ERROR)
+        buildErrorResponse(e.message, CODE_OTHER, HttpStatus.INTERNAL_SERVER_ERROR)
 
     @ExceptionHandler(InvalidJwtException::class)
     fun handleInvalidJwtException(locale: Locale): ResponseEntity<ExceptionResponse> =
@@ -68,8 +68,8 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
             CODE_INVALID_JWT, HttpStatus.UNAUTHORIZED
         )
 
-    fun buildNoJwtResponseObject(locale: Locale): ExceptionResponse =
-        ExceptionResponse(resolveResourceBundle("jwt.not.exist", locale), CODE_JWT_NOT_EXISTS)
+    fun buildNoJwtResponseObject(locale: Locale): ExceptionResponse? =
+        resolveResourceBundle("jwt.not.exist", locale)?.let{ ExceptionResponse(it, CODE_JWT_NOT_EXISTS) }
 
     companion object {
         private val AVAILABLE_LOCALES: List<String> = mutableListOf("en_US", "ua_UA")

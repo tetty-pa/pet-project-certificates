@@ -14,12 +14,12 @@ import org.springframework.hateoas.RepresentationModel
 @Table(name = "roles")
 @EntityListeners(EntityAuditListener::class)
 data class Role(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(name = "name", length = 60, unique = true)
-        var name: String = ""
+    @Column(name = "name", length = 60, unique = true)
+    var name: String = ""
 ) : RepresentationModel<Role>() {
     enum class RoleType {
         GUEST,

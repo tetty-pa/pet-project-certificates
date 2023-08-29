@@ -31,9 +31,6 @@ data class User(
     @Column(length = 80, nullable = false)
     var password: String = "",
 
-    /*@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    val orders: List<Order> = ArrayList(),
-*/
     @OneToOne
     @JoinColumn(name = "role_id", nullable = false)
     var role: Role? = Role(2)

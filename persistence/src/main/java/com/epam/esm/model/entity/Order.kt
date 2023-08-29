@@ -25,7 +25,6 @@ data class Order(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    @Column(nullable = false)
     var cost: BigDecimal = BigDecimal.ZERO,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

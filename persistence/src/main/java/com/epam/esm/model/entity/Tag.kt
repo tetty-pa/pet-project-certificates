@@ -18,5 +18,6 @@ data class Tag(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    var name: @Size(min = 1, max = 80, message = "tag.invalidName") String = ""
+    @field:Size(min = 1, max = 80, message = "tag.invalidName")
+    var name: String = ""
 ) : RepresentationModel<Tag>()

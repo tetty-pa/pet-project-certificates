@@ -76,7 +76,7 @@ class GiftCertificatesController(
         bindingResult: BindingResult
     ): GiftCertificate {
         if (bindingResult.hasErrors()) {
-            throw InvalidDataException("")
+            throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
         giftCertificateService.update(giftCertificate)
         giftCertificateLinkAdder.addLinks(giftCertificate)
