@@ -4,6 +4,7 @@ import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.service.GiftCertificateService
 import com.epam.esm.web.link.GiftCertificateLinkAdder
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/gift-certificates")
@@ -76,7 +76,7 @@ class GiftCertificatesController(
         bindingResult: BindingResult
     ): GiftCertificate {
         if (bindingResult.hasErrors()) {
-            throw InvalidDataException(bindingResult.fieldError.defaultMessage)
+            throw InvalidDataException("")
         }
         giftCertificateService.update(giftCertificate)
         giftCertificateLinkAdder.addLinks(giftCertificate)
