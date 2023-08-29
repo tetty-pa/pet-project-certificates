@@ -1,5 +1,7 @@
 package com.epam.esm.web.security
 
+// TODO: this code was commented because security configuration is not yet implemented;
+//  It will be fixed once security is ready
 import com.epam.esm.model.entity.Role
 import com.epam.esm.service.security.PersonUserDetailsService
 import com.epam.esm.web.exception.RestResponseEntityExceptionHandler

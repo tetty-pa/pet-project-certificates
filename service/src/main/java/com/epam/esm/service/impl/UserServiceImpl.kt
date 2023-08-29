@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserServiceImpl(private val userRepository: UserRepository,
+    // TODO: this code was commented because security configuration is not yet implemented;
+    //  It will be fixed once security is ready
                       //private val passwordEncoder: PasswordEncoder
     ) : UserService {
     override fun getAll(page: Int, size: Int): MutableList<User> =

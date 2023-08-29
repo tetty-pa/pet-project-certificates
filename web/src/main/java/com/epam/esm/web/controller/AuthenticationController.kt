@@ -22,7 +22,9 @@ import java.util.*
 
 @RestController
 class AuthenticationController(
- //   private val authenticationManager: AuthenticationManager,
+// TODO: this code was commented because security configuration is not yet implemented;
+//  It will be fixed once security is ready
+    //   private val authenticationManager: AuthenticationManager,
     private val personUserDetailsService: PersonUserDetailsService,
     private val jwtUtil: JwtUtil,
     private val userService: UserService,
@@ -32,11 +34,11 @@ class AuthenticationController(
     @ResponseStatus(HttpStatus.OK)
     fun login(@RequestBody authenticationRequest: AuthenticationRequest): String? {
         try {
-           /* authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                    authenticationRequest.userName, authenticationRequest.password
-                )
-            )*/
+            /* authenticationManager.authenticate(
+                 UsernamePasswordAuthenticationToken(
+                     authenticationRequest.userName, authenticationRequest.password
+                 )
+             )*/
         } catch (e: BadCredentialsException) {
             throw EntityNotFoundException("user.notfoundById")
         }
@@ -47,11 +49,11 @@ class AuthenticationController(
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     fun signup(
-        @Valid @RequestBody user:  User,
+        @Valid @RequestBody user: User,
         bindingResult: BindingResult
     ): User {
         if (bindingResult.hasErrors()) {
-            throw InvalidDataException("")
+            throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
         userService.create(user)
         userLinkAdder.addLinks(user)
