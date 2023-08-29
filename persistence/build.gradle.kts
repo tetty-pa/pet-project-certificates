@@ -7,7 +7,6 @@ plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.9.10"
     kotlin("plugin.allopen") version "1.9.10"
-
 }
 
 group = "com.epam.esm"
@@ -17,14 +16,7 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    // https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
-
     api("io.jsonwebtoken:jjwt:0.9.0")
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -33,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.2")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
 
     compileOnly("org.springframework.boot:spring-boot-starter-hateoas")
 
@@ -51,6 +44,7 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
     languageVersion = "1.9"

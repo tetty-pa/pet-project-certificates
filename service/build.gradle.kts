@@ -7,7 +7,6 @@ plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.9.10"
     kotlin("plugin.allopen") version "1.9.10"
-
 }
 
 group = "com.epam.esm"
@@ -15,10 +14,6 @@ version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -50,14 +45,15 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
     languageVersion = "1.9"
 }
+
 kotlin {
     jvmToolchain(17)
 }
-
 
 tasks {
     bootJar {

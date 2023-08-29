@@ -7,7 +7,6 @@ plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.9.10"
     kotlin("plugin.allopen") version "1.9.10"
-
 }
 
 group = "com.epam.esm"
@@ -15,10 +14,6 @@ version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -33,13 +28,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.2")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
+    implementation("cglib:cglib:3.3.0")
 
     compileOnly("org.springframework.boot:spring-boot-starter-hateoas")
 
     testCompileOnly("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-
 }
 
 tasks.withType<KotlinCompile> {
