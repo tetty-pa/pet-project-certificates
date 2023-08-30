@@ -28,8 +28,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 
-    compileOnly("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
 
+    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
     testCompileOnly("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
