@@ -1,3 +1,5 @@
+// TODO: this code was commented because security configuration is not yet implemented;
+//  It will be fixed once security is ready
 /*
 package com.epam.esm.web.filter
 

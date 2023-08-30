@@ -1,9 +1,9 @@
 package com.epam.esm.web.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import java.io.IOException
-import javax.servlet.http.HttpServletResponse
 
 @Component
 class ServletJsonResponseSender {

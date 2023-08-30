@@ -5,12 +5,12 @@ import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.repository.GiftCertificateRepository
 import com.epam.esm.service.GiftCertificateService
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.ZoneId
-import javax.transaction.Transactional
 
 @Service
 class GiftCertificateServiceImpl(
