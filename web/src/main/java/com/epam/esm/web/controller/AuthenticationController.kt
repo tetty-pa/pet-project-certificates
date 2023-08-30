@@ -18,13 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 @RestController
 class AuthenticationController(
 // TODO: this code was commented because security configuration is not yet implemented;
 //  It will be fixed once security is ready
-    //   private val authenticationManager: AuthenticationManager,
+    private val authenticationManager: AuthenticationManager,
     private val personUserDetailsService: PersonUserDetailsService,
     private val jwtUtil: JwtUtil,
     private val userService: UserService,
@@ -34,11 +33,11 @@ class AuthenticationController(
     @ResponseStatus(HttpStatus.OK)
     fun login(@RequestBody authenticationRequest: AuthenticationRequest): String? {
         try {
-            /* authenticationManager.authenticate(
-                 UsernamePasswordAuthenticationToken(
-                     authenticationRequest.userName, authenticationRequest.password
-                 )
-             )*/
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(
+                    authenticationRequest.userName, authenticationRequest.password
+                )
+            )
         } catch (e: BadCredentialsException) {
             throw EntityNotFoundException("user.notfoundById")
         }

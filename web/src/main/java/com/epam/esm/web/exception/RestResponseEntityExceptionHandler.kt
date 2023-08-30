@@ -4,11 +4,11 @@ import com.epam.esm.exception.DuplicateEntityException
 import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.exception.InvalidJwtException
+import java.util.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import java.util.Locale
 
 @RestControllerAdvice
 class RestResponseEntityExceptionHandler(private val messageSource: MessageConfig) {
@@ -21,12 +21,9 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
         return ResponseEntity(response, status)
     }
 
-    private fun resolveResourceBundle(key: String?, localeU: Locale): String? {
-        var locale = localeU
-        if (!AVAILABLE_LOCALES.contains(locale.toString())) {
-            locale = DEFAULT_LOCALE
-        }
-        return key?.let { messageSource.messageSource().getMessage(it, null, locale) }
+    private fun resolveResourceBundle(key: String?, locale: Locale): String? {
+        val resolvedLocale = locale.takeIf { AVAILABLE_LOCALES.contains(it.toString()) } ?: DEFAULT_LOCALE
+        return key?.let { messageSource.messageSource().getMessage(it, null, resolvedLocale) }
     }
 
     @ExceptionHandler(EntityNotFoundException::class)
@@ -69,7 +66,7 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
         )
 
     fun buildNoJwtResponseObject(locale: Locale): ExceptionResponse? =
-        resolveResourceBundle("jwt.not.exist", locale)?.let{ ExceptionResponse(it, CODE_JWT_NOT_EXISTS) }
+        resolveResourceBundle("jwt.not.exist", locale)?.let { ExceptionResponse(it, CODE_JWT_NOT_EXISTS) }
 
     companion object {
         private val AVAILABLE_LOCALES: List<String> = mutableListOf("en_US", "ua_UA")
