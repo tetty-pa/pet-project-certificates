@@ -10,38 +10,32 @@ import java.util.function.Function
 
 @Component
 class JwtUtil {
-    val secret = "secret"
-    fun exactUsername(token: String): String {
-        return extractClaim(token) { obj: Claims -> obj.subject }
-    }
+    fun exactUsername(token: String): String =
+        extractClaim(token) { obj: Claims -> obj.subject }
 
-    fun exactExpiration(token: String): Date {
-        return extractClaim(token) { obj: Claims -> obj.expiration }
-    }
+    fun exactExpiration(token: String): Date =
+        extractClaim(token) { obj: Claims -> obj.expiration }
 
     private fun <T> extractClaim(token: String, claimsResolver: Function<Claims, T>): T {
         val claims = extractAllClaims(token)
         return claimsResolver.apply(claims)
     }
 
-    private fun extractAllClaims(token: String): Claims {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body
-    }
+    private fun extractAllClaims(token: String): Claims =
+        Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).body
 
-    private fun isTokenExpired(token: String): Boolean {
-        return exactExpiration(token).before(Date())
-    }
+    private fun isTokenExpired(token: String): Boolean =
+        exactExpiration(token).before(Date())
 
     fun generateToken(userDetails: UserDetails): String {
         val claims: Map<String, Any> = HashMap()
         return createToken(claims, userDetails.username)
     }
 
-    private fun createToken(claims: Map<String, Any>, subject: String): String {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(Date(System.currentTimeMillis()))
-                .setExpiration(Date(System.currentTimeMillis() + TIME))
-                .signWith(SignatureAlgorithm.HS256, secret).compact()
-    }
+    private fun createToken(claims: Map<String, Any>, subject: String): String =
+        Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(Date(System.currentTimeMillis()))
+            .setExpiration(Date(System.currentTimeMillis() + TIME))
+            .signWith(SignatureAlgorithm.HS256, SECRET).compact()
 
     fun validateToken(token: String?, userDetails: UserDetails): Boolean {
         val username = token?.let { exactUsername(it) }
@@ -50,5 +44,6 @@ class JwtUtil {
 
     companion object {
         private const val TIME = 1000 * 60 * 60 * 10
+        private const val SECRET = "secret"
     }
 }

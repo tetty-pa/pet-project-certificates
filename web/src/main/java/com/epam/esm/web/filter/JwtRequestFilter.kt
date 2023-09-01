@@ -1,24 +1,21 @@
-// TODO: this code was commented because security configuration is not yet implemented;
-//  It will be fixed once security is ready
-/*
 package com.epam.esm.web.filter
 
 import com.epam.esm.exception.InvalidJwtException
 import com.epam.esm.service.security.PersonUserDetailsService
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 @Component
-class JwtRequestFilter(private val personUserDetailsService: PersonUserDetailsService,
-    private val jwtUtil: JwtUtil): OncePerRequestFilter(){
-
-
+class JwtRequestFilter(
+    private val personUserDetailsService: PersonUserDetailsService,
+    private val jwtUtil: JwtUtil
+) : OncePerRequestFilter() {
     override fun doFilterInternal(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -38,6 +35,7 @@ class JwtRequestFilter(private val personUserDetailsService: PersonUserDetailsSe
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 val usernamePasswordAuthenticationToken =
                     UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
+
                 usernamePasswordAuthenticationToken.details =
                     WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
                 SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
@@ -45,4 +43,4 @@ class JwtRequestFilter(private val personUserDetailsService: PersonUserDetailsSe
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse)
     }
-}*/
+}

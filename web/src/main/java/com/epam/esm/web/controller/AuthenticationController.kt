@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class AuthenticationController(
-// TODO: this code was commented because security configuration is not yet implemented;
-//  It will be fixed once security is ready
     private val authenticationManager: AuthenticationManager,
     private val personUserDetailsService: PersonUserDetailsService,
     private val jwtUtil: JwtUtil,
