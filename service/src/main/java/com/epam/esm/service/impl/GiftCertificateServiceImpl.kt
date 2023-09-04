@@ -5,12 +5,11 @@ import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.repository.GiftCertificateRepository
 import com.epam.esm.service.GiftCertificateService
-import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.time.LocalDateTime
-import java.time.ZoneId
 
 @Service
 class GiftCertificateServiceImpl(
@@ -19,18 +18,18 @@ class GiftCertificateServiceImpl(
     override fun getAll(page: Int, size: Int): List<GiftCertificate> =
         giftCertificateRepository.findAll(PageRequest.of(page, size)).content
 
-    override fun getById(id: Long): GiftCertificate =
+    override fun getById(id: String): GiftCertificate =
         giftCertificateRepository.findById(id)
             .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
 
     @Transactional
     override fun create(giftCertificate: GiftCertificate): GiftCertificate {
-        val isCertificateExist = giftCertificateRepository.findByName(giftCertificate.name).isPresent
-        if (isCertificateExist) throw DuplicateEntityException("gift-certificate.already.exist")
+        giftCertificateRepository.findByName(giftCertificate.name)
+            ?: throw DuplicateEntityException("gift-certificate.already.exist")
 
         giftCertificate.apply {
-            createDate = LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev"))
-            lastUpdatedDate = LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev"))
+            createDate = LocalDateTime.now()
+            lastUpdatedDate = LocalDateTime.now()
         }
 
         return giftCertificateRepository.save(giftCertificate)
@@ -39,11 +38,11 @@ class GiftCertificateServiceImpl(
     @Transactional
     override fun update(updatedGiftCertificate: GiftCertificate): GiftCertificate {
         val id = updatedGiftCertificate.id
-        val giftCertificate = giftCertificateRepository.findById(id ?: 1)
+        val giftCertificate = giftCertificateRepository.findById(id)
             .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
 
         updateFields(giftCertificate, updatedGiftCertificate)
-        giftCertificate.lastUpdatedDate = LocalDateTime.now().atZone(ZoneId.of("Europe/Kiev"))
+        giftCertificate.lastUpdatedDate = LocalDateTime.now()
         return giftCertificateRepository.save(giftCertificate)
     }
 
@@ -64,7 +63,7 @@ class GiftCertificateServiceImpl(
         }
     }
 
-    override fun deleteById(id: Long) {
+    override fun deleteById(id: String) {
         giftCertificateRepository.findById(id)
             .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
         giftCertificateRepository.deleteById(id)
