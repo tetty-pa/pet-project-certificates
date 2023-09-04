@@ -17,7 +17,7 @@ class UserServiceImpl(
     override fun getAll(page: Int, size: Int): MutableList<User> =
         userRepository.findAll(PageRequest.of(page, size)).content
 
-    override fun getById(id: Long): User =
+    override fun getById(id: String): User =
         userRepository.findById(id)
             .orElseThrow { EntityNotFoundException("user.notfoundById") }
 

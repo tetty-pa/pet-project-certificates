@@ -26,14 +26,14 @@ interface TagService {
      * @param id Tag id to get
      * @return Tag
      */
-    fun getById(id: Long): Tag
+    fun getById(id: String): Tag
 
     /**
      * Deletes Gift Certificates.
      *
      * @param id Tag id to delete
      */
-    fun deleteById(id: Long)
+    fun deleteById(id: String)
 
     /**
      * Gets Most Widely Used Tag Of User With Highest Cost Of All Orders Tag .
@@ -41,5 +41,7 @@ interface TagService {
      * @param userId User id to get
      * @return Tag
      */
-    fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: Long): Tag
+    // TODO: this code was commented because I want to change this method later;
+
+    //   fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: String): Tag
 }

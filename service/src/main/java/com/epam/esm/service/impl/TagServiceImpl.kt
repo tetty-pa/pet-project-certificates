@@ -23,20 +23,21 @@ class TagServiceImpl(private val tagRepository: TagRepository, private val userR
         return tagRepository.save(tag)
     }
 
-    override fun getById(id: Long): Tag =
+    override fun getById(id: String): Tag =
         tagRepository.findById(id)
             .orElseThrow { EntityNotFoundException("tag.notfoundById") }
 
-    override fun deleteById(id: Long) {
+    override fun deleteById(id: String) {
         tagRepository.findById(id)
             .orElseThrow { EntityNotFoundException("tag.notfoundById") }
         tagRepository.deleteById(id)
     }
+    // TODO: this code was commented because I want to change this method later;
 
-    override fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: Long): Tag {
+   /* override fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: String): Tag {
         userRepository.findById(userId)
             .orElseThrow { EntityNotFoundException("user.notfoundById") }
         return tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
             .orElseThrow { EntityNotFoundException("order.notfoundById") }
-    }
+    }*/
 }

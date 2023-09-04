@@ -45,7 +45,7 @@ class SecurityConfig(
         http.csrf { it.disable() }
         http.httpBasic { it.disable() }
         http.exceptionHandling {
-            it.authenticationEntryPoint { request, response, ex ->
+            it.authenticationEntryPoint { request, response, _ ->
                 handleNoJwt(request, response)
             }
         }.formLogin {}
@@ -72,7 +72,7 @@ class SecurityConfig(
         get() = BCryptPasswordEncoder()
 
     companion object {
-        val USER = Role.RoleType.USER.name
-        val ADMIN = Role.RoleType.ADMIN.name
+        val USER = Role.USER.name
+        val ADMIN = Role.ADMIN.name
     }
 }

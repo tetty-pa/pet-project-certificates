@@ -18,9 +18,7 @@ class PersonUserDetails : UserDetails {
         authorities = listOf<GrantedAuthority>(
             SimpleGrantedAuthority(
                 "ROLE_" +
-                        Role.getRole((user.role?.id ?: 1) - 1)
-                            .name
-                            .uppercase()
+                        Role.valueOf(user.role.name)
             )
         )
     }

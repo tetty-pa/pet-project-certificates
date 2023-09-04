@@ -18,7 +18,7 @@ interface UserService {
      * @param id User id to get
      * @return User
      */
-    fun getById(id: Long): User
+    fun getById(id: String): User
 
     /**
      * Creates new User.

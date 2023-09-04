@@ -31,7 +31,7 @@ class UsersController(
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable id: Long): User {
+    fun getById(@PathVariable id: String): User {
         val user = userService.getById(id)
         userLinkAdder.addLinks(user)
         return user

@@ -17,14 +17,14 @@ class OrderServiceImpl(
     private val giftCertificateRepository: GiftCertificateRepository
 ) : OrderService {
 
-    override fun getAllByUserId(userId: Long, page: Int, size: Int): List<Order> {
+    override fun getAllByUserId(userId: String, page: Int, size: Int): List<Order> {
         userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
 
         val pageRequest: Pageable = PageRequest.of(page, size)
         return orderRepository.getAllByUserId(userId, pageRequest)
     }
 
-    override fun create(userId: Long, certificateId: Long): Order {
+    override fun create(userId: String, certificateId: String): Order {
         val order = Order()
 
         val user = userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
@@ -38,6 +38,6 @@ class OrderServiceImpl(
         return orderRepository.save(order)
     }
 
-    override fun getById(orderId: Long): Order =
+    override fun getById(orderId: String): Order =
         orderRepository.findById(orderId).orElseThrow { EntityNotFoundException("order.notfoundById") }
 }

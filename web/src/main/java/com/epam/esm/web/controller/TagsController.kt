@@ -51,7 +51,7 @@ class TagsController(
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable("id") id: Long): Tag {
+    fun getById(@PathVariable("id") id: String): Tag {
         val tag = tagService.getById(id)
         tagLinkAdder.addLinks(tag)
         return tag
@@ -59,14 +59,14 @@ class TagsController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: Long) {
+    fun deleteById(@PathVariable("id") id: String) {
         tagService.deleteById(id)
     }
 
-    @GetMapping("/users/{userId}")
-    fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(@PathVariable userId: Long): Tag {
+  /*  @GetMapping("/users/{userId}")
+    fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(@PathVariable userId: String): Tag {
         val tag = tagService.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
         tagLinkAdder.addLinks(tag)
         return tag
-    }
+    }*/
 }
