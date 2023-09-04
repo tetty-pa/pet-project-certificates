@@ -20,14 +20,12 @@ dependencies {
     implementation(project(":persistence"))
 
     api("io.jsonwebtoken:jjwt:0.9.0")
-    runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
-
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
 
     testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
