@@ -1,10 +1,10 @@
 package com.epam.esm.repository
 
 import com.epam.esm.model.entity.User
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 import java.util.Optional
 
-interface UserRepository : JpaRepository<User, Long> {
+interface UserRepository : MongoRepository<User, String> {
     /**
      * Gets User by  name.
      *
