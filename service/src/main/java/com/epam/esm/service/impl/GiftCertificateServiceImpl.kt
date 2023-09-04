@@ -24,8 +24,10 @@ class GiftCertificateServiceImpl(
 
     @Transactional
     override fun create(giftCertificate: GiftCertificate): GiftCertificate {
-        giftCertificateRepository.findByName(giftCertificate.name)
-            ?: throw DuplicateEntityException("gift-certificate.already.exist")
+        val findByName = giftCertificateRepository.findByName(giftCertificate.name)
+        if (findByName != null) {
+            throw DuplicateEntityException("gift-certificate.already.exist")
+        }
 
         giftCertificate.apply {
             createDate = LocalDateTime.now()

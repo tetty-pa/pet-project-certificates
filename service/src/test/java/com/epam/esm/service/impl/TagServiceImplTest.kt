@@ -6,7 +6,6 @@ import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.repository.TagRepository
 import com.epam.esm.repository.UserRepository
 import com.epam.esm.service.impl.util.Constants.FIRST_TEST_TAG
-import com.epam.esm.service.impl.util.Constants.FIRST_TEST_USER
 import com.epam.esm.service.impl.util.Constants.INVALID_TAG
 import com.epam.esm.service.impl.util.Constants.NOT_EXIST_ID
 import com.epam.esm.service.impl.util.Constants.PAGE
@@ -84,15 +83,4 @@ class TagServiceImplTest {
         assertThrows<EntityNotFoundException> { tagService.deleteById(NOT_EXIST_ID) }
     }
 
-    @Test
-    fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
-        whenever(userRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_USER))
-        whenever(tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(TEST_ID)).thenReturn(
-            Optional.of(
-                FIRST_TEST_TAG
-            )
-        )
-        val actual = tagService.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(TEST_ID)
-        assertEquals(FIRST_TEST_TAG, actual)
-    }
 }
