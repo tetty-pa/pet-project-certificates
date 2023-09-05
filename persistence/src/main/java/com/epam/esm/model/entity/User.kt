@@ -1,37 +1,28 @@
 package com.epam.esm.model.entity
 
 import com.epam.esm.model.entity.audit.EntityAuditListener
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
 import jakarta.validation.constraints.Size
+import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.hateoas.RepresentationModel
 
-@Entity
-@Table(name = "users")
+@Document("users")
 @EntityListeners(EntityAuditListener::class)
 data class User(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
-
-    @Column(length = 80)
     @field:Size(min = 1, max = 80, message = "user.invalidName")
-    var name: String = "",
+    val name: String,
 
-    @Column(length = 80)
-    var email: String = "",
+    val email: String,
 
-    @Column(length = 80)
-    var password: String = "",
+    var password: String,
 
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    var role: Role? = Role(2)
-) : RepresentationModel<User>()
+    val role: Role
+) : RepresentationModel<User>() {
+    @Id
+    lateinit var id: String
+}
+
+enum class Role {
+    ADMIN, USER
+}

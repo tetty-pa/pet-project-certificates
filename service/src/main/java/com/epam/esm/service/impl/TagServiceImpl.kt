@@ -8,7 +8,6 @@ import com.epam.esm.repository.UserRepository
 import com.epam.esm.service.TagService
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class TagServiceImpl(private val tagRepository: TagRepository, private val userRepository: UserRepository) :
@@ -16,27 +15,27 @@ class TagServiceImpl(private val tagRepository: TagRepository, private val userR
     override fun getAll(page: Int, size: Int): List<Tag> =
         tagRepository.findAll(PageRequest.of(page, size)).content
 
-    @Transactional
     override fun create(tag: Tag): Tag {
         if (tagRepository.findByName(tag.name).isPresent)
             throw DuplicateEntityException("tag.already.exist")
         return tagRepository.save(tag)
     }
 
-    override fun getById(id: Long): Tag =
+    override fun getById(id: String): Tag =
         tagRepository.findById(id)
             .orElseThrow { EntityNotFoundException("tag.notfoundById") }
 
-    override fun deleteById(id: Long) {
+    override fun deleteById(id: String) {
         tagRepository.findById(id)
             .orElseThrow { EntityNotFoundException("tag.notfoundById") }
         tagRepository.deleteById(id)
     }
+    // TODO: this code was commented because I want to change this method later;
 
-    override fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: Long): Tag {
+   /* override fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: String): Tag {
         userRepository.findById(userId)
             .orElseThrow { EntityNotFoundException("user.notfoundById") }
         return tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
             .orElseThrow { EntityNotFoundException("order.notfoundById") }
-    }
+    }*/
 }

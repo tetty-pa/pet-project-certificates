@@ -21,7 +21,7 @@ interface GiftCertificateService {
      * @param id Gift Certificate id to get
      * @return GiftCertificate
      */
-    fun getById(id: Long): GiftCertificate
+    fun getById(id: String): GiftCertificate
 
     /**
      * Creates new Gift Certificate.
@@ -44,5 +44,5 @@ interface GiftCertificateService {
      *
      * @param id Gift Certificate id to delete
      */
-    fun deleteById(id: Long)
+    fun deleteById(id: String)
 }

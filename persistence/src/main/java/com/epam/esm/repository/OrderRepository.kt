@@ -2,9 +2,9 @@ package com.epam.esm.repository
 
 import com.epam.esm.model.entity.Order
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 
-interface OrderRepository : JpaRepository<Order, Long> {
+interface OrderRepository : MongoRepository<Order, String> {
     /**
      * Gets list of Order by user ID.
      *
@@ -12,5 +12,5 @@ interface OrderRepository : JpaRepository<Order, Long> {
      * @param pageable object with pagination info(page number, page size)
      * @return list of orders
      */
-    fun getAllByUserId(userId: Long, pageable: Pageable): List<Order>
+    fun getAllByUserId(userId: String, pageable: Pageable): List<Order>
 }

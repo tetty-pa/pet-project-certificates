@@ -20,8 +20,8 @@ class OrdersController(
 ) {
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getAll(
-        @PathVariable userId: Long,
+    fun getAllByUserId(
+        @PathVariable userId: String,
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
     ): List<Order> {
@@ -34,8 +34,8 @@ class OrdersController(
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun create(
-            @PathVariable userId: Long,
-            @RequestParam certificateId: Long
+            @PathVariable userId: String,
+            @RequestParam certificateId: String
     ): Order {
 
         val order = orderService.create(userId, certificateId)
@@ -45,7 +45,7 @@ class OrdersController(
 
     @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable orderId: Long): Order {
+    fun getById(@PathVariable orderId: String): Order {
         val order = orderService.getById(orderId)
         ordersLinkAdder.addLinks(order)
         return order

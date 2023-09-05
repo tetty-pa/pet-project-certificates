@@ -10,7 +10,6 @@ import com.epam.esm.service.impl.util.Constants.PAGE_SIZE
 import com.epam.esm.service.impl.util.Constants.SECOND_TEST_USER
 import com.epam.esm.service.impl.util.Constants.TEST_ID
 import com.epam.esm.service.impl.util.Constants.USER_TO_CREATE
-import java.util.Optional
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,6 +19,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)

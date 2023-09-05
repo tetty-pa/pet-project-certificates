@@ -11,16 +11,16 @@ interface OrderService {
      * @param size   page size for pagination
      * @return list of orders
      */
-    fun getAllByUserId(userId: Long, page: Int, size: Int): List<Order>
-
+    fun getAllByUserId(userId: String, page: Int, size: Int): List<Order>
     /**
-     * Creates an Order.
-     *
-     * @param userId user`s ID
-     * @param certificateId certificate`s ID
-     * @return Entity object
-     */
-    fun create(userId: Long, certificateId: Long): Order
+    * Creates an Order.
+    *
+    * @param userId user`s ID
+    * @param certificateId certificate`s ID
+    * @ return Entity
+    object
+    */
+    fun create(userId: String, certificateId: String): Order
 
     /**
      * Gets  {@link Order} from database by  ID.
@@ -28,5 +28,5 @@ interface OrderService {
      * @param orderId ID of user
      * @return order
      */
-    fun getById(orderId: Long): Order
+    fun getById(orderId: String): Order
 }

@@ -30,7 +30,6 @@ class GiftCertificatesController(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
     ): List<GiftCertificate> {
-
         val certificates = giftCertificateService.getAll(page, size)
         certificates.forEach(giftCertificateLinkAdder::addLinks)
         return certificates
@@ -38,7 +37,7 @@ class GiftCertificatesController(
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable id: Long): GiftCertificate {
+    fun getById(@PathVariable id: String): GiftCertificate {
         val giftCertificate = giftCertificateService.getById(id)
         giftCertificateLinkAdder.addLinks(giftCertificate)
         return giftCertificate
@@ -63,7 +62,7 @@ class GiftCertificatesController(
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: Long) {
+    fun deleteById(@PathVariable("id") id: String) {
         giftCertificateService.deleteById(id)
     }
 
