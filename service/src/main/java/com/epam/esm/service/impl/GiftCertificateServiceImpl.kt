@@ -7,7 +7,6 @@ import com.epam.esm.repository.GiftCertificateRepository
 import com.epam.esm.service.GiftCertificateService
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -22,7 +21,6 @@ class GiftCertificateServiceImpl(
         giftCertificateRepository.findById(id)
             .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
 
-    @Transactional
     override fun create(giftCertificate: GiftCertificate): GiftCertificate {
         val findByName = giftCertificateRepository.findByName(giftCertificate.name)
         if (findByName != null) {
@@ -37,7 +35,6 @@ class GiftCertificateServiceImpl(
         return giftCertificateRepository.save(giftCertificate)
     }
 
-    @Transactional
     override fun update(updatedGiftCertificate: GiftCertificate): GiftCertificate {
         val id = updatedGiftCertificate.id
         val giftCertificate = giftCertificateRepository.findById(id)
