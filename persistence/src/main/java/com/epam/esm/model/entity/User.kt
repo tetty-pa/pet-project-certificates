@@ -11,13 +11,13 @@ import org.springframework.hateoas.RepresentationModel
 @EntityListeners(EntityAuditListener::class)
 data class User(
     @field:Size(min = 1, max = 80, message = "user.invalidName")
-    var name: String,
+    val name: String,
 
-    var email: String,
+    val email: String,
 
     var password: String,
 
-    var role: Role
+    val role: Role
 ) : RepresentationModel<User>() {
     @Id
     lateinit var id: String

@@ -36,7 +36,7 @@ data class GiftCertificate(
     @field:Min(value = 1, message = "gift-certificate.invalidDuration")
     var duration: Int,
 
-    val tagList: MutableList<Tag>
+    val tagList: List<Tag>
 ) : RepresentationModel<GiftCertificate>() {
     @Id
     lateinit var id: String

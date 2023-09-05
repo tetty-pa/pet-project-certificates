@@ -11,7 +11,7 @@ import org.springframework.hateoas.RepresentationModel
 @EntityListeners(EntityAuditListener::class)
 data class Tag(
     @field:Size(min = 1, max = 80, message = "tag.invalidName")
-    var name: String
+    val name: String
 ) : RepresentationModel<Tag>() {
     @Id
     lateinit var id: String
