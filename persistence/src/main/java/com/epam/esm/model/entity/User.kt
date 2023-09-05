@@ -5,7 +5,6 @@ import jakarta.persistence.EntityListeners
 import jakarta.persistence.Id
 import jakarta.validation.constraints.Size
 import org.springframework.data.mongodb.core.mapping.Document
-import org.springframework.hateoas.RepresentationModel
 
 @Document("users")
 @EntityListeners(EntityAuditListener::class)
@@ -18,7 +17,7 @@ data class User(
     var password: String,
 
     val role: Role
-) : RepresentationModel<User>() {
+) {
     @Id
     lateinit var id: String
 }

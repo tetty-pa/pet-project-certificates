@@ -27,6 +27,7 @@ dependencies {
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     compileOnly("org.springframework.boot:spring-boot-starter-hateoas")
 

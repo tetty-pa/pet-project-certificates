@@ -8,7 +8,6 @@ import jakarta.persistence.Id
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 import org.springframework.data.mongodb.core.mapping.Document
-import org.springframework.hateoas.RepresentationModel
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -37,7 +36,7 @@ data class GiftCertificate(
     var duration: Int,
 
     val tagList: List<Tag>
-) : RepresentationModel<GiftCertificate>() {
+) {
     @Id
     lateinit var id: String
 }

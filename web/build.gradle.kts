@@ -29,8 +29,7 @@ dependencies {
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
     implementation("cglib:cglib:3.3.0")
-
-    compileOnly("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     testCompileOnly("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -58,5 +57,5 @@ kotlin {
 }
 
 springBoot {
-    mainClass.set("com.epam.esm.web.WebApplication")
+    mainClass.set("com.epam.esm.web.WebApplicationKt")
 }

@@ -26,7 +26,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
-    implementation("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
     testCompileOnly("org.springframework.boot:spring-boot-starter-hateoas")

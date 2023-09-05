@@ -3,7 +3,6 @@ package com.epam.esm.web.controller
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.service.GiftCertificateService
-import com.epam.esm.web.link.GiftCertificateLinkAdder
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
@@ -21,27 +20,20 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/gift-certificates")
 class GiftCertificatesController(
-    private val giftCertificateService: GiftCertificateService,
-    private val giftCertificateLinkAdder: GiftCertificateLinkAdder
+    private val giftCertificateService: GiftCertificateService
 ) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<GiftCertificate> {
-        val certificates = giftCertificateService.getAll(page, size)
-        certificates.forEach(giftCertificateLinkAdder::addLinks)
-        return certificates
-    }
+    ): List<GiftCertificate> = giftCertificateService.getAll(page, size)
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable id: String): GiftCertificate {
-        val giftCertificate = giftCertificateService.getById(id)
-        giftCertificateLinkAdder.addLinks(giftCertificate)
-        return giftCertificate
-    }
+    fun getById(@PathVariable id: String): GiftCertificate =
+        giftCertificateService.getById(id)
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,16 +41,11 @@ class GiftCertificatesController(
         @Valid @RequestBody giftCertificate: GiftCertificate,
         bindingResult: BindingResult?
     ): GiftCertificate {
-
         if (bindingResult?.hasErrors() == true) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-
-        giftCertificateService.create(giftCertificate)
-        giftCertificateLinkAdder.addLinks(giftCertificate)
-        return giftCertificate
+        return giftCertificateService.create(giftCertificate)
     }
-
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -75,9 +62,6 @@ class GiftCertificatesController(
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        giftCertificateService.update(giftCertificate)
-        giftCertificateLinkAdder.addLinks(giftCertificate)
-        return giftCertificate
+        return giftCertificateService.update(giftCertificate)
     }
-
 }

@@ -3,7 +3,6 @@ package com.epam.esm.web.controller
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.Tag
 import com.epam.esm.service.TagService
-import com.epam.esm.web.link.TagLinkAdder
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
@@ -19,21 +18,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/tags")
-class TagsController(
-    private val tagService: TagService,
-    private val tagLinkAdder: TagLinkAdder
-) {
+class TagsController(private val tagService: TagService) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<Tag> {
-
-        val all = tagService.getAll(page, size)
-        all.forEach(tagLinkAdder::addLinks)
-        return all
-    }
+    ): List<Tag> = tagService.getAll(page, size)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,29 +35,24 @@ class TagsController(
         if (bindingResult?.hasErrors() == true) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        tagService.create(tag)
-        tagLinkAdder.addLinks(tag)
-        return tag
+        return tagService.create(tag)
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable("id") id: String): Tag {
-        val tag = tagService.getById(id)
-        tagLinkAdder.addLinks(tag)
-        return tag
-    }
+    fun getById(@PathVariable("id") id: String): Tag =
+        tagService.getById(id)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: String) {
+    fun deleteById(@PathVariable("id") id: String) =
         tagService.deleteById(id)
-    }
 
   /*  @GetMapping("/users/{userId}")
-    fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(@PathVariable userId: String): Tag {
-        val tag = tagService.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
-        tagLinkAdder.addLinks(tag)
-        return tag
-    }*/
+      fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(@PathVariable userId: String): Tag {
+          val tag = tagService.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
+          tagLinkAdder.addLinks(tag)
+          return tag
+      }*/
+
 }

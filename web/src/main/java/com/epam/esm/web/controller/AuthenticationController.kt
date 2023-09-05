@@ -1,13 +1,12 @@
 package com.epam.esm.web.controller
 
+import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.User
 import com.epam.esm.model.jwt.AuthenticationRequest
 import com.epam.esm.service.UserService
 import com.epam.esm.service.security.PersonUserDetailsService
 import com.epam.esm.web.filter.JwtUtil
-import com.epam.esm.web.link.UserLinkAdder
-import jakarta.persistence.EntityNotFoundException
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
@@ -24,8 +23,7 @@ class AuthenticationController(
     private val authenticationManager: AuthenticationManager,
     private val personUserDetailsService: PersonUserDetailsService,
     private val jwtUtil: JwtUtil,
-    private val userService: UserService,
-    private val userLinkAdder: UserLinkAdder
+    private val userService: UserService
 ) {
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.OK)
@@ -53,7 +51,6 @@ class AuthenticationController(
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
         userService.create(user)
-        userLinkAdder.addLinks(user)
         return user
     }
 }
