@@ -21,6 +21,7 @@ dependencies {
 
     api("io.jsonwebtoken:jjwt:0.9.0")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
     implementation("org.springframework.boot:spring-boot-devtools")

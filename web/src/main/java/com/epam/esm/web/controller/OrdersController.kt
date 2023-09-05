@@ -29,7 +29,6 @@ class OrdersController(private val orderService: OrderService) {
         @RequestParam certificateId: String
     ): Order = orderService.create(userId, certificateId)
 
-
     @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable orderId: String): Order =

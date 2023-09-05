@@ -34,6 +34,7 @@ class GiftCertificatesController(
     fun getById(@PathVariable id: String): GiftCertificate =
         giftCertificateService.getById(id)
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
