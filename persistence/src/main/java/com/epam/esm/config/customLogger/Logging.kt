@@ -1,7 +1,7 @@
 package com.epam.esm.config.customLogger
 
 
-@Target( AnnotationTarget.FUNCTION)
+@Target( AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Logging(
     val isRequest: Boolean = true,
