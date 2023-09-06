@@ -28,10 +28,10 @@ class LoggingBeanPostProcessor : BeanPostProcessor {
         val beanClass = loggingBeans[beanName]
         beanClass?.apply {
             return Proxy.newProxyInstance(
-                beanClass.java.classLoader,
-                beanClass.java.interfaces,
+                this.java.classLoader,
+                this.java.interfaces,
                 InvocationHandler { _, method, args ->
-                    val annotation = beanClass.java.getAnnotation(Logging::class.java)
+                    val annotation = this.java.getAnnotation(Logging::class.java)
                     if (annotation.isRequest) {
                         LOGGER.info("{}#{}: {}", bean::class.java, method.name, args?.toList())
                     }
