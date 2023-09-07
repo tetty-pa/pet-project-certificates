@@ -16,7 +16,7 @@ class LoggingBeanPostProcessor : BeanPostProcessor {
         private val LOGGER: Logger = LoggerFactory.getLogger(LoggingBeanPostProcessor::class.java)
     }
 
-    override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any? {
+    override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any {
         val beanClass: KClass<*> = bean::class
         if (beanClass.java.isAnnotationPresent(Logging::class.java)) {
             loggingBeans[beanName] = beanClass
@@ -39,7 +39,7 @@ class LoggingBeanPostProcessor : BeanPostProcessor {
 
                     if (annotation.isResponse) {
                         LOGGER.info(
-                            "{}#{}: {}", bean::class.java, method.name, result?.toString() ?: "void"
+                            "{}#{}: {}", bean::class.java, method.name, result.toString()
                         )
                     }
                     return@InvocationHandler result
