@@ -19,26 +19,24 @@ class GiftCertificateServiceImpl(
 
     override fun getById(id: String): GiftCertificate =
         giftCertificateRepository.findById(id)
-            .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
+            ?: throw EntityNotFoundException("gift-certificate.notfoundById")
 
     override fun create(giftCertificate: GiftCertificate): GiftCertificate {
         val findByName = giftCertificateRepository.findByName(giftCertificate.name)
         if (findByName != null) {
             throw DuplicateEntityException("gift-certificate.already.exist")
         }
-
         giftCertificate.apply {
             createDate = LocalDateTime.now()
             lastUpdatedDate = LocalDateTime.now()
         }
-
         return giftCertificateRepository.save(giftCertificate)
     }
 
     override fun update(updatedGiftCertificate: GiftCertificate): GiftCertificate {
         val id = updatedGiftCertificate.id
         val giftCertificate = giftCertificateRepository.findById(id)
-            .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
+            ?: throw EntityNotFoundException("gift-certificate.notfoundById")
 
         updateFields(giftCertificate, updatedGiftCertificate)
         giftCertificate.lastUpdatedDate = LocalDateTime.now()
@@ -64,7 +62,7 @@ class GiftCertificateServiceImpl(
 
     override fun deleteById(id: String) {
         giftCertificateRepository.findById(id)
-            .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
+            ?: throw EntityNotFoundException("gift-certificate.notfoundById")
         giftCertificateRepository.deleteById(id)
     }
 }
