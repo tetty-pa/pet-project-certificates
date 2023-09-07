@@ -4,13 +4,12 @@ import com.epam.esm.exception.DuplicateEntityException
 import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.model.entity.Tag
 import com.epam.esm.repository.TagRepository
-import com.epam.esm.repository.UserRepository
 import com.epam.esm.service.TagService
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
-class TagServiceImpl(private val tagRepository: TagRepository, private val userRepository: UserRepository) :
+class TagServiceImpl(private val tagRepository: TagRepository) :
     TagService {
     override fun getAll(page: Int, size: Int): List<Tag> =
         tagRepository.findAll(PageRequest.of(page, size)).content
@@ -28,12 +27,5 @@ class TagServiceImpl(private val tagRepository: TagRepository, private val userR
         tagRepository.findById(id) ?: throw EntityNotFoundException("tag.notfoundById")
         tagRepository.deleteById(id)
     }
-    // TODO: this code was commented because I want to change this method later;
 
-    /* override fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: String): Tag {
-         userRepository.findById(userId)
-             .orElseThrow { EntityNotFoundException("user.notfoundById") }
-         return tagRepository.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
-             .orElseThrow { EntityNotFoundException("order.notfoundById") }
-     }*/
 }

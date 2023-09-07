@@ -15,6 +15,4 @@ interface TagRepository {
 
     fun findByName(name: String): Tag?
 
-    fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId: String): Tag?
-
 }
