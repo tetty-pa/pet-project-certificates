@@ -23,7 +23,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
-import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
@@ -61,13 +60,13 @@ class TagServiceImplTest {
 
     @Test
     fun createShouldThrowDuplicateEntityException() {
-        whenever(tagRepository.findByName(FIRST_TEST_TAG.name)).thenReturn(Optional.of(FIRST_TEST_TAG))
+        whenever(tagRepository.findByName(FIRST_TEST_TAG.name)).thenReturn(FIRST_TEST_TAG)
         assertThrows<DuplicateEntityException> { tagService.create(FIRST_TEST_TAG) }
     }
 
     @Test
     fun getById() {
-        whenever(tagRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_TAG))
+        whenever(tagRepository.findById(TEST_ID)).thenReturn(FIRST_TEST_TAG)
         val actual = tagService.getById(TEST_ID)
         assertEquals(FIRST_TEST_TAG, actual)
     }

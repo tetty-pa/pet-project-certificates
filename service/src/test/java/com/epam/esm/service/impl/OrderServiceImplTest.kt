@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import java.util.Optional
+import org.springframework.data.support.PageableExecutionUtils
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
@@ -39,13 +39,14 @@ class OrderServiceImplTest {
 
     @Test
     fun getAllByUserId() {
-        val expected = listOf(FIRST_TEST_ORDER, SECOND_TEST_ORDER)
-        whenever(orderRepository.getAllByUserId(TEST_ID, PAGE)).thenReturn(expected)
-        whenever(userRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_USER))
-
+        val expected = PageableExecutionUtils.getPage(
+            listOf(FIRST_TEST_ORDER, SECOND_TEST_ORDER),
+            PAGE
+        ) { 2 }
+        whenever(orderRepository.findAllByUserId(TEST_ID, PAGE)).thenReturn(expected)
+        whenever(userRepository.findById(TEST_ID)).thenReturn(FIRST_TEST_USER)
         val actual = orderService.getAllByUserId(TEST_ID, PAGE_NUM, PAGE_SIZE)
-
-        assertEquals(expected, actual)
+        assertEquals(listOf(FIRST_TEST_ORDER, SECOND_TEST_ORDER), actual)
     }
 
     @Test
@@ -62,7 +63,7 @@ class OrderServiceImplTest {
 
     @Test
     fun getById() {
-        whenever(orderRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_ORDER))
+        whenever(orderRepository.findById(TEST_ID)).thenReturn(FIRST_TEST_ORDER)
         val actual = orderService.getById(TEST_ID)
         assertEquals(FIRST_TEST_ORDER, actual)
     }
