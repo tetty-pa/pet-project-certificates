@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Repository
 
@@ -15,11 +16,10 @@ import org.springframework.stereotype.Repository
 class TagRepositoryImpl(private val mongoTemplate: MongoTemplate) : TagRepository {
     override fun findAll(page: Pageable): Page<Tag> {
         val query = Query().with(page)
-        val count: Long = mongoTemplate.count(query, Tag::class.java)
         return PageableExecutionUtils.getPage(
             mongoTemplate.find(query, Tag::class.java),
             page
-        ) { count }
+        ) { mongoTemplate.count(query, Tag::class.java) }
     }
 
     override fun save(tag: Tag): Tag =
@@ -35,8 +35,7 @@ class TagRepositoryImpl(private val mongoTemplate: MongoTemplate) : TagRepositor
     }
 
     override fun findByName(name: String): Tag? {
-        val query = Query().addCriteria(Criteria.where("name").`is`(name))
-        return mongoTemplate.findOne(query, Tag::class.java)
+        return mongoTemplate.findOne<Tag>(Criteria("name").isEqualTo(name))
     }
 
 }

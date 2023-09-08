@@ -14,11 +14,10 @@ import org.springframework.stereotype.Repository
 class OrderRepositoryImpl(private val mongoTemplate: MongoTemplate) : OrderRepository {
     override fun findAllByUserId(userId: String, page: Pageable): Page<Order> {
         val query = Query().with(page).addCriteria(Criteria.where("user._id").`is`(userId))
-        val count: Long = mongoTemplate.count(query, Order::class.java)
         return PageableExecutionUtils.getPage(
             mongoTemplate.find(query, Order::class.java),
             page
-        ) { count }
+        ) { mongoTemplate.count(query, Order::class.java) }
     }
 
     override fun findById(id: String): Order? =

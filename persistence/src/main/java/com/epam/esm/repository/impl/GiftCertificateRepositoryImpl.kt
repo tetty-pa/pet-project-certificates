@@ -7,23 +7,22 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Repository
 
 @Repository
 class GiftCertificateRepositoryImpl(private val mongoTemplate: MongoTemplate) : GiftCertificateRepository {
     override fun findByName(name: String): GiftCertificate? {
-        val query = Query().addCriteria(Criteria.where("_name").`is`(name))
-        return mongoTemplate.findOne(query, GiftCertificate::class.java)
+        return mongoTemplate.findOne<GiftCertificate>(Criteria("name").isEqualTo(name))
     }
 
     override fun findAll(page: Pageable): Page<GiftCertificate> {
         val query = Query().with(page)
-        val count: Long = mongoTemplate.count(query, GiftCertificate::class.java)
         return PageableExecutionUtils.getPage(
             mongoTemplate.find(query, GiftCertificate::class.java),
             page
-        ) { count }
+        ) { mongoTemplate.count(query, GiftCertificate::class.java) }
     }
 
     override fun findById(id: String): GiftCertificate? =
