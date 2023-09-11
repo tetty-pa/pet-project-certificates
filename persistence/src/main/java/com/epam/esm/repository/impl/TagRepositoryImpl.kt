@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Repository
 
-
 @Repository
 class TagRepositoryImpl(private val mongoTemplate: MongoTemplate) : TagRepository {
     override fun findAll(page: Pageable): Page<Tag> {
@@ -28,14 +27,11 @@ class TagRepositoryImpl(private val mongoTemplate: MongoTemplate) : TagRepositor
     override fun findById(id: String): Tag? =
         mongoTemplate.findById(id, Tag::class.java)
 
-
     override fun deleteById(id: String) {
         val query = Query().addCriteria(Criteria.where("_id").`is`(id))
         mongoTemplate.remove(query)
     }
 
-    override fun findByName(name: String): Tag? {
-        return mongoTemplate.findOne<Tag>(Criteria("name").isEqualTo(name))
-    }
-
+    override fun findByName(name: String): Tag? =
+        mongoTemplate.findOne<Tag>(Criteria("name").isEqualTo(name))
 }

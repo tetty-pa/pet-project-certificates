@@ -13,9 +13,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class GiftCertificateRepositoryImpl(private val mongoTemplate: MongoTemplate) : GiftCertificateRepository {
-    override fun findByName(name: String): GiftCertificate? {
-        return mongoTemplate.findOne<GiftCertificate>(Criteria("name").isEqualTo(name))
-    }
+    override fun findByName(name: String): GiftCertificate? =
+        mongoTemplate.findOne<GiftCertificate>(Criteria("name").isEqualTo(name))
 
     override fun findAll(page: Pageable): Page<GiftCertificate> {
         val query = Query().with(page)

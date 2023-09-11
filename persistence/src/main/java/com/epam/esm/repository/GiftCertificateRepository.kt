@@ -11,7 +11,7 @@ interface GiftCertificateRepository {
 
     fun findById(id: String): GiftCertificate?
 
-    fun save(giftCertificate: GiftCertificate):GiftCertificate
+    fun save(giftCertificate: GiftCertificate): GiftCertificate
 
     fun deleteById(id: String)
 }

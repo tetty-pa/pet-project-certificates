@@ -8,4 +8,3 @@ inline fun <reified T : Any> MongoTemplate.findOne(criteria: Criteria): T? {
     val query = Query(criteria)
     return findOne(query, T::class.java)
 }
-

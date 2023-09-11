@@ -1,3 +1,7 @@
+plugins {
+    id("io.gitlab.arturbosch.detekt") version ("1.23.1")
+}
+
 repositories {
     mavenCentral()
     maven {

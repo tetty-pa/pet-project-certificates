@@ -16,7 +16,6 @@ class OrderServiceImpl(
     private val userRepository: UserRepository,
     private val giftCertificateRepository: GiftCertificateRepository
 ) : OrderService {
-
     override fun getAllByUserId(userId: String, page: Int, size: Int): List<Order> {
         userRepository.findById(userId) ?: throw EntityNotFoundException("user.notfoundById")
 
@@ -28,11 +27,11 @@ class OrderServiceImpl(
         val order = Order()
 
         val user = userRepository.findById(userId) ?: throw EntityNotFoundException("user.notfoundById")
-        order.user = user
+        order.userId = user.id
 
         val giftCertificate = giftCertificateRepository.findById(certificateId)
             ?: throw EntityNotFoundException("gift-certificate.notfoundById")
-        order.giftCertificate = giftCertificate
+        order.giftCertificateId = giftCertificate.id
 
         order.cost = giftCertificate.price
         return orderRepository.save(order)

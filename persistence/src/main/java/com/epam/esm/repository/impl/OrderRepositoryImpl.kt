@@ -25,5 +25,4 @@ class OrderRepositoryImpl(private val mongoTemplate: MongoTemplate) : OrderRepos
 
     override fun save(order: Order): Order =
         mongoTemplate.save(order)
-
 }

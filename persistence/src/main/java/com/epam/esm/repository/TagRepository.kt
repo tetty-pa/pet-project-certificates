@@ -14,5 +14,4 @@ interface TagRepository {
     fun deleteById(id: String)
 
     fun findByName(name: String): Tag?
-
 }

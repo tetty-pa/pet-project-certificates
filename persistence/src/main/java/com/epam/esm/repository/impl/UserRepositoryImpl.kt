@@ -27,8 +27,6 @@ class UserRepositoryImpl(private val mongoTemplate: MongoTemplate) : UserReposit
     override fun findById(id: String): User? =
         mongoTemplate.findById(id, User::class.java)
 
-    override fun findByName(name: String): User? {
-        return mongoTemplate.findOne<User>(Criteria("name").isEqualTo(name))
-
-    }
+    override fun findByName(name: String): User? =
+        mongoTemplate.findOne<User>(Criteria("name").isEqualTo(name))
 }
