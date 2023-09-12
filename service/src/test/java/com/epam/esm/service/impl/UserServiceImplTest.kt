@@ -19,7 +19,6 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
 import org.springframework.security.crypto.password.PasswordEncoder
-import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
@@ -46,7 +45,7 @@ class UserServiceImplTest {
 
     @Test
     fun getById() {
-        whenever(userRepository.findById(TEST_ID)).thenReturn(Optional.of(FIRST_TEST_USER))
+        whenever(userRepository.findById(TEST_ID)).thenReturn(FIRST_TEST_USER)
         val actual = userService.getById(TEST_ID)
         assertEquals(FIRST_TEST_USER, actual)
     }

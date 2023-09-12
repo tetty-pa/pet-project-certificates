@@ -48,11 +48,4 @@ class TagsController(private val tagService: TagService) {
     fun deleteById(@PathVariable("id") id: String) =
         tagService.deleteById(id)
 
-  /*  @GetMapping("/users/{userId}")
-      fun getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(@PathVariable userId: String): Tag {
-          val tag = tagService.getMostWidelyUsedTagOfUserWithHighestCostOfAllOrders(userId)
-          tagLinkAdder.addLinks(tag)
-          return tag
-      }*/
-
 }

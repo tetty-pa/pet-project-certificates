@@ -22,9 +22,9 @@ data class Order(
     @Id
     lateinit var id: String
 
-    lateinit var giftCertificate: GiftCertificate
+    lateinit var giftCertificateId: String
 
-    lateinit var user: User
+    lateinit var userId: String
 
     @PrePersist
     fun onCreate() {

@@ -22,7 +22,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageImpl
-import java.util.Optional
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
@@ -34,7 +33,6 @@ class GiftCertificateServiceImplTest {
     @InjectMocks
     private lateinit var giftCertificateService: GiftCertificateServiceImpl
 
-
     @Test
     fun getAll() {
         val expected = listOf(FIRST_TEST_GIFT_CERTIFICATE, SECOND_TEST_GIFT_CERTIFICATE, THIRD_TEST_GIFT_CERTIFICATE)
@@ -43,14 +41,9 @@ class GiftCertificateServiceImplTest {
         assertEquals(actual, expected)
     }
 
-
     @Test
     fun getById() {
-        whenever(giftCertificateRepository.findById(Constants.TEST_ID)).thenReturn(
-            Optional.of(
-                FIRST_TEST_GIFT_CERTIFICATE
-            )
-        )
+        whenever(giftCertificateRepository.findById(Constants.TEST_ID)).thenReturn(FIRST_TEST_GIFT_CERTIFICATE)
         val actual = giftCertificateService.getById(Constants.TEST_ID)
         assertEquals(FIRST_TEST_GIFT_CERTIFICATE, actual)
     }

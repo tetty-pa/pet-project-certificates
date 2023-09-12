@@ -16,28 +16,27 @@ class OrderServiceImpl(
     private val userRepository: UserRepository,
     private val giftCertificateRepository: GiftCertificateRepository
 ) : OrderService {
-
     override fun getAllByUserId(userId: String, page: Int, size: Int): List<Order> {
-        userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
+        userRepository.findById(userId) ?: throw EntityNotFoundException("user.notfoundById")
 
         val pageRequest: Pageable = PageRequest.of(page, size)
-        return orderRepository.getAllByUserId(userId, pageRequest)
+        return orderRepository.findAllByUserId(userId, pageRequest).content
     }
 
     override fun create(userId: String, certificateId: String): Order {
         val order = Order()
 
-        val user = userRepository.findById(userId).orElseThrow { EntityNotFoundException("user.notfoundById") }
-        order.user = user
+        val user = userRepository.findById(userId) ?: throw EntityNotFoundException("user.notfoundById")
+        order.userId = user.id
 
         val giftCertificate = giftCertificateRepository.findById(certificateId)
-            .orElseThrow { EntityNotFoundException("gift-certificate.notfoundById") }
-        order.giftCertificate = giftCertificate
+            ?: throw EntityNotFoundException("gift-certificate.notfoundById")
+        order.giftCertificateId = giftCertificate.id
 
         order.cost = giftCertificate.price
         return orderRepository.save(order)
     }
 
     override fun getById(orderId: String): Order =
-        orderRepository.findById(orderId).orElseThrow { EntityNotFoundException("order.notfoundById") }
+        orderRepository.findById(orderId) ?: throw EntityNotFoundException("order.notfoundById")
 }
