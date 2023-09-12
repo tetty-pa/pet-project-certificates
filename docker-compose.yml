@@ -2,14 +2,27 @@ version: "3.8"
 services:
   mongo:
     image: mongo
-    container_name: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
-      - data:/data
+      - mongo:/data
+
+  sb-app:
+    depends_on:
+      - mongo
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      SPRING_APPLICATION_JSON: '{
+              "spring.data.mongodb.database":"certificates",
+              "spring.data.mongodb.port":"27017",
+              "spring.data.mongodb.host":"mongo"
+      }'
+    container_name: "docker-app"
+    ports:
+      - "8080:8080"
 
 volumes:
-  data: {}
+  mongo:
