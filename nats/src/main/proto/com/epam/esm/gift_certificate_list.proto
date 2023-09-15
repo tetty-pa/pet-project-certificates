@@ -1,0 +1,15 @@
+syntax = "proto3";
+package com.epam.esm;
+
+import "com/epam/esm/gift_certificate.proto";
+
+message ListOfGiftCertificates {
+  repeated GiftCertificate gift_certificates = 1;
+}
+message GetAllGiftCertificateRequest {
+  int32 page = 1;
+  int32 size = 2;
+}
+message GetAllGiftCertificateResponse {
+  ListOfGiftCertificates gift_certificate_list = 1;
+}

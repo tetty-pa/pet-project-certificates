@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.epam.esm;
+
+import "com/epam/esm/tag.proto";
+
+
+message ListOfTags {
+  repeated Tag tags = 1;
+}
+
+message GetAllTagRequest {
+  int32 page = 1;
+  int32 size = 2;
+}
+
+message GetAllTagResponse {
+  ListOfTags tag_list = 1;
+}
