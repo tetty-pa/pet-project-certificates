@@ -21,6 +21,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Protobuf
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Create Nats cluster
+        uses: onichandame/nats-action@master
+        with:
+          port: "4222 4223 4224"
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
