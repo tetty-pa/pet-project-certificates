@@ -29,7 +29,7 @@ class TagRepositoryImpl(private val mongoTemplate: MongoTemplate) : TagRepositor
 
     override fun deleteById(id: String) {
         val query = Query().addCriteria(Criteria.where("_id").`is`(id))
-        mongoTemplate.remove(query)
+        mongoTemplate.remove(query, Tag::class.java)
     }
 
     override fun findByName(name: String): Tag? =
