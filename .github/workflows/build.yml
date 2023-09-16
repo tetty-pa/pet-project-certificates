@@ -31,12 +31,6 @@ jobs:
         with:
           port: "4222 4223 4224"
 
-      - name: test connection to cluster
-        uses: onichandame/nats-client-action@master
-        with:
-          servers: "nats://localhost:4222 nats://localhost:4223 nats://localhost:4224"
-          cluster: "true"
-
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
