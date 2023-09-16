@@ -29,7 +29,7 @@ jobs:
       - name: Create Nats cluster
         uses: onichandame/nats-action@master
         with:
-          port: "4222 4223 4224"
+          port: "4222 6222 8222"
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
