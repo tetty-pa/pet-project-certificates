@@ -1,8 +1,7 @@
 package com.epam.esm.web.natsController
 
-import com.epam.esm.GiftCertificateList.GetAllGiftCertificateRequest
-import com.epam.esm.GiftCertificateList.GetAllGiftCertificateResponse
-import com.epam.esm.GiftCertificateList.ListOfGiftCertificates
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.DeleteByIdGiftCertificateRequest
@@ -64,11 +63,8 @@ class GiftCertificatesNatsControllerTest {
         val protoList =
             giftCertificateRepository.findAll(PAGE)
                 .map { giftCertificate -> giftCertificateConverter.entityToProto(giftCertificate) }
-        val listOfGiftCertificates =
-            ListOfGiftCertificates.newBuilder()
-                .addAllGiftCertificates(protoList)
         val expected = GetAllGiftCertificateResponse.newBuilder()
-            .setGiftCertificateList(listOfGiftCertificates)
+            .addAllGiftCertificates(protoList)
             .build()
 
         val request =

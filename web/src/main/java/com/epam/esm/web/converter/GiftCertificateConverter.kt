@@ -1,7 +1,6 @@
 package com.epam.esm.web.converter
 
 import com.epam.esm.GiftCertificateOuterClass
-import com.epam.esm.TagList
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.model.entity.Tag
 import org.springframework.stereotype.Component
@@ -15,32 +14,29 @@ class GiftCertificateConverter(
         giftCertificate: GiftCertificate
     ): GiftCertificateOuterClass.GiftCertificate {
         val tagListOfProto =
-            giftCertificate.tagList.map { tag ->
-                tagConverter.tagToProto(tag)
-            }.toList()
-        val listOfTags = TagList.ListOfTags.newBuilder().addAllTags(tagListOfProto)
+            giftCertificate.tagList
+                .map { tagConverter.tagToProto(it) }
+                .toList()
 
-        return GiftCertificateOuterClass.GiftCertificate.newBuilder()
-            .setName(giftCertificate.name)
-            .setDescription(giftCertificate.description)
-            .setDuration(giftCertificate.duration)
-            .setPrice(giftCertificate.price.toDouble())
-            .setCreateDate(
+        return GiftCertificateOuterClass.GiftCertificate.newBuilder().apply {
+            name = giftCertificate.name
+            description = giftCertificate.description
+            duration = giftCertificate.duration
+            price = giftCertificate.price.toDouble()
+            createDate =
                 dateConverter
                     .localDateTimeToTimestamp(giftCertificate.createDate)
-            )
-            .setLastUpdatedDate(
+            lastUpdatedDate =
                 dateConverter
                     .localDateTimeToTimestamp(giftCertificate.lastUpdatedDate)
-            )
-            .setTagList(listOfTags)
+        }.addAllTags(tagListOfProto)
             .build()
     }
 
     fun protoToEntity(
         giftCertificate: GiftCertificateOuterClass.GiftCertificate
     ): GiftCertificate {
-        val tagList = giftCertificate.tagList.tagsList.map { tag -> Tag(tag.name) }
+        val tagList = giftCertificate.tagsList.map { Tag(it.name) }
 
         return GiftCertificate(
             name = giftCertificate.name,
@@ -54,5 +50,4 @@ class GiftCertificateConverter(
             tagList = tagList
         )
     }
-
 }

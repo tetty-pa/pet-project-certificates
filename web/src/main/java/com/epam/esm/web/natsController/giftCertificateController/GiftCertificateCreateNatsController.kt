@@ -15,7 +15,7 @@ class GiftCertificateCreateNatsController(
     private val giftCertificateConverter: GiftCertificateConverter,
     private val service: GiftCertificateService,
     override val connection: Connection
-) : NatsController<CreateGiftCertificateRequest, CreateGiftCertificateResponse> {
+): NatsController<CreateGiftCertificateRequest, CreateGiftCertificateResponse> {
 
     override val subject: String = NatsSubject.ADD_GIFT_CERTIFICATE_SUBJECT
 

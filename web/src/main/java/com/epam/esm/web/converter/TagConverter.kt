@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component
 @Component
 class TagConverter {
     fun tagToProto(tag: Tag): TagOuterClass.Tag {
-        return TagOuterClass.Tag.newBuilder()
-            .setName(tag.name)
-            .build()
+        return TagOuterClass.Tag.newBuilder().apply {
+            name = tag.name
+        }.build()
     }
 }

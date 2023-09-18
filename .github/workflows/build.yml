@@ -21,16 +21,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Protobuf
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y protobuf-compiler
-
-      - name: Create Nats cluster
-        uses: onichandame/nats-action@master
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
         with:
-          port: "4222 6222 8222"
-
+          mongodb-version: '7.0.1'
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2

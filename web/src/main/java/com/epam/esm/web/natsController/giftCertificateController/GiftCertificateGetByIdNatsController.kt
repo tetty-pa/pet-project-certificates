@@ -25,7 +25,6 @@ class GiftCertificateGetByIdNatsController(
     override fun generateReplyForNatsRequest(
         request: GetByIdGiftCertificateRequest
     ): GetByIdGiftCertificateResponse {
-
         val giftCertificateById = service.getById(request.giftCertificateId)
         val protoTag =
             giftCertificateConverter

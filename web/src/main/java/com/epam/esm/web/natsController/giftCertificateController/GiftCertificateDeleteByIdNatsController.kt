@@ -23,7 +23,6 @@ class GiftCertificateDeleteByIdNatsController(
     override fun generateReplyForNatsRequest(
         request: DeleteByIdGiftCertificateRequest
     ): DeleteByIdGiftCertificateResponse {
-
         service.deleteById(request.giftCertificateId)
         return DeleteByIdGiftCertificateResponse
             .newBuilder()

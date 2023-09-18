@@ -14,7 +14,5 @@ class AppConfig {
     private lateinit var natsUrl: String
 
     @Bean
-    fun natsConnection(): Connection =
-        Nats.connect(natsUrl)
-
+    fun natsConnection(): Connection = Nats.connect(natsUrl)
 }

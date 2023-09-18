@@ -1,9 +1,8 @@
 package com.epam.esm.web.natsController.tagController
 
 import com.epam.esm.NatsSubject
-import com.epam.esm.TagList.GetAllTagRequest
-import com.epam.esm.TagList.GetAllTagResponse
-import com.epam.esm.TagList.ListOfTags
+import com.epam.esm.TagOuterClass.GetAllTagRequest
+import com.epam.esm.TagOuterClass.GetAllTagResponse
 import com.epam.esm.service.TagService
 import com.epam.esm.web.converter.TagConverter
 import com.epam.esm.web.natsController.NatsController
@@ -28,9 +27,8 @@ class TagGetAllNatsController(
                 .map { tag -> tagConverter.tagToProto(tag) }
                 .toList()
 
-        val listOfTags = ListOfTags.newBuilder().addAllTags(tagListOfProto)
         return GetAllTagResponse.newBuilder()
-            .setTagList(listOfTags)
+            .addAllTagList(tagListOfProto)
             .build()
     }
 }

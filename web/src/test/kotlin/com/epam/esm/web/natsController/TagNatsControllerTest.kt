@@ -1,9 +1,8 @@
 package com.epam.esm.web.natsController
 
 import com.epam.esm.NatsSubject
-import com.epam.esm.TagList.GetAllTagRequest
-import com.epam.esm.TagList.GetAllTagResponse
-import com.epam.esm.TagList.ListOfTags
+import com.epam.esm.TagOuterClass.GetAllTagRequest
+import com.epam.esm.TagOuterClass.GetAllTagResponse
 import com.epam.esm.TagOuterClass.CreateTagRequest
 import com.epam.esm.TagOuterClass.CreateTagResponse
 import com.epam.esm.TagOuterClass.DeleteByIdTagRequest
@@ -60,10 +59,8 @@ class TagNatsControllerTest {
         val protoFromDb = tagRepository.findAll(PAGE)
             .map { tag -> tagConverter.tagToProto(tag) }
 
-        val listOfTags = ListOfTags.newBuilder()
-            .addAllTags(protoFromDb)
         val expected = GetAllTagResponse.newBuilder()
-            .setTagList(listOfTags)
+            .addAllTagList(protoFromDb)
             .build()
 
         val request =

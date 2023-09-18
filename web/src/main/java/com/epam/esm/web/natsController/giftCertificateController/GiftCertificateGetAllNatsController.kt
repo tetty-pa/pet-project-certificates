@@ -1,8 +1,7 @@
 package com.epam.esm.web.natsController.giftCertificateController
 
-import com.epam.esm.GiftCertificateList.GetAllGiftCertificateRequest
-import com.epam.esm.GiftCertificateList.GetAllGiftCertificateResponse
-import com.epam.esm.GiftCertificateList.ListOfGiftCertificates
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.NatsSubject
 import com.epam.esm.service.GiftCertificateService
 import com.epam.esm.web.converter.GiftCertificateConverter
@@ -30,10 +29,8 @@ class GiftCertificateGetAllNatsController(
                 .map { tag -> giftCertificateConverter.entityToProto(tag) }
                 .toList()
 
-        val listOfGiftCertificates =
-            ListOfGiftCertificates.newBuilder().addAllGiftCertificates(giftCertificateListOfProto)
         return GetAllGiftCertificateResponse.newBuilder()
-            .setGiftCertificateList(listOfGiftCertificates)
+            .addAllGiftCertificates(giftCertificateListOfProto)
             .build()
     }
 }

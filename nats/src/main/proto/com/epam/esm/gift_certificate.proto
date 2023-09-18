@@ -2,7 +2,7 @@ syntax = "proto3";
 package com.epam.esm;
 
 import "google/protobuf/timestamp.proto";
-import "com/epam/esm/tag_list.proto";
+import "com/epam/esm/tag.proto";
 
 message GiftCertificate {
   string name = 1;
@@ -11,12 +11,13 @@ message GiftCertificate {
   double price = 4;
   google.protobuf.Timestamp create_date = 5;
   google.protobuf.Timestamp last_updated_date = 6;
-  ListOfTags tag_list = 7;
+  repeated Tag tags = 7;
 }
 
 message CreateGiftCertificateRequest {
   GiftCertificate gift_certificate = 1;
 }
+
 message CreateGiftCertificateResponse {
   GiftCertificate gift_certificate = 1;
 }
@@ -24,6 +25,7 @@ message CreateGiftCertificateResponse {
 message GetByIdGiftCertificateRequest {
   string gift_certificate_id = 1;
 }
+
 message GetByIdGiftCertificateResponse {
   GiftCertificate gift_certificate = 1;
 }
@@ -31,13 +33,24 @@ message GetByIdGiftCertificateResponse {
 message DeleteByIdGiftCertificateRequest {
   string gift_certificate_id = 1;
 }
+
 message DeleteByIdGiftCertificateResponse {
 }
+
 message UpdateGiftCertificateRequest {
   string id = 1;
   GiftCertificate gift_certificate = 2;
 }
+
 message UpdateGiftCertificateResponse {
   GiftCertificate gift_certificate = 1;
 }
 
+message GetAllGiftCertificateRequest {
+  int32 page = 1;
+  int32 size = 2;
+}
+
+message GetAllGiftCertificateResponse {
+  repeated GiftCertificate gift_certificates = 1;
+}
