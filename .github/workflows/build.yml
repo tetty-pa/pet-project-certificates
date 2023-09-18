@@ -21,10 +21,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Start mongo
+      - name: Setup Protobuf
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Start mongodb
         run: docker run -d --name mongo -p 27017:27017 mongo:latest
 
-      - name: Start nats container
+      - name: Start nats
         run: docker run -d --name nats -p 4222:4222 nats:latest
 
       - name: Setup Gradle
