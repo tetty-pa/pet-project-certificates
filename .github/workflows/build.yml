@@ -21,6 +21,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Protobuf
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y protobuf-compiler
+
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.6.0
         with:
