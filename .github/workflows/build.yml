@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,16 +21,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Protobuf
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y protobuf-compiler
+      - name: Start mongo
+        run: docker run -d --name mongo -p 27017:27017 mongo:latest
 
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.6.0
-        with:
-          mongodb-version: '7.0.1'
-          mongodb-replica-set: 'certificates'
+      - name: Start nats container
+        run: docker run -d --name nats -p 4222:4222 nats:latest
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
