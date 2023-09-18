@@ -23,14 +23,10 @@ class GiftCertificateConverter(
             description = giftCertificate.description
             duration = giftCertificate.duration
             price = giftCertificate.price.toDouble()
-            createDate =
-                dateConverter
-                    .localDateTimeToTimestamp(giftCertificate.createDate)
-            lastUpdatedDate =
-                dateConverter
-                    .localDateTimeToTimestamp(giftCertificate.lastUpdatedDate)
-        }.addAllTags(tagListOfProto)
-            .build()
+            createDate = dateConverter.localDateTimeToTimestamp(giftCertificate.createDate)
+            lastUpdatedDate = dateConverter.localDateTimeToTimestamp(giftCertificate.lastUpdatedDate)
+            addAllTags(tagListOfProto)
+        }.build()
     }
 
     fun protoToEntity(
@@ -42,10 +38,8 @@ class GiftCertificateConverter(
             name = giftCertificate.name,
             description = giftCertificate.description,
             duration = giftCertificate.duration,
-            createDate = dateConverter
-                .timestampToLocalDateTime(giftCertificate.createDate),
-            lastUpdatedDate = dateConverter
-                .timestampToLocalDateTime(giftCertificate.lastUpdatedDate),
+            createDate = dateConverter.timestampToLocalDateTime(giftCertificate.createDate),
+            lastUpdatedDate = dateConverter.timestampToLocalDateTime(giftCertificate.lastUpdatedDate),
             price = giftCertificate.price.toBigDecimal(),
             tagList = tagList
         )

@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @EntityScan(basePackages = ["com.epam.esm"])
 class AppConfig {
-    @Value("\${nats.connection.url}")
-    private lateinit var natsUrl: String
-
     @Bean
-    fun natsConnection(): Connection = Nats.connect(natsUrl)
+    fun natsConnection(
+        @Value("\${nats.connection.url}")
+        natsUrl: String
+    ): Connection = Nats.connect(natsUrl)
 }
