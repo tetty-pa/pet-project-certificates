@@ -1,0 +1,38 @@
+syntax = "proto3";
+package com.epam.esm;
+
+message Tag {
+  string name = 1;
+}
+
+message CreateTagRequest {
+  Tag tag = 1;
+}
+
+message CreateTagResponse {
+  Tag tag = 1;
+}
+
+message GetByIdTagRequest {
+  string tag_id = 1;
+}
+
+message GetByIdTagResponse {
+  Tag tag = 1;
+}
+
+message DeleteByIdTagRequest {
+  string tag_id = 1;
+}
+
+message DeleteByIdTagResponse {
+}
+
+message GetAllTagRequest {
+  int32 page = 1;
+  int32 size = 2;
+}
+
+message GetAllTagResponse {
+  repeated Tag tag_list = 1;
+}

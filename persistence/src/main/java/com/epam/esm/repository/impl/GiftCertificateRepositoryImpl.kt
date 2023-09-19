@@ -32,6 +32,6 @@ class GiftCertificateRepositoryImpl(private val mongoTemplate: MongoTemplate) : 
 
     override fun deleteById(id: String) {
         val query = Query().addCriteria(Criteria.where("_id").`is`(id))
-        mongoTemplate.remove(query)
+        mongoTemplate.remove(query, GiftCertificate::class.java)
     }
 }
