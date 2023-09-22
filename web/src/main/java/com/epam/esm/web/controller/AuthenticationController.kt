@@ -50,7 +50,6 @@ class AuthenticationController(
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        userService.create(user)
-        return user
+        return userService.create(user).block()!!
     }
 }

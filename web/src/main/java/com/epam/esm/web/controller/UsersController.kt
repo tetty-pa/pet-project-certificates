@@ -18,10 +18,10 @@ class UsersController(private val userService: UserService) {
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<User> = userService.getAll(page, size)
+    ): List<User> = userService.getAll(page, size).collectList().block()!!
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable id: String): User =
-        userService.getById(id)
+        userService.getById(id).block()!!
 }

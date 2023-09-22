@@ -27,7 +27,8 @@ class GiftCertificateGetAllNatsController(
         val giftCertificateListOfProto =
             service.getAll(page = request.page, size = request.size)
                 .map { tag -> giftCertificateConverter.entityToProto(tag) }
-                .toList()
+                .collectList()
+                .block()
 
         return GetAllGiftCertificateResponse.newBuilder()
             .addAllGiftCertificates(giftCertificateListOfProto)

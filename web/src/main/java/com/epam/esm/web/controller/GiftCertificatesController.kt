@@ -27,12 +27,13 @@ class GiftCertificatesController(
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<GiftCertificate> = giftCertificateService.getAll(page, size)
+    ): List<GiftCertificate> =
+        giftCertificateService.getAll(page, size).collectList().block()!!
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable id: String): GiftCertificate =
-        giftCertificateService.getById(id)
+        giftCertificateService.getById(id).block()!!
 
 
     @PostMapping
@@ -44,7 +45,7 @@ class GiftCertificatesController(
         if (bindingResult?.hasErrors() == true) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        return giftCertificateService.create(giftCertificate)
+        return giftCertificateService.create(giftCertificate).block()!!
     }
 
     @DeleteMapping(value = ["/{id}"])
@@ -62,6 +63,6 @@ class GiftCertificatesController(
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        return giftCertificateService.update(giftCertificate)
+        return giftCertificateService.update(giftCertificate).block()!!
     }
 }
