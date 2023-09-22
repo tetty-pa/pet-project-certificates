@@ -31,7 +31,7 @@ class GiftCertificateCreateNatsController(
         return CreateGiftCertificateResponse.newBuilder()
             .setGiftCertificate(
                 giftCertificateConverter
-                    .entityToProto(createdGiftCertificate)
+                    .entityToProto(createdGiftCertificate.block()!!)
             )
             .build()
     }

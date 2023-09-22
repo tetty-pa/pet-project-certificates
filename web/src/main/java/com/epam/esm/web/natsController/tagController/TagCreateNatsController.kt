@@ -27,7 +27,7 @@ class TagCreateNatsController(
         val createdTag = service.create(tag)
 
         return CreateTagResponse.newBuilder()
-            .setTag(tagConverter.tagToProto(createdTag))
+            .setTag(tagConverter.tagToProto(createdTag.block()!!))
             .build()
     }
 }

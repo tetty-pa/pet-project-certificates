@@ -24,7 +24,7 @@ class TagGetByIdNatsController(
 
     override fun generateReplyForNatsRequest(request: GetByIdTagRequest): GetByIdTagResponse {
         val tagById = service.getById(request.tagId)
-        val protoTag = tagConverter.tagToProto(tagById)
+        val protoTag = tagConverter.tagToProto(tagById.block()!!)
 
         return GetByIdTagResponse
             .newBuilder()

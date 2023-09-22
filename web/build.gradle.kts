@@ -24,7 +24,7 @@ dependencies {
     implementation(project(":nats"))
 
     api("io.jsonwebtoken:jjwt:0.9.0")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.1.3")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -37,9 +37,11 @@ dependencies {
     implementation("com.google.protobuf:protobuf-java:3.24.2")
     implementation("com.google.protobuf:protobuf-java-util:3.20.1")
 
+    testImplementation("io.projectreactor:reactor-test:3.5.10")
+    testImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
 }
 
 tasks.withType<KotlinCompile> {

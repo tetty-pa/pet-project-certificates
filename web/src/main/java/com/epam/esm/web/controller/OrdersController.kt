@@ -20,17 +20,17 @@ class OrdersController(private val orderService: OrderService) {
         @PathVariable userId: String,
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<Order> = orderService.getAllByUserId(userId, page, size)
+    ): List<Order> = orderService.getAllByUserId(userId, page, size).collectList().block()!!
 
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun create(
         @PathVariable userId: String,
         @RequestParam certificateId: String
-    ): Order = orderService.create(userId, certificateId)
+    ): Order = orderService.create(userId, certificateId).block()!!
 
     @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable orderId: String): Order =
-        orderService.getById(orderId)
+        orderService.getById(orderId).block()!!
 }

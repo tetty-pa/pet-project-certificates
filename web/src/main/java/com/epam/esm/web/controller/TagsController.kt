@@ -24,7 +24,7 @@ class TagsController(private val tagService: TagService) {
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<Tag> = tagService.getAll(page, size)
+    ): List<Tag> = tagService.getAll(page, size).collectList().block()!!
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,13 +35,13 @@ class TagsController(private val tagService: TagService) {
         if (bindingResult?.hasErrors() == true) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        return tagService.create(tag)
+        return tagService.create(tag).block()!!
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable("id") id: String): Tag =
-        tagService.getById(id)
+        tagService.getById(id).block()!!
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

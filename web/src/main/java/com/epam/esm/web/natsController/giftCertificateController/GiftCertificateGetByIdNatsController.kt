@@ -28,7 +28,7 @@ class GiftCertificateGetByIdNatsController(
         val giftCertificateById = service.getById(request.giftCertificateId)
         val protoTag =
             giftCertificateConverter
-                .entityToProto(giftCertificateById)
+                .entityToProto(giftCertificateById.block()!!)
 
         return GetByIdGiftCertificateResponse
             .newBuilder()

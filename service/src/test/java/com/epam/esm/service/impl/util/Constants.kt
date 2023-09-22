@@ -68,8 +68,10 @@ object Constants {
 
     @JvmField
     val FIRST_TEST_ORDER = Order(
-        BigDecimal.ZERO,
-        LocalDateTime.now()
+        BigDecimal.ONE,
+        LocalDateTime.now(),
+        "1",
+        "1"
     )
 
     @JvmField
