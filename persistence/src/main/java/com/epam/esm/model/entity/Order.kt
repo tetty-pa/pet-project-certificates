@@ -1,8 +1,6 @@
 package com.epam.esm.model.entity
 
 import com.epam.esm.model.entity.audit.EntityAuditListener
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.Id
 import jakarta.persistence.PrePersist
@@ -15,16 +13,14 @@ import java.time.LocalDateTime
 data class Order(
     var cost: BigDecimal = BigDecimal.ZERO,
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    var orderDate: LocalDateTime = LocalDateTime.now()
+    var orderDate: LocalDateTime = LocalDateTime.now(),
+
+    var userId: String = "",
+
+    var giftCertificateId: String = ""
 ) {
     @Id
     lateinit var id: String
-
-    lateinit var giftCertificateId: String
-
-    lateinit var userId: String
 
     @PrePersist
     fun onCreate() {

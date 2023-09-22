@@ -32,7 +32,7 @@ class OrderServiceImpl(
         )
             .switchIfEmpty(Mono.error(EntityNotFoundException("")))
             .flatMap {
-                val order = Order(orderDate = LocalDateTime.now())
+                val order = Order()
                 order.apply {
                     userId = it.t1.id
                     giftCertificateId = it.t2.id
