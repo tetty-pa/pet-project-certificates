@@ -1,17 +1,19 @@
 package com.epam.esm.repository
 
 import com.epam.esm.model.entity.Tag
-import org.springframework.data.domain.Page
+import com.mongodb.client.result.DeleteResult
 import org.springframework.data.domain.Pageable
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 interface TagRepository {
-    fun findAll(page: Pageable): Page<Tag>
+    fun findAll(page: Pageable): Flux<Tag>
 
-    fun save(tag: Tag): Tag
+    fun save(tag: Tag): Mono<Tag>
 
-    fun findById(id: String): Tag?
+    fun findById(id: String): Mono<Tag>
 
-    fun deleteById(id: String)
+    fun deleteById(id: String): Mono<DeleteResult>
 
-    fun findByName(name: String): Tag?
+    fun findByName(name: String): Mono<Tag>
 }

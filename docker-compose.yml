@@ -26,7 +26,8 @@ services:
       SPRING_APPLICATION_JSON: '{
               "spring.data.mongodb.database":"certificates",
               "spring.data.mongodb.port":"27017",
-              "spring.data.mongodb.host":"mongo"
+              "spring.data.mongodb.host":"mongo",
+              "nats.connection.url":"nats://nats:4222"
       }'
     container_name: "docker-app"
     ports:

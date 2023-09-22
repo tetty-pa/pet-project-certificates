@@ -1,38 +1,16 @@
 package com.epam.esm.service
 
 import com.epam.esm.model.entity.Tag
+import com.mongodb.client.result.DeleteResult
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 interface TagService {
-    /**
-     * Gets all Tags.
-     *
-     * @param page page number for pagination
-     * @param size   page size for pagination
-     * @return List of Tags
-     */
-    fun getAll(page: Int, size: Int): List<Tag>
+    fun getAll(page: Int, size: Int): Flux<Tag>
 
-    /**
-     * Creates new Tag.
-     *
-     * @param tag Tag to create
-     * @return Tag
-     */
-    fun create(tag: Tag): Tag
+    fun create(tag: Tag): Mono<Tag>
 
-    /**
-     * Gets Tag by id.
-     *
-     * @param id Tag id to get
-     * @return Tag
-     */
-    fun getById(id: String): Tag
+    fun getById(id: String): Mono<Tag>
 
-    /**
-     * Deletes Gift Certificates.
-     *
-     * @param id Tag id to delete
-     */
-    fun deleteById(id: String)
-
+    fun deleteById(id: String): Mono<DeleteResult>
 }
