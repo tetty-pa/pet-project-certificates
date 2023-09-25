@@ -5,9 +5,28 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 interface UserService {
+    /**
+     * Gets all Users.
+     *
+     * @param page page number for pagination
+     * @param size   page size for pagination
+     * @return List of Users Flux<User>
+     */
     fun getAll(page: Int, size: Int): Flux<User>
 
+    /**
+     * Gets User by id.
+     *
+     * @param id User id to get
+     * @return Mono<User>
+     */
     fun getById(id: String): Mono<User>
 
+    /**
+     * Creates new User.
+     *
+     * @param user User to create
+     * @return Mono<User>
+     */
     fun create(user: User): Mono<User>
 }

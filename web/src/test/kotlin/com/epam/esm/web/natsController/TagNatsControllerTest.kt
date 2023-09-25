@@ -1,6 +1,7 @@
 package com.epam.esm.web.natsController
 
 import com.epam.esm.NatsSubject
+import com.epam.esm.TagOuterClass.CreateTagResponse
 import com.epam.esm.TagOuterClass.CreateTagRequest
 import com.epam.esm.TagOuterClass.DeleteByIdTagRequest
 import com.epam.esm.TagOuterClass.GetAllTagRequest
@@ -44,13 +45,13 @@ class TagNatsControllerTest {
                 Duration.ofMillis(100000)
             )
 
-        /*val actual =
+        val actual =
             CreateTagResponse
                 .parseFrom(future.get().data)
         assertThat(expected.tag).isEqualTo(actual.tag)
 
         val findByName = tagRepository.findByName(actual.tag.name).block()
-        findByName?.let { tagRepository.deleteById(it.id) }*/
+        findByName?.let { tagRepository.deleteById(it.id) }
     }
 
     @Test
