@@ -172,7 +172,7 @@ class GiftCertificatesNatsControllerTest {
         assertThat(expected.giftCertificate.name).isEqualTo(actual.giftCertificate.name)
 
         val findByName = giftCertificateRepository.findByName(actual.giftCertificate.name).block()!!
-        findByName?.let { giftCertificateRepository.deleteById(it.id) }
+        findByName.let { giftCertificateRepository.deleteById(it.id) }
     }
 
 

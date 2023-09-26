@@ -25,7 +25,7 @@ class TagGetAllNatsController(
     override fun generateReplyForNatsRequest(request: GetAllTagRequest): Mono<GetAllTagResponse> {
         val tagListOfProto =
             service.getAll(page = request.page, size = request.size)
-                .map { tag -> tagConverter.tagToProto(tag) }
+                .map {tagConverter.tagToProto(it) }
                 .collectList()
 
         return tagListOfProto

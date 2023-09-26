@@ -27,7 +27,7 @@ class GiftCertificateGetAllNatsController(
     ): Mono<GetAllGiftCertificateResponse> {
 
         return service.getAll(page = request.page, size = request.size)
-            .map { certificate -> giftCertificateConverter.entityToProto(certificate) }
+            .map { giftCertificateConverter.entityToProto(it) }
             .collectList()
             .map {
                 GetAllGiftCertificateResponse
