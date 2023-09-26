@@ -3,7 +3,6 @@ package com.epam.esm.web.natsController
 import com.epam.esm.NatsSubject
 import com.epam.esm.TagOuterClass.CreateTagRequest
 import com.epam.esm.TagOuterClass.CreateTagResponse
-import com.epam.esm.TagOuterClass.CreateTagRequest
 import com.epam.esm.TagOuterClass.DeleteByIdTagRequest
 import com.epam.esm.TagOuterClass.GetAllTagRequest
 import com.epam.esm.TagOuterClass.GetAllTagResponse

@@ -24,7 +24,6 @@ class OrdersController(private val orderService: OrderService) {
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
     ): Flux<Order> = orderService.getAllByUserId(userId, page, size)
 
-
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     fun create(

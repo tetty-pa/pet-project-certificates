@@ -39,7 +39,6 @@ class GiftCertificatesController(
     fun getById(@PathVariable id: String): Mono<GiftCertificate> =
         giftCertificateService.getById(id)
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@Valid @RequestBody giftCertificate: GiftCertificate): Mono<GiftCertificate> {
@@ -49,7 +48,6 @@ class GiftCertificatesController(
                     ex.bindingResult.fieldErrors.joinToString(", ") { it.defaultMessage.toString() }
                 InvalidDataException(errorMessage)
             }
-
     }
 
     @DeleteMapping(value = ["/{id}"])
@@ -66,6 +64,6 @@ class GiftCertificatesController(
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        return giftCertificateService.update(giftCertificate).block()!!
+        return giftCertificateService.update(giftCertificate)
     }
 }
