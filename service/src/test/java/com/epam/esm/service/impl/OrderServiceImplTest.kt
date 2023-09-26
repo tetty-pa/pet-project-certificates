@@ -1,25 +1,23 @@
 package com.epam.esm.service.impl
 
-import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.repository.GiftCertificateRepository
 import com.epam.esm.repository.OrderRepository
 import com.epam.esm.repository.UserRepository
 import com.epam.esm.service.impl.util.Constants.FIRST_TEST_ORDER
-import com.epam.esm.service.impl.util.Constants.FIRST_TEST_USER
 import com.epam.esm.service.impl.util.Constants.NOT_EXIST_ID
 import com.epam.esm.service.impl.util.Constants.PAGE
 import com.epam.esm.service.impl.util.Constants.PAGE_NUM
 import com.epam.esm.service.impl.util.Constants.PAGE_SIZE
 import com.epam.esm.service.impl.util.Constants.SECOND_TEST_ORDER
 import com.epam.esm.service.impl.util.Constants.TEST_ID
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.data.support.PageableExecutionUtils
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
@@ -39,38 +37,48 @@ class OrderServiceImplTest {
 
     @Test
     fun getAllByUserId() {
-        val expected = PageableExecutionUtils.getPage(
-            listOf(FIRST_TEST_ORDER, SECOND_TEST_ORDER),
-            PAGE
-        ) { 2 }
-        whenever(orderRepository.findAllByUserId(TEST_ID, PAGE)).thenReturn(expected)
-        whenever(userRepository.findById(TEST_ID)).thenReturn(FIRST_TEST_USER)
-        val actual = orderService.getAllByUserId(TEST_ID, PAGE_NUM, PAGE_SIZE)
-        assertEquals(listOf(FIRST_TEST_ORDER, SECOND_TEST_ORDER), actual)
-    }
+        val expected = listOf(FIRST_TEST_ORDER, SECOND_TEST_ORDER)
 
-    @Test
-    fun getAllByUserIdShouldThrowEntityNotFoundException() {
-        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
-        assertThrows<EntityNotFoundException> { orderService.getAllByUserId(NOT_EXIST_ID, PAGE_NUM, PAGE_SIZE) }
+        whenever(orderRepository.findAllByUserId(TEST_ID, PAGE)).thenReturn(Flux.fromIterable(expected))
+
+        val actual = orderService.getAllByUserId(TEST_ID, PAGE_NUM, PAGE_SIZE)
+
+        StepVerifier.create(actual)
+            .expectNextCount(expected.size.toLong())
+            .verifyComplete()
     }
 
     @Test
     fun createShouldThrowEntityNotFoundException() {
-        whenever(userRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
-        assertThrows<EntityNotFoundException> { orderService.create(NOT_EXIST_ID, NOT_EXIST_ID) }
+        whenever(userRepository.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
+        whenever(giftCertificateRepository.findById(TEST_ID)).thenReturn(Mono.empty())
+
+        val actual = orderService.create(NOT_EXIST_ID, TEST_ID)
+
+        StepVerifier.create(actual)
+            .expectNext()
+            .verifyError()
     }
 
     @Test
     fun getById() {
-        whenever(orderRepository.findById(TEST_ID)).thenReturn(FIRST_TEST_ORDER)
+        whenever(orderRepository.findById(TEST_ID)).thenReturn(Mono.just(FIRST_TEST_ORDER))
+
         val actual = orderService.getById(TEST_ID)
-        assertEquals(FIRST_TEST_ORDER, actual)
+
+        StepVerifier.create(actual)
+            .expectNext(FIRST_TEST_ORDER)
+            .verifyComplete()
     }
 
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
-        whenever(orderRepository.findById(NOT_EXIST_ID)).thenThrow(EntityNotFoundException(""))
-        assertThrows<EntityNotFoundException> { orderService.getById(NOT_EXIST_ID) }
+        whenever(orderRepository.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
+
+        val actual = orderService.getById(NOT_EXIST_ID)
+
+        StepVerifier.create(actual)
+            .expectNext()
+            .verifyError()
     }
 }

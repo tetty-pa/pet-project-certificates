@@ -9,6 +9,9 @@ import com.epam.esm.service.OrderService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import java.time.LocalDateTime
 
 @Service
 class OrderServiceImpl(
@@ -16,27 +19,31 @@ class OrderServiceImpl(
     private val userRepository: UserRepository,
     private val giftCertificateRepository: GiftCertificateRepository
 ) : OrderService {
-    override fun getAllByUserId(userId: String, page: Int, size: Int): List<Order> {
-        userRepository.findById(userId) ?: throw EntityNotFoundException("user.notfoundById")
 
+    override fun getAllByUserId(userId: String, page: Int, size: Int): Flux<Order> {
         val pageRequest: Pageable = PageRequest.of(page, size)
-        return orderRepository.findAllByUserId(userId, pageRequest).content
+        return orderRepository.findAllByUserId(userId, pageRequest)
     }
 
-    override fun create(userId: String, certificateId: String): Order {
-        val order = Order()
-
-        val user = userRepository.findById(userId) ?: throw EntityNotFoundException("user.notfoundById")
-        order.userId = user.id
-
-        val giftCertificate = giftCertificateRepository.findById(certificateId)
-            ?: throw EntityNotFoundException("gift-certificate.notfoundById")
-        order.giftCertificateId = giftCertificate.id
-
-        order.cost = giftCertificate.price
-        return orderRepository.save(order)
+    override fun create(user: String, certificate: String): Mono<Order> {
+        return Mono.zip(
+            userRepository.findById(user),
+            giftCertificateRepository.findById(certificate)
+        )
+            .switchIfEmpty(Mono.error(EntityNotFoundException("")))
+            .flatMap {
+                val order = Order()
+                order.apply {
+                    userId = it.t1.id
+                    giftCertificateId = it.t2.id
+                    cost = it.t2.price
+                    orderDate = LocalDateTime.now()
+                }
+                orderRepository.save(order)
+            }
     }
 
-    override fun getById(orderId: String): Order =
-        orderRepository.findById(orderId) ?: throw EntityNotFoundException("order.notfoundById")
+    override fun getById(orderId: String): Mono<Order> =
+        orderRepository.findById(orderId)
+            .switchIfEmpty(Mono.error(EntityNotFoundException("order.notfoundById")))
 }

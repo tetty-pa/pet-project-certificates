@@ -25,7 +25,7 @@ class TagGetAllNatsController(
         val tagListOfProto =
             service.getAll(page = request.page, size = request.size)
                 .map { tag -> tagConverter.tagToProto(tag) }
-                .toList()
+                .collectList().block()
 
         return GetAllTagResponse.newBuilder()
             .addAllTagList(tagListOfProto)

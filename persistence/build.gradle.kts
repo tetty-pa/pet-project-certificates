@@ -22,17 +22,18 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.1.3")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("io.nats:jnats:2.16.14")
+    implementation("cglib:cglib:3.3.0")
 
-    compileOnly("org.springframework.boot:spring-boot-starter-hateoas")
-
-    testCompileOnly("org.springframework.boot:spring-boot-starter-hateoas")
+    testImplementation("io.projectreactor:reactor-test:3.5.10")
+    testImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 }

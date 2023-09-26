@@ -1,6 +1,8 @@
 package com.epam.esm.service
 
 import com.epam.esm.model.entity.User
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 interface UserService {
     /**
@@ -8,23 +10,23 @@ interface UserService {
      *
      * @param page page number for pagination
      * @param size   page size for pagination
-     * @return List of Users
+     * @return List of Users Flux<User>
      */
-    fun getAll(page: Int, size: Int): List<User>
+    fun getAll(page: Int, size: Int): Flux<User>
 
     /**
      * Gets User by id.
      *
      * @param id User id to get
-     * @return User
+     * @return Mono<User>
      */
-    fun getById(id: String): User
+    fun getById(id: String): Mono<User>
 
     /**
      * Creates new User.
      *
      * @param user User to create
-     * @return User
+     * @return Mono<User>
      */
-    fun create(user: User): User
+    fun create(user: User): Mono<User>
 }
