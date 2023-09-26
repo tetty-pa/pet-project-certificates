@@ -64,7 +64,7 @@ class GiftCertificatesNatsControllerTest {
     fun getAllGiftCertificatesTest() {
         val protoList =
             giftCertificateRepository.findAll(PAGE)
-                .map { giftCertificate -> giftCertificateConverter.entityToProto(giftCertificate) }
+                .map { giftCertificate -> giftCertificateConverter.entityToProto(giftCertificate) }.collectList().block()
         val expected = GetAllGiftCertificateResponse.newBuilder()
             .addAllGiftCertificates(protoList.collectList().block())
             .build()
@@ -136,6 +136,7 @@ class GiftCertificatesNatsControllerTest {
 
         val giftCertificatesSizeAfter = giftCertificateRepository.findAll(Pageable.unpaged()).collectList().block()
         assertThat(giftCertificatesSizeBefore).isEqualTo(giftCertificatesSizeAfter)
+
     }
 
     @Test

@@ -38,6 +38,7 @@ class TagsController(private val tagService: TagService) {
                     ex.bindingResult.fieldErrors.joinToString(", ") { it.defaultMessage.toString() }
                 InvalidDataException(errorMessage)
             }
+
     }
 
     @GetMapping("/{id}")

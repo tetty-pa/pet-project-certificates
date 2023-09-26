@@ -44,5 +44,6 @@ class UserServiceImpl(
         val encodedPassword: String = passwordEncoder.encode(password)
         return if (passwordEncoder.matches(password, encodedPassword)) user
         else throw EntityNotFoundException("User with such userName and password is not found!!!")
+
     }
 }
