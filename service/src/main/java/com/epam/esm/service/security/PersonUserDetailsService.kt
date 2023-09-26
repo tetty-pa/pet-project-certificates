@@ -11,8 +11,7 @@ import reactor.core.publisher.Mono
 class PersonUserDetailsService(private val userRepository: UserRepository) : ReactiveUserDetailsService {
 
     override fun findByUsername(username: String): Mono<UserDetails> {
-        val user = userRepository.findByName(username)
-        return user
+        return userRepository.findByName(username)
             .switchIfEmpty(Mono.error(UsernameNotFoundException("user $username not found")))
             .map { PersonUserDetails(it) }
     }

@@ -9,8 +9,11 @@ class NatsConfigurationBeanPostProcessor : BeanPostProcessor {
     override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any {
         if (bean is NatsController<*, *>) {
             val dispatcher = bean.connection.createDispatcher { message ->
-                val response = bean.handle(message)
-                bean.connection.publish(message.replyTo, response.block()!!.toByteArray())
+                bean.handle(message)
+                    .doOnNext {
+                        bean.connection.publish(message.replyTo, it.toByteArray())
+                    }
+                    .subscribe()
             }
             dispatcher.subscribe(bean.subject)
         }

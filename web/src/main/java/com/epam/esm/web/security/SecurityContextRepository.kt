@@ -24,4 +24,3 @@ class SecurityContextRepository(
             .map { SecurityContextImpl(it) }
     }
 }
-

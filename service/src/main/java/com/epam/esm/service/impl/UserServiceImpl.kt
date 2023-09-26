@@ -40,9 +40,11 @@ class UserServiceImpl(
     }
 
     override fun login(userName: String, password: String): Mono<User> {
-        val user: Mono<User> = userRepository.findByName(userName)
-        val encodedPassword: String = passwordEncoder.encode(password)
-        return if (passwordEncoder.matches(password, encodedPassword)) user
-        else throw EntityNotFoundException("User with such userName and password is not found!!!")
+        return Mono.fromCallable { passwordEncoder.encode(password) }
+            .flatMap { encodedPassword ->
+                userRepository.findByName(userName)
+                    .filter { passwordEncoder.matches(password, encodedPassword) }
+                    .switchIfEmpty(Mono.error(EntityNotFoundException("User with such userName and password is not found!")))
+            }
     }
 }
