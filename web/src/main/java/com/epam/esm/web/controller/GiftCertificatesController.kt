@@ -3,6 +3,7 @@ package com.epam.esm.web.controller
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.service.GiftCertificateService
+import com.mongodb.client.result.DeleteResult
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.support.WebExchangeBindException
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/gift-certificates")
@@ -27,42 +31,39 @@ class GiftCertificatesController(
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): List<GiftCertificate> =
-        giftCertificateService.getAll(page, size).collectList().block()!!
+    ): Flux<GiftCertificate> =
+        giftCertificateService.getAll(page, size)
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getById(@PathVariable id: String): GiftCertificate =
-        giftCertificateService.getById(id).block()!!
-
+    fun getById(@PathVariable id: String): Mono<GiftCertificate> =
+        giftCertificateService.getById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(
-        @Valid @RequestBody giftCertificate: GiftCertificate,
-        bindingResult: BindingResult?
-    ): GiftCertificate {
-        if (bindingResult?.hasErrors() == true) {
-            throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
-        }
-        return giftCertificateService.create(giftCertificate).block()!!
+    fun create(@Valid @RequestBody giftCertificate: GiftCertificate): Mono<GiftCertificate> {
+        return giftCertificateService.create(giftCertificate)
+            .onErrorMap(WebExchangeBindException::class.java) { ex ->
+                val errorMessage =
+                    ex.bindingResult.fieldErrors.joinToString(", ") { it.defaultMessage.toString() }
+                InvalidDataException(errorMessage)
+            }
     }
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: String) {
+    fun deleteById(@PathVariable("id") id: String): Mono<DeleteResult> =
         giftCertificateService.deleteById(id)
-    }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     fun update(
         @Valid @RequestBody giftCertificate: GiftCertificate,
         bindingResult: BindingResult
-    ): GiftCertificate {
+    ): Mono<GiftCertificate> {
         if (bindingResult.hasErrors()) {
             throw InvalidDataException(bindingResult.fieldError?.defaultMessage ?: "")
         }
-        return giftCertificateService.update(giftCertificate).block()!!
+        return giftCertificateService.update(giftCertificate)
     }
 }

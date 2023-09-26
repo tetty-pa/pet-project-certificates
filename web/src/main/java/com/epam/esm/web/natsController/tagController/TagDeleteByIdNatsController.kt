@@ -8,6 +8,7 @@ import com.epam.esm.web.natsController.NatsController
 import com.google.protobuf.Parser
 import io.nats.client.Connection
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 
 @Component
 class TagDeleteByIdNatsController(
@@ -19,10 +20,14 @@ class TagDeleteByIdNatsController(
 
     override val parser: Parser<DeleteByIdTagRequest> = DeleteByIdTagRequest.parser()
 
-    override fun generateReplyForNatsRequest(request: DeleteByIdTagRequest): DeleteByIdTagResponse {
-        service.deleteById(request.tagId)
-        return DeleteByIdTagResponse
-            .newBuilder()
-            .build()
+    override fun generateReplyForNatsRequest(
+        request: DeleteByIdTagRequest
+    ): Mono<DeleteByIdTagResponse> {
+
+        return service.deleteById(request.tagId).map {
+            DeleteByIdTagResponse
+                .newBuilder()
+                .build()
+        }
     }
 }
