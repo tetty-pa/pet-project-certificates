@@ -1,0 +1,14 @@
+syntax = "proto3";
+package com.epam.esm.grpcService;
+
+import "com/epam/esm/tag.proto";
+
+service TagService {
+  rpc getAll (GetAllTagRequest) returns (GetAllTagResponse) {}
+
+  rpc getById (GetByIdTagRequest) returns (GetByIdTagResponse) {}
+
+  rpc create (CreateTagRequest) returns (CreateTagResponse) {}
+
+  rpc deleteById (DeleteByIdTagRequest) returns (DeleteByIdTagResponse) {}
+}
