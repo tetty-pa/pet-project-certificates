@@ -3,6 +3,7 @@ package com.epam.esm.web.config
 import com.epam.esm.web.natsController.NatsController
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.stereotype.Component
+import reactor.core.scheduler.Schedulers
 
 @Component
 class NatsConfigurationBeanPostProcessor : BeanPostProcessor {
@@ -13,7 +14,8 @@ class NatsConfigurationBeanPostProcessor : BeanPostProcessor {
                     .doOnNext {
                         bean.connection.publish(message.replyTo, it.toByteArray())
                     }
-                    .subscribe()
+                    .subscribeOn(Schedulers.boundedElastic())
+                .subscribe()
             }
             dispatcher.subscribe(bean.subject)
         }
