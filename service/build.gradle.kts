@@ -22,7 +22,7 @@ dependencies {
     api("io.jsonwebtoken:jjwt:0.9.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.1.3")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("javax.xml.bind:jaxb-api:2.3.1")

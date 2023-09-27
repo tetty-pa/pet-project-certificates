@@ -9,6 +9,7 @@ import com.epam.esm.web.natsController.NatsController
 import com.google.protobuf.Parser
 import io.nats.client.Connection
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 
 @Component
 class GiftCertificateGetByIdNatsController(
@@ -24,15 +25,14 @@ class GiftCertificateGetByIdNatsController(
 
     override fun generateReplyForNatsRequest(
         request: GetByIdGiftCertificateRequest
-    ): GetByIdGiftCertificateResponse {
-        val giftCertificateById = service.getById(request.giftCertificateId)
-        val protoTag =
-            giftCertificateConverter
-                .entityToProto(giftCertificateById.block()!!)
+    ): Mono<GetByIdGiftCertificateResponse> {
 
-        return GetByIdGiftCertificateResponse
-            .newBuilder()
-            .setGiftCertificate(protoTag)
-            .build()
+        return service.getById(request.giftCertificateId)
+            .map {
+                GetByIdGiftCertificateResponse
+                    .newBuilder()
+                    .setGiftCertificate(giftCertificateConverter.entityToProto((it)))
+                    .build()
+            }
     }
 }

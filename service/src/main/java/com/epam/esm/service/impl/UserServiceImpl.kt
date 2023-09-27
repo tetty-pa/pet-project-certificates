@@ -38,4 +38,13 @@ class UserServiceImpl(
                 DuplicateEntityException("Duplicate user error")
             }
     }
+
+    override fun login(userName: String, password: String): Mono<User> {
+        return Mono.fromCallable { passwordEncoder.encode(password) }
+            .flatMap { encodedPassword ->
+                userRepository.findByName(userName)
+                    .filter { passwordEncoder.matches(password, encodedPassword) }
+                    .switchIfEmpty(Mono.error(EntityNotFoundException("User with such userName and password is not found!")))
+            }
+    }
 }

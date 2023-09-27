@@ -1,10 +1,10 @@
 package com.epam.esm.web.natsController
 
-import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
-import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.DeleteByIdGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
@@ -54,8 +54,10 @@ class GiftCertificatesNatsControllerTest {
 
         assertThat(expected.giftCertificate.name).isEqualTo(actual.giftCertificate.name)
 
-        val findByName = giftCertificateRepository.findByName(actual.giftCertificate.name).block()!!
-        findByName?.let { giftCertificateRepository.deleteById(it.id) }
+        val findByName = giftCertificateRepository.findByName(actual.giftCertificate.name).block()
+        if (findByName != null) {
+            giftCertificateRepository.deleteById(findByName.id).block()
+        }
     }
 
     @Test
@@ -84,7 +86,7 @@ class GiftCertificatesNatsControllerTest {
     fun getByIdGiftCertificateTest() {
         val addedGiftCertificate = giftCertificateRepository.save(TEST_GIFT_CERTIFICATE).block()!!
         val dbGiftCertificate = giftCertificateRepository
-            .findById(addedGiftCertificate.id).block()!! ?: TEST_GIFT_CERTIFICATE
+            .findById(addedGiftCertificate.id).block()!!
 
         val protoGiftCertificate =
             giftCertificateConverter
@@ -108,7 +110,7 @@ class GiftCertificatesNatsControllerTest {
         val actual =
             GetByIdGiftCertificateResponse
                 .parseFrom(future.get().data)
-        giftCertificateRepository.deleteById(addedGiftCertificate.id)
+        giftCertificateRepository.deleteById(addedGiftCertificate.id).block()
         assertThat(expected).isEqualTo(actual)
     }
 
@@ -133,7 +135,7 @@ class GiftCertificatesNatsControllerTest {
         future.get().data
 
         val giftCertificatesSizeAfter = giftCertificateRepository.findAll(Pageable.unpaged()).collectList().block()
-        //assertThat(giftCertificatesSizeBefore).isEqualTo(giftCertificatesSizeAfter)
+        assertThat(giftCertificatesSizeBefore).isEqualTo(giftCertificatesSizeAfter)
     }
 
     @Test
@@ -170,7 +172,7 @@ class GiftCertificatesNatsControllerTest {
         assertThat(expected.giftCertificate.name).isEqualTo(actual.giftCertificate.name)
 
         val findByName = giftCertificateRepository.findByName(actual.giftCertificate.name).block()!!
-        findByName?.let { giftCertificateRepository.deleteById(it.id) }
+        findByName.let { giftCertificateRepository.deleteById(it.id) }
     }
 
 

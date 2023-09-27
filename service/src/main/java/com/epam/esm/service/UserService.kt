@@ -29,4 +29,12 @@ interface UserService {
      * @return Mono<User>
      */
     fun create(user: User): Mono<User>
+
+    /**
+     * Gets User by name and password.
+     *
+     * @param userName User name and password to get
+     * @return Mono<User>
+     */
+    fun login(userName: String, password: String): Mono<User>
 }

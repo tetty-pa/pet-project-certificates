@@ -1,15 +1,18 @@
 package com.epam.esm.service.security
 
 import com.epam.esm.repository.UserRepository
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
-class PersonUserDetailsService(private val userRepository: UserRepository) : UserDetailsService {
-    override fun loadUserByUsername(userName: String): UserDetails {
-        val user = userRepository.findByName(userName).block()
-        return PersonUserDetails(user ?: throw UsernameNotFoundException("user not found") )
+class PersonUserDetailsService(private val userRepository: UserRepository) : ReactiveUserDetailsService {
+
+    override fun findByUsername(username: String): Mono<UserDetails> {
+        return userRepository.findByName(username)
+            .switchIfEmpty(Mono.error(UsernameNotFoundException("user $username not found")))
+            .map { PersonUserDetails(it) }
     }
 }

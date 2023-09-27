@@ -29,10 +29,10 @@ class RestResponseEntityExceptionHandler(private val messageSource: MessageConfi
     @ExceptionHandler(EntityNotFoundException::class)
     fun handleEntityNotFoundException(
         e: EntityNotFoundException,
-        locale: Locale
+        locale: Locale?
     ): ResponseEntity<ExceptionResponse> =
         buildErrorResponse(
-            resolveResourceBundle(e.message, locale),
+            locale?.let { resolveResourceBundle(e.message, it) },
             CODE_ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND
         )
 

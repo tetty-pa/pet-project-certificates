@@ -17,11 +17,11 @@ interface OrderService {
     /**
      * Creates an Order.
      *
-     * @param userId user`s ID
-     * @param certificateId certificate`s ID
+     * @param user user`s ID
+     * @param certificate certificate`s ID
      * @ return created Mono<Order>
      */
-    fun create(userId: String, certificateId: String): Mono<Order>
+    fun create(user: String, certificate: String): Mono<Order>
 
     /**
      * Gets  from database by  ID.

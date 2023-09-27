@@ -9,6 +9,7 @@ import com.epam.esm.web.natsController.NatsController
 import com.google.protobuf.Parser
 import io.nats.client.Connection
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 
 @Component
 class TagGetByIdNatsController(
@@ -22,13 +23,13 @@ class TagGetByIdNatsController(
     override val parser: Parser<GetByIdTagRequest> =
         GetByIdTagRequest.parser()
 
-    override fun generateReplyForNatsRequest(request: GetByIdTagRequest): GetByIdTagResponse {
-        val tagById = service.getById(request.tagId)
-        val protoTag = tagConverter.tagToProto(tagById.block()!!)
+    override fun generateReplyForNatsRequest(request: GetByIdTagRequest): Mono<GetByIdTagResponse> {
 
-        return GetByIdTagResponse
-            .newBuilder()
-            .setTag(protoTag)
-            .build()
+        return service.getById(request.tagId).map {
+            GetByIdTagResponse
+                .newBuilder()
+                .setTag(tagConverter.tagToProto(it))
+                .build()
+        }
     }
 }

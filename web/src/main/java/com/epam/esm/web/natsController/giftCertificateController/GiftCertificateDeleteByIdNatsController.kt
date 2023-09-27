@@ -8,6 +8,7 @@ import com.epam.esm.web.natsController.NatsController
 import com.google.protobuf.Parser
 import io.nats.client.Connection
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 
 @Component
 class GiftCertificateDeleteByIdNatsController(
@@ -22,10 +23,13 @@ class GiftCertificateDeleteByIdNatsController(
 
     override fun generateReplyForNatsRequest(
         request: DeleteByIdGiftCertificateRequest
-    ): DeleteByIdGiftCertificateResponse {
-        service.deleteById(request.giftCertificateId)
-        return DeleteByIdGiftCertificateResponse
-            .newBuilder()
-            .build()
+    ): Mono<DeleteByIdGiftCertificateResponse> {
+
+        return service.deleteById(request.giftCertificateId)
+            .map {
+                DeleteByIdGiftCertificateResponse
+                    .newBuilder()
+                    .build()
+            }
     }
 }

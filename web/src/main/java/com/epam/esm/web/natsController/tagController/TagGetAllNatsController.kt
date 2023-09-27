@@ -9,6 +9,7 @@ import com.epam.esm.web.natsController.NatsController
 import com.google.protobuf.Parser
 import io.nats.client.Connection
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 
 @Component
 class TagGetAllNatsController(
@@ -21,14 +22,17 @@ class TagGetAllNatsController(
 
     override val parser: Parser<GetAllTagRequest> = GetAllTagRequest.parser()
 
-    override fun generateReplyForNatsRequest(request: GetAllTagRequest): GetAllTagResponse {
+    override fun generateReplyForNatsRequest(request: GetAllTagRequest): Mono<GetAllTagResponse> {
         val tagListOfProto =
             service.getAll(page = request.page, size = request.size)
-                .map { tag -> tagConverter.tagToProto(tag) }
-                .collectList().block()
+                .map {tagConverter.tagToProto(it) }
+                .collectList()
 
-        return GetAllTagResponse.newBuilder()
-            .addAllTagList(tagListOfProto)
-            .build()
+        return tagListOfProto
+            .map {
+                GetAllTagResponse.newBuilder()
+                    .addAllTagList(it)
+                    .build()
+            }
     }
 }
