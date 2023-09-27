@@ -15,7 +15,7 @@ class NatsConfigurationBeanPostProcessor : BeanPostProcessor {
                         bean.connection.publish(message.replyTo, it.toByteArray())
                     }
                     .subscribeOn(Schedulers.boundedElastic())
-                .subscribe()
+                    .subscribe()
             }
             dispatcher.subscribe(bean.subject)
         }
