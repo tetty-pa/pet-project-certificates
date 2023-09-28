@@ -30,6 +30,7 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("io.nats:jnats:2.16.14")
     implementation("cglib:cglib:3.3.0")
+    implementation ("io.grpc:grpc-stub:1.40.1")
 
     testImplementation("io.projectreactor:reactor-test:3.5.10")
     testImplementation("com.willowtreeapps.assertk:assertk:0.27.0")

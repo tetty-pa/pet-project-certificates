@@ -23,6 +23,10 @@ dependencies {
     implementation("io.nats:jnats:2.16.14")
     implementation("com.google.protobuf:protobuf-java:3.24.2")
     implementation("com.google.protobuf:protobuf-java-util:3.20.1")
+    implementation ("io.grpc:grpc-protobuf:1.40.1")
+    implementation ("io.grpc:grpc-stub:1.40.1")
+    implementation("io.grpc:grpc-netty:1.40.1")
+    implementation("javax.annotation:javax.annotation-api:1.2")
 }
 
 tasks.withType<KotlinCompile> {
@@ -48,5 +52,30 @@ kotlin {
 tasks {
     bootJar {
         enabled = false
+    }
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.20.1"
+    }
+
+    plugins {
+        create("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.46.0"
+        }
+    }
+
+    generateProtoTasks {
+        all().configureEach {
+            generateDescriptorSet = true
+            descriptorSetOptions.includeImports = true
+        }
+        all().forEach {
+            it.plugins {
+                create("grpc")
+            }
+        }
     }
 }

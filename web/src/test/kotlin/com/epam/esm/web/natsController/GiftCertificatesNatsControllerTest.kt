@@ -116,13 +116,8 @@ class GiftCertificatesNatsControllerTest {
 
     @Test
     fun deleteByIdGiftCertificateTest() {
-        val giftCertificate = GiftCertificate(
-            "1", "1", BigDecimal(1),
-            LocalDateTime.now(),
-            LocalDateTime.now(), 1, mutableListOf()
-        )
         val giftCertificatesSizeBefore = giftCertificateRepository.findAll(Pageable.unpaged()).collectList().block()
-        val addedGiftCertificate = giftCertificateRepository.save(giftCertificate).block()!!
+        val addedGiftCertificate = giftCertificateRepository.save(TEST_GIFT_CERTIFICATE).block()!!
 
         val request =
             DeleteByIdGiftCertificateRequest.newBuilder()
@@ -174,7 +169,6 @@ class GiftCertificatesNatsControllerTest {
         val findByName = giftCertificateRepository.findByName(actual.giftCertificate.name).block()!!
         findByName.let { giftCertificateRepository.deleteById(it.id) }
     }
-
 
     companion object {
         val TEST_GIFT_CERTIFICATE = GiftCertificate(

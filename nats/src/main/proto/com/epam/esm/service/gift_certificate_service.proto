@@ -1,0 +1,16 @@
+syntax = "proto3";
+package com.epam.esm.grpcService;
+
+import "com/epam/esm/gift_certificate.proto";
+
+service GiftCertificateService {
+  rpc getAll (GetAllGiftCertificateRequest) returns (GetAllGiftCertificateResponse) {}
+
+  rpc getById (GetByIdGiftCertificateRequest) returns (GetByIdGiftCertificateResponse) {}
+
+  rpc create (CreateGiftCertificateRequest) returns (CreateGiftCertificateResponse) {}
+
+  rpc update (UpdateGiftCertificateRequest) returns (UpdateGiftCertificateResponse) {}
+
+  rpc deleteById (DeleteByIdGiftCertificateRequest) returns (DeleteByIdGiftCertificateResponse) {}
+}
