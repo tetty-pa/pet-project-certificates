@@ -13,6 +13,7 @@ import com.epam.esm.model.entity.Tag
 import com.epam.esm.service.TagService
 import com.epam.esm.web.converter.TagConverter
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
@@ -31,28 +32,22 @@ class ReactorTagGrpcServiceImpl(
     }
 
     override fun getById(request: Mono<GetByIdTagRequest>): Mono<GetByIdTagResponse> {
-        return request.flatMap {
-            service.getById(it.tagId)
-                .map { tag -> converter.tagToProto(tag) }
-        }.map {
-            GetByIdTagResponse.newBuilder().setTag(it).build()
-        }
+        return request
+            .flatMap { service.getById(it.tagId) }
+            .map { converter.tagToProto(it) }
+            .map { GetByIdTagResponse.newBuilder().setTag(it).build() }
     }
 
     override fun create(request: Mono<CreateTagRequest>): Mono<CreateTagResponse> {
-        return request.flatMap {
-            service.create(Tag(it.tag.name))
-                .map { certificate -> converter.tagToProto(certificate) }
-        }.map {
-            CreateTagResponse.newBuilder().setTag(it).build()
-        }
+        return request
+            .flatMap { service.create(Tag(it.tag.name)) }
+            .map { converter.tagToProto(it) }
+            .map { CreateTagResponse.newBuilder().setTag(it).build() }
     }
 
     override fun deleteById(request: Mono<DeleteByIdTagRequest>): Mono<DeleteByIdTagResponse> {
-        return request.flatMap {
-            service.deleteById(it.tagId)
-        }.map {
-            DeleteByIdTagResponse.newBuilder().build()
-        }
+        return request
+            .flatMap { service.deleteById(it.tagId) }
+            .map { DeleteByIdTagResponse.getDefaultInstance() }
     }
 }

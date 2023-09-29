@@ -1,6 +1,8 @@
 package com.epam.esm.config
 
 import io.grpc.BindableService
+import io.grpc.ManagedChannel
+import io.grpc.ManagedChannelBuilder
 import io.grpc.Server
 import io.grpc.ServerBuilder
 import io.nats.client.Connection
@@ -12,17 +14,18 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EntityScan(basePackages = ["com.epam.esm"])
-class AppConfig {
+class AppConfig(
+    @Value("\${grpc.server.port}")
+    private val grpcPort: Int,
+) {
     @Bean
     fun natsConnection(
         @Value("\${nats.connection.url}")
         natsUrl: String
     ): Connection = Nats.connect(natsUrl)
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     fun grpcServer(
-        @Value("\${grpc.server.port}")
-        grpcPort: Int,
         grpcServices: List<BindableService>
     ): Server =
         ServerBuilder
@@ -32,4 +35,11 @@ class AppConfig {
             }
             .build()
             .start()
+
+    @Bean(destroyMethod = "shutdown")
+    fun grpcChannel(): ManagedChannel =
+        ManagedChannelBuilder
+            .forTarget("localhost:$grpcPort")
+            .usePlaintext()
+            .build()
 }

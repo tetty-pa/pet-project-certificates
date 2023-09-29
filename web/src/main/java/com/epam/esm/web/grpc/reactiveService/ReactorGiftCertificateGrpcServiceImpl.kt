@@ -33,37 +33,29 @@ class ReactorGiftCertificateGrpcServiceImpl(
     }
 
     override fun getById(request: Mono<GetByIdGiftCertificateRequest>): Mono<GetByIdGiftCertificateResponse> {
-        return request.flatMap {
-            service.getById(it.giftCertificateId)
-                .map { certificate -> converter.entityToProto(certificate) }
-        }.map {
-            GetByIdGiftCertificateResponse.newBuilder().setGiftCertificate(it).build()
-        }
+        return request
+            .flatMap { service.getById(it.giftCertificateId) }
+            .map { converter.entityToProto(it) }
+            .map { GetByIdGiftCertificateResponse.newBuilder().setGiftCertificate(it).build() }
     }
 
     override fun create(request: Mono<CreateGiftCertificateRequest>): Mono<CreateGiftCertificateResponse> {
-        return request.flatMap {
-            service.create(converter.protoToEntity(it.giftCertificate))
-                .map { certificate -> converter.entityToProto(certificate) }
-        }.map {
-            CreateGiftCertificateResponse.newBuilder().setGiftCertificate(it).build()
-        }
+        return request
+            .flatMap { service.create(converter.protoToEntity(it.giftCertificate)) }
+            .map { converter.entityToProto(it) }
+            .map { CreateGiftCertificateResponse.newBuilder().setGiftCertificate(it).build() }
     }
 
     override fun update(request: Mono<UpdateGiftCertificateRequest>): Mono<UpdateGiftCertificateResponse> {
-        return request.flatMap {
-            service.update(converter.protoToEntity(it.giftCertificate))
-                .map { certificate -> converter.entityToProto(certificate) }
-        }.map {
-            UpdateGiftCertificateResponse.newBuilder().setGiftCertificate(it).build()
-        }
+        return request
+            .flatMap { service.update(converter.protoToEntity(it.giftCertificate)) }
+            .map { converter.entityToProto(it) }
+            .map { UpdateGiftCertificateResponse.newBuilder().setGiftCertificate(it).build() }
     }
 
     override fun deleteById(request: Mono<DeleteByIdGiftCertificateRequest>): Mono<DeleteByIdGiftCertificateResponse> {
-        return request.flatMap {
-            service.deleteById(it.giftCertificateId)
-        }.map {
-            DeleteByIdGiftCertificateResponse.newBuilder().build()
-        }
+        return request
+            .flatMap { service.deleteById(it.giftCertificateId) }
+            .map { DeleteByIdGiftCertificateResponse.getDefaultInstance() }
     }
 }

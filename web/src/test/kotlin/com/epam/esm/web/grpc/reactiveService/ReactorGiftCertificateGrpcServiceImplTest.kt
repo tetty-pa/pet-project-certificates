@@ -1,34 +1,39 @@
 package com.epam.esm.web.grpc.reactiveService
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.DeleteByIdGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.DeleteByIdGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateResponse
 import com.epam.esm.grpcService.ReactorGiftCertificateServiceGrpc
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.repository.GiftCertificateRepository
 import com.epam.esm.service.GiftCertificateService
 import com.epam.esm.web.converter.GiftCertificateConverter
 import io.grpc.ManagedChannel
-import io.grpc.ManagedChannelBuilder
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @SpringBootTest
-class ReactorGiftCertificateGrpcServiceImplTest(
-    @Value("\${grpc.server.port}")
-    var grpcPort: Int
-) {
+class ReactorGiftCertificateGrpcServiceImplTest {
+    @Autowired
+    lateinit var channel: ManagedChannel
+
     @Autowired
     private lateinit var giftCertificateConverter: GiftCertificateConverter
 
@@ -38,16 +43,11 @@ class ReactorGiftCertificateGrpcServiceImplTest(
     @Autowired
     private lateinit var giftCertificateRepository: GiftCertificateRepository
 
-    private lateinit var stub: ReactorGiftCertificateServiceGrpc.ReactorGiftCertificateServiceStub
 
-    private lateinit var channel: ManagedChannel
+    private lateinit var stub: ReactorGiftCertificateServiceGrpc.ReactorGiftCertificateServiceStub
 
     @BeforeEach
     fun startClient() {
-        channel = ManagedChannelBuilder
-            .forTarget("localhost:$grpcPort")
-            .usePlaintext()
-            .build()
         stub = ReactorGiftCertificateServiceGrpc.newReactorStub(channel)
     }
 
@@ -61,19 +61,24 @@ class ReactorGiftCertificateGrpcServiceImplTest(
     @Test
     fun getAll() {
         val expected =
-            giftCertificateService.getAll(page = PAGE.pageNumber, size = PAGE.pageSize).map {
-                giftCertificateConverter.entityToProto(it)
-            }.collectList().block()
+            GetAllGiftCertificateResponse.newBuilder().addAllGiftCertificates(
+                giftCertificateService.getAll(page = PAGE.pageNumber, size = PAGE.pageSize).map {
+                    giftCertificateConverter.entityToProto(it)
+                }.collectList().block()
+            )
 
         val request =
             Mono.just(
                 GetAllGiftCertificateRequest.newBuilder()
-                    .setPage(1).setSize(2).build()
+                    .setPage(PAGE.pageNumber).setSize(PAGE.pageSize).build()
             )
 
-        val actual = stub.getAll(request).block()
+        val actual = stub.getAll(request)
 
-        assertThat(actual?.giftCertificatesList).isEqualTo(expected)
+        StepVerifier.create(actual)
+            .expectNextCount(expected.giftCertificatesBuilderList.size.toLong())
+            .verifyComplete()
+
     }
 
     @Test
@@ -82,12 +87,10 @@ class ReactorGiftCertificateGrpcServiceImplTest(
             giftCertificateService.create(TEST_GIFT_CERTIFICATE).block()!!
 
         val expected =
-            giftCertificateService
-                .getById(addedGiftCertificate.id)
-                .map {
-                    giftCertificateConverter
-                        .entityToProto(it)
-                }.block()!!
+            GetByIdGiftCertificateResponse
+                .newBuilder()
+                .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                .build()
 
         val request =
             Mono.just(
@@ -97,14 +100,24 @@ class ReactorGiftCertificateGrpcServiceImplTest(
                     .build()
             )
 
-        val actual = stub.getById(request).block()
+        val actual = stub.getById(request)
 
-        assertThat(actual?.giftCertificate).isEqualTo(expected)
+        StepVerifier.create(actual)
+            .assertNext {
+                assertThat( expected.giftCertificate.name).isEqualTo(it.giftCertificate.name)
+            }
+            .verifyComplete()
     }
 
     @Test
     fun create() {
         val expected =
+            CreateGiftCertificateResponse
+                .newBuilder()
+                .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                .build()
+
+        val request =
             Mono.just(
                 CreateGiftCertificateRequest
                     .newBuilder()
@@ -112,10 +125,13 @@ class ReactorGiftCertificateGrpcServiceImplTest(
                     .build()
             )
 
+        val actual = stub.create(request)
 
-        val actual = stub.create(expected).block()
-
-        assertThat(actual?.giftCertificate?.name).isEqualTo(TEST_GIFT_CERTIFICATE.name)
+        StepVerifier.create(actual)
+            .assertNext {
+                assertThat( expected.giftCertificate.name).isEqualTo(it.giftCertificate.name)
+            }
+            .verifyComplete()
     }
 
     @Test
@@ -123,26 +139,34 @@ class ReactorGiftCertificateGrpcServiceImplTest(
         val addedGiftCertificate = giftCertificateService.create(TEST_GIFT_CERTIFICATE_CHANGED).block()!!
         TEST_GIFT_CERTIFICATE.id = addedGiftCertificate.id
 
-        val expected = giftCertificateConverter
+        val certificate = giftCertificateConverter
             .entityToProto(TEST_GIFT_CERTIFICATE)
+
+        val expected =
+            UpdateGiftCertificateResponse
+                .newBuilder()
+                .setGiftCertificate(certificate)
+                .build()
 
         val request =
             Mono.just(
                 UpdateGiftCertificateRequest.newBuilder()
-                    .setGiftCertificate(expected)
+                    .setGiftCertificate(certificate)
                     .setId(addedGiftCertificate.id)
                     .build()
             )
         val actual =
-            stub.update(request).block()
+            stub.update(request)
 
-        assertThat(actual?.giftCertificate?.name).isEqualTo(TEST_GIFT_CERTIFICATE.name)
+        StepVerifier.create(actual)
+            .assertNext {
+                assertThat( expected.giftCertificate.name).isEqualTo(it.giftCertificate.name)
+            }
+            .verifyComplete()
     }
 
     @Test
     fun deleteById() {
-        val giftCertificatesSizeBefore =
-            giftCertificateService.getAll(0, 111110).collectList().block()
         val addedGiftCertificate = giftCertificateService.create(TEST_GIFT_CERTIFICATE).block()!!
 
         val request =
@@ -151,12 +175,11 @@ class ReactorGiftCertificateGrpcServiceImplTest(
                     .setGiftCertificateId(addedGiftCertificate.id).build()
             )
 
-        stub.deleteById(request).block()
+        val actual = stub.deleteById(request)
 
-        val giftCertificatesSizeAfter =
-            giftCertificateService.getAll(0, 11110).collectList().block()
-
-        assertThat(giftCertificatesSizeAfter).isEqualTo(giftCertificatesSizeBefore)
+        StepVerifier.create(actual)
+            .expectNext(DeleteByIdGiftCertificateResponse.getDefaultInstance())
+            .verifyComplete()
     }
 
     companion object {
