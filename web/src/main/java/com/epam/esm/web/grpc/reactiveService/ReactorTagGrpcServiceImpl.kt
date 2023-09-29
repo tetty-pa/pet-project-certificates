@@ -13,7 +13,6 @@ import com.epam.esm.model.entity.Tag
 import com.epam.esm.service.TagService
 import com.epam.esm.web.converter.TagConverter
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
@@ -22,13 +21,11 @@ class ReactorTagGrpcServiceImpl(
     private val converter: TagConverter
 ) : ReactorTagServiceGrpc.TagServiceImplBase() {
     override fun getAll(request: Mono<GetAllTagRequest>): Mono<GetAllTagResponse> {
-        return request.flatMap {
-            service.getAll(page = it.page, size = it.size)
-                .map { tag -> converter.tagToProto(tag) }
-                .collectList()
-        }.map {
-            GetAllTagResponse.newBuilder().addAllTagList(it).build()
-        }
+        return request
+            .flatMapMany { service.getAll(page = it.page, size = it.size) }
+            .map { tag -> converter.tagToProto(tag) }
+            .collectList()
+            .map { GetAllTagResponse.newBuilder().addAllTagList(it).build() }
     }
 
     override fun getById(request: Mono<GetByIdTagRequest>): Mono<GetByIdTagResponse> {

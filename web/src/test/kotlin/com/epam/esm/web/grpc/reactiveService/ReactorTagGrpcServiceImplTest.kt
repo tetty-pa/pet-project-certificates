@@ -74,7 +74,7 @@ class ReactorTagGrpcServiceImplTest {
         val actual = stub.getAll(request)
 
         StepVerifier.create(actual)
-            .expectNextCount(expected.tagListCount.toLong())
+            .expectNext(expected)
             .verifyComplete()
     }
 

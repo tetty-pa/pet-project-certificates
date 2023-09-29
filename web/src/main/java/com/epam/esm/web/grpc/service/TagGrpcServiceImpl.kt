@@ -72,7 +72,7 @@ class TagGrpcServiceImpl(
         service.deleteById(request.tagId).block()!!
 
         val build =
-            DeleteByIdTagResponse.newBuilder().build()
+            DeleteByIdTagResponse.getDefaultInstance()
         responseObserver.onNext(build)
         responseObserver.onCompleted()
     }

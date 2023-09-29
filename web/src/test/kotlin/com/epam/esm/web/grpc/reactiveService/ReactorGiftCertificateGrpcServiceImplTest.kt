@@ -65,7 +65,7 @@ class ReactorGiftCertificateGrpcServiceImplTest {
                 giftCertificateService.getAll(page = PAGE.pageNumber, size = PAGE.pageSize).map {
                     giftCertificateConverter.entityToProto(it)
                 }.collectList().block()
-            )
+            ).build()
 
         val request =
             Mono.just(
@@ -76,9 +76,8 @@ class ReactorGiftCertificateGrpcServiceImplTest {
         val actual = stub.getAll(request)
 
         StepVerifier.create(actual)
-            .expectNextCount(expected.giftCertificatesBuilderList.size.toLong())
+            .expectNext(expected)
             .verifyComplete()
-
     }
 
     @Test
