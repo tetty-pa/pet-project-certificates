@@ -8,11 +8,11 @@ import reactor.core.scheduler.Scheduler
 
 @Component
 class NatsConfigurationBeanPostProcessor(
-    private val scheduler: Scheduler
+    private val messageHandlerScheduler: Scheduler
 ) : BeanPostProcessor {
     override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any {
         if (bean is NatsController<*, *>) {
-            val reactiveHandler = ReactiveMessageHandler(bean, scheduler)
+            val reactiveHandler = ReactiveMessageHandler(bean, messageHandlerScheduler)
             bean.connection
                 .createDispatcher(reactiveHandler)
                 .subscribe(bean.subject)

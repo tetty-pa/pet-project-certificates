@@ -36,5 +36,5 @@ class AppConfig {
             .start()
 
     @Bean
-    fun scheduler(): Scheduler = Schedulers.boundedElastic()
+    fun messageHandlerScheduler(): Scheduler = Schedulers.boundedElastic()
 }
