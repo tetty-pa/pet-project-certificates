@@ -25,9 +25,7 @@ class TagDeleteByIdNatsController(
     ): Mono<DeleteByIdTagResponse> {
 
         return service.deleteById(request.tagId).map {
-            DeleteByIdTagResponse
-                .newBuilder()
-                .build()
+            DeleteByIdTagResponse.getDefaultInstance()
         }
     }
 }

@@ -27,9 +27,7 @@ class GiftCertificateDeleteByIdNatsController(
 
         return service.deleteById(request.giftCertificateId)
             .map {
-                DeleteByIdGiftCertificateResponse
-                    .newBuilder()
-                    .build()
+                DeleteByIdGiftCertificateResponse.getDefaultInstance()
             }
     }
 }

@@ -90,7 +90,7 @@ class GiftCertificateGrpcServiceImpl(
         service.deleteById(request.giftCertificateId).block()!!
 
         val build =
-            DeleteByIdGiftCertificateResponse.newBuilder().build()
+            DeleteByIdGiftCertificateResponse.getDefaultInstance()
         responseObserver.onNext(build)
         responseObserver.onCompleted()
     }

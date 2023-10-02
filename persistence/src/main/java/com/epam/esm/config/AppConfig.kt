@@ -12,17 +12,18 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EntityScan(basePackages = ["com.epam.esm"])
-class AppConfig {
+class AppConfig(
+    @Value("\${grpc.server.port}")
+    private val grpcPort: Int,
+) {
     @Bean
     fun natsConnection(
         @Value("\${nats.connection.url}")
         natsUrl: String
     ): Connection = Nats.connect(natsUrl)
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     fun grpcServer(
-        @Value("\${grpc.server.port}")
-        grpcPort: Int,
         grpcServices: List<BindableService>
     ): Server =
         ServerBuilder
