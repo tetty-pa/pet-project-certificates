@@ -1,8 +1,6 @@
 package com.epam.esm.config
 
 import io.grpc.BindableService
-import io.grpc.ManagedChannel
-import io.grpc.ManagedChannelBuilder
 import io.grpc.Server
 import io.grpc.ServerBuilder
 import io.nats.client.Connection
@@ -35,11 +33,4 @@ class AppConfig(
             }
             .build()
             .start()
-
-    @Bean(destroyMethod = "shutdown")
-    fun grpcChannel(): ManagedChannel =
-        ManagedChannelBuilder
-            .forTarget("localhost:$grpcPort")
-            .usePlaintext()
-            .build()
 }

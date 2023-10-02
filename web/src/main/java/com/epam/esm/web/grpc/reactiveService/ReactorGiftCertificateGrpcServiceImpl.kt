@@ -1,11 +1,11 @@
 package com.epam.esm.web.grpc.reactiveService
 
-import com.epam.esm.GiftCertificateOuterClass
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.DeleteByIdGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.DeleteByIdGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
+import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
@@ -22,12 +22,12 @@ class ReactorGiftCertificateGrpcServiceImpl(
     private val converter: GiftCertificateConverter
 ) : ReactorGiftCertificateServiceGrpc.GiftCertificateServiceImplBase() {
 
-    override fun getAll(request: Mono<GetAllGiftCertificateRequest>): Mono<GiftCertificateOuterClass.GetAllGiftCertificateResponse> {
+    override fun getAll(request: Mono<GetAllGiftCertificateRequest>): Mono<GetAllGiftCertificateResponse> {
         return request
             .flatMapMany { service.getAll(page = it.page, size = it.size) }
             .map { certificate -> converter.entityToProto(certificate) }
             .collectList()
-            .map { GiftCertificateOuterClass.GetAllGiftCertificateResponse.newBuilder().addAllGiftCertificates(it).build() }
+            .map { GetAllGiftCertificateResponse.newBuilder().addAllGiftCertificates(it).build() }
     }
 
     override fun getById(request: Mono<GetByIdGiftCertificateRequest>): Mono<GetByIdGiftCertificateResponse> {
