@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import reactor.core.scheduler.Scheduler
+import reactor.core.scheduler.Schedulers
 
 @Configuration
 @EntityScan(basePackages = ["com.epam.esm"])
@@ -33,4 +35,7 @@ class AppConfig(
             }
             .build()
             .start()
+
+    @Bean
+    fun messageHandlerScheduler(): Scheduler = Schedulers.boundedElastic()
 }
