@@ -32,7 +32,7 @@ class GiftCertificatesController(
     private val giftCertificateService: GiftCertificateService,
     private val reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, GeneratedMessageV3>,
     private val giftCertificateConverter: GiftCertificateConverter
-) {
+ {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
