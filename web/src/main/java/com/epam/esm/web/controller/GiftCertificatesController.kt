@@ -1,11 +1,17 @@
 package com.epam.esm.web.controller
 
+import com.epam.esm.GiftCertificateOuterClass.CreateGiftCertificateRequest
+import com.epam.esm.KafkaTopic
 import com.epam.esm.exception.InvalidDataException
 import com.epam.esm.model.entity.GiftCertificate
 import com.epam.esm.service.GiftCertificateService
+import com.epam.esm.web.converter.GiftCertificateConverter
+import com.epam.esm.web.kafka.GiftCertificateUpdatesSubscriber
+import com.google.protobuf.GeneratedMessageV3
 import com.mongodb.client.result.DeleteResult
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,15 +30,20 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/gift-certificates")
 class GiftCertificatesController(
-    private val giftCertificateService: GiftCertificateService
+    private val giftCertificateService: GiftCertificateService,
+    private val reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, GeneratedMessageV3>,
+    private val giftCertificateConverter: GiftCertificateConverter,
+    private val updatesSubscriber: GiftCertificateUpdatesSubscriber
 ) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
         @RequestParam(value = "size", defaultValue = "25", required = false) size: Int
-    ): Flux<GiftCertificate> =
-        giftCertificateService.getAll(page, size)
+    ): Flux<GiftCertificate> {
+        updatesSubscriber.subscribeUpdates()
+        return giftCertificateService.getAll(page, size)
+    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -47,6 +58,14 @@ class GiftCertificatesController(
                 val errorMessage =
                     ex.bindingResult.fieldErrors.joinToString(", ") { it.defaultMessage.toString() }
                 InvalidDataException(errorMessage)
+            }
+            .flatMap {
+                reactiveKafkaProducerTemplate.send(
+                    KafkaTopic.ADD_GIFT_CERTIFICATE_TOPIC,
+                    CreateGiftCertificateRequest.newBuilder()
+                        .setGiftCertificate(giftCertificateConverter.entityToProto(it))
+                        .build()
+                ) .thenReturn(it)
             }
     }
 

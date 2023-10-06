@@ -15,10 +15,45 @@ services:
       - "8222:8222"
       - "6222:6222"
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+
+  broker:
+    image: confluentinc/cp-kafka
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ADVERTISED_HOST_NAME: broker
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 1
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:9092
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_ENABLE: 'true'
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      GROUP_ID: 'ajax'
+
   sb-app:
     depends_on:
       - mongo
       - nats
+      - broker
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -27,7 +62,8 @@ services:
               "spring.data.mongodb.database":"certificates",
               "spring.data.mongodb.port":"27017",
               "spring.data.mongodb.host":"mongo",
-              "nats.connection.url":"nats://nats:4222"
+              "nats.connection.url":"nats://nats:4222",
+              "spring.kafka.bootstrap-servers":"broker:29092"
       }'
     container_name: "docker-app"
     ports:
