@@ -28,7 +28,7 @@ class GiftCertificateKafkaGrpcService(
             },
             streamGiftCertificateUpdates.flux
         )
-    }
+   }
 
     private fun getInitialCertificatesListMono(): Mono<InitialCertificatesList> {
         return service.getAll(0, 1000)
