@@ -18,7 +18,7 @@ class KafkaAddGiftCertificateEventListener(
             reactiveKafkaConsumerTemplate
                 .receiveAutoAck()
                 .map { it.value() }
-                .doOnNext { natsConnection.publish(NatsSubject.KAFKA_ADD_GIFT_CERTIFICATE_SUBJECT, it) }
+                .doOnNext { natsConnection.publish(NatsSubject.NATS_ADD_GIFT_CERTIFICATE_SUBJECT, it) }
                 .subscribe()
         }
     }

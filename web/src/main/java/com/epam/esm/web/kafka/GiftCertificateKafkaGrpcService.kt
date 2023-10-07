@@ -23,7 +23,7 @@ class GiftCertificateKafkaGrpcService(
         val dispatcher = natsConnection.createDispatcher { message ->
             responseSink.tryEmitNext(CreateGiftCertificateResponse.parseFrom(message.data))
         }
-        dispatcher.subscribe(NatsSubject.KAFKA_ADD_GIFT_CERTIFICATE_SUBJECT)
+        dispatcher.subscribe(NatsSubject.NATS_ADD_GIFT_CERTIFICATE_SUBJECT)
     }
 
     override fun createWithKafka(request: Flux<CreateGiftCertificateRequest>): Flux<CreateGiftCertificateResponse> {
