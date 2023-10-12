@@ -4,5 +4,5 @@ package com.epam.esm.grpcService;
 import "com/epam/esm/gift_certificate.proto";
 
 service GiftCertificateKafkaService {
-  rpc createWithKafka (stream CreateGiftCertificateRequest) returns (stream CreateGiftCertificateResponse) {}
+  rpc streamGiftCertificates(StreamAllGiftCertificatesRequest) returns (stream StreamAllGiftCertificatesResponse) {}
 }

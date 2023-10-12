@@ -1,31 +1,23 @@
 package com.epam.esm.web.kafka
 
-import com.epam.esm.GiftCertificateOuterClass
-import com.epam.esm.grpcService.ReactorGiftCertificateKafkaServiceGrpc
-import com.epam.esm.grpcService.ReactorGiftCertificateKafkaServiceGrpc.ReactorGiftCertificateKafkaServiceStub
-import io.grpc.ManagedChannel
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.epam.esm.GiftCertificateOuterClass.StreamAllGiftCertificatesResponse
+import com.epam.esm.NatsSubject
+import io.nats.client.Connection
+import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 
 @Component
-class GiftCertificateUpdatesSubscriber(private val grpcChannel: ManagedChannel) {
+class GiftCertificateUpdatesSubscriber(
+    private val natsConnection: Connection,
+    private val streamGiftCertificateUpdates: StreamGiftCertificateUpdates,
+) {
 
-    private lateinit var stub: ReactorGiftCertificateKafkaServiceStub
-
-    companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(GiftCertificateUpdatesSubscriber::class.java)
-    }
-
+    @PostConstruct
     fun subscribeUpdates() {
-        stub = ReactorGiftCertificateKafkaServiceGrpc.newReactorStub(grpcChannel)
-
-        stub.createWithKafka(Flux.from(Mono.just(GiftCertificateOuterClass.CreateGiftCertificateRequest.getDefaultInstance())))
-            .doOnNext { LOGGER.info("Update [{}]", it); }
-            .subscribe()
-
-        grpcChannel.shutdown()
+        natsConnection.createDispatcher { message ->
+            val parsedData =
+                StreamAllGiftCertificatesResponse.parseFrom(message.data)
+            streamGiftCertificateUpdates.update(parsedData)
+        }.subscribe(NatsSubject.NATS_ADD_GIFT_CERTIFICATE_SUBJECT)
     }
 }
