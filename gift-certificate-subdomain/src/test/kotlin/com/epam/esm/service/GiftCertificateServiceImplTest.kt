@@ -1,8 +1,13 @@
-package com.epam.esm.service.impl
+package com.epam.esm.service
 
+import com.epam.esm.GiftCertificateOuterClass
+import com.epam.esm.KafkaTopic
+import com.epam.esm.application.proto.converter.DateConverter
+import com.epam.esm.application.proto.converter.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateService
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
+import com.google.protobuf.GeneratedMessageV3
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -11,18 +16,28 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import java.math.BigDecimal
 import java.sql.Timestamp
+import java.time.ZoneOffset
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
 class GiftCertificateServiceImplTest {
 
+    private lateinit var dateConverter: DateConverter
+
     @Mock
     private lateinit var giftCertificateRepository: GiftCertificateRepository
+
+    @Mock
+    private lateinit var reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, GeneratedMessageV3>
+
+    @Mock
+    private lateinit var giftCertificateConverter: GiftCertificateConverter
 
     @InjectMocks
     private lateinit var giftCertificateService: GiftCertificateService
@@ -66,6 +81,17 @@ class GiftCertificateServiceImplTest {
         whenever(giftCertificateRepository.save(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(
             Mono.just(GIFT_CERTIFICATE_TO_CREATE)
         )
+        whenever(giftCertificateConverter.entityToProto(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(
+            GIFT_CERTIFICATE_TO_CREATE_PROTO
+        )
+        whenever(
+            reactiveKafkaProducerTemplate.send(
+                KafkaTopic.ADD_GIFT_CERTIFICATE_TOPIC,
+                GiftCertificateOuterClass.StreamAllGiftCertificatesResponse.newBuilder()
+                    .setNewGiftCertificate(giftCertificateConverter.entityToProto(GIFT_CERTIFICATE_TO_CREATE))
+                    .build()
+            )
+        ).thenReturn(Mono.empty())
 
         val actual = giftCertificateService.create(GIFT_CERTIFICATE_TO_CREATE)
 
@@ -128,7 +154,8 @@ class GiftCertificateServiceImplTest {
             .expectNext()
             .verifyError()
     }
-    companion object{
+
+    companion object {
         const val TEST_ID: String = "1"
 
         const val NOT_EXIST_ID: String = "100"
@@ -156,7 +183,21 @@ class GiftCertificateServiceImplTest {
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(), 1, mutableListOf()
         )
-
+        val GIFT_CERTIFICATE_TO_CREATE_PROTO = GiftCertificateOuterClass.GiftCertificate.newBuilder().apply {
+            name = "1"
+            description = "certificate new"
+            duration = 1
+            price = BigDecimal("1.10").toDouble()
+            createDate = com.google.protobuf.Timestamp.newBuilder()
+                .setSeconds(GIFT_CERTIFICATE_TO_CREATE.createDate.toInstant(ZoneOffset.UTC).epochSecond)
+                .setNanos(GIFT_CERTIFICATE_TO_CREATE.createDate.nano)
+                .build()
+            lastUpdatedDate = com.google.protobuf.Timestamp.newBuilder()
+                .setSeconds(GIFT_CERTIFICATE_TO_CREATE.lastUpdatedDate.toInstant(ZoneOffset.UTC).epochSecond)
+                .setNanos(GIFT_CERTIFICATE_TO_CREATE.lastUpdatedDate.nano)
+                .build()
+            addAllTags(mutableListOf())
+        }.build()
 
         val PAGE: Pageable = PageRequest.of(0, 25)
 
