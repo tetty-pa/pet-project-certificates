@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
@@ -58,7 +57,9 @@ class AppConfig(
 
 
     @Bean
-    fun reactiveRedisTemplate(connectionFactory: ReactiveRedisConnectionFactory): ReactiveRedisTemplate<String, GiftCertificateEntity> {
+    fun reactiveRedisTemplate(
+        connectionFactory: ReactiveRedisConnectionFactory
+    ): ReactiveRedisTemplate<String, GiftCertificateEntity> {
         val valueSerializer =
             Jackson2JsonRedisSerializer(GiftCertificateEntity::class.java)
 
