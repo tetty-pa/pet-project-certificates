@@ -11,4 +11,5 @@ object NatsSubject  {
     const val UPDATE_GIFT_CERTIFICATE_SUBJECT = "update_gift_certificate"
     const val GET_GIFT_CERTIFICATE_BY_ID_SUBJECT = "get_gift_certificate_by_id"
     const val DELETE_GIFT_CERTIFICATE_BY_ID_SUBJECT = "delete_gift_certificate_by_id"
+    const val NATS_ADD_GIFT_CERTIFICATE_SUBJECT = "nats_add_gift_certificate"
 }

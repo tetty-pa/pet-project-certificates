@@ -54,3 +54,16 @@ message GetAllGiftCertificateRequest {
 message GetAllGiftCertificateResponse {
   repeated GiftCertificate gift_certificates = 1;
 }
+
+message StreamAllGiftCertificatesRequest {
+}
+
+message StreamAllGiftCertificatesResponse {
+  oneof resp{
+    InitialCertificatesList initial_certificates_list = 1;
+    GiftCertificate new_gift_certificate = 2;
+  }
+}
+message InitialCertificatesList{
+  repeated GiftCertificate gift_certificates = 1;
+}

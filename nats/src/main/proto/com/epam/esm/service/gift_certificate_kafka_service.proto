@@ -1,0 +1,8 @@
+syntax = "proto3";
+package com.epam.esm.grpcService;
+
+import "com/epam/esm/gift_certificate.proto";
+
+service GiftCertificateKafkaService {
+  rpc streamGiftCertificates(StreamAllGiftCertificatesRequest) returns (stream StreamAllGiftCertificatesResponse) {}
+}
