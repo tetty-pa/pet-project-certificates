@@ -15,7 +15,6 @@ class DateConverter {
             .build()
     }
 
-
     fun timestampToLocalDateTime(timestamp: Timestamp): LocalDateTime {
         val instant = Instant.ofEpochSecond(timestamp.seconds, timestamp.nanos.toLong())
         return instant.atZone(ZoneOffset.UTC).toLocalDateTime()

@@ -1,16 +1,11 @@
 package com.epam.esm.infrastructure.rest
 
-import com.epam.esm.GiftCertificateOuterClass.StreamAllGiftCertificatesResponse
-import com.epam.esm.KafkaTopic
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.exception.InvalidDataException
-import com.google.protobuf.GeneratedMessageV3
 import com.mongodb.client.result.DeleteResult
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
-import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,9 +24,7 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/gift-certificates")
 class GiftCertificatesController(
-    private val giftCertificateService: GiftCertificateServiceInPort,
-    private val reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, GeneratedMessageV3>,
-    private val giftCertificateConverter: GiftCertificateConverter
+    private val giftCertificateService: GiftCertificateServiceInPort
 ) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -55,14 +48,6 @@ class GiftCertificatesController(
                 val errorMessage =
                     ex.bindingResult.fieldErrors.joinToString(", ") { it.defaultMessage.toString() }
                 InvalidDataException(errorMessage)
-            }
-            .flatMap {
-                reactiveKafkaProducerTemplate.send(
-                    KafkaTopic.ADD_GIFT_CERTIFICATE_TOPIC,
-                    StreamAllGiftCertificatesResponse.newBuilder()
-                        .setNewGiftCertificate(giftCertificateConverter.entityToProto(it))
-                        .build()
-                ).thenReturn(it)
             }
     }
 
