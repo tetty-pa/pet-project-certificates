@@ -15,6 +15,35 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Start docker network
+        run: docker network create mynetwork
+
+      - name: Start zookeeper container
+        run: docker run -d --name zookeeper
+          -p 2181:2181
+          --env ZOOKEEPER_CLIENT_PORT=2181
+          --env ZOOKEEPER_TICK_TIME=2000
+          --network mynetwork
+          confluentinc/cp-zookeeper
+
+      - name: Start kafka container
+        run: docker run -d --name broker
+          -p 9092:9092 -p 29092:29092
+          --hostname broker --env KAFKA_BROKER_ID=1
+          --env KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+          --env KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+          --env KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
+          --env KAFKA_ADVERTISED_HOST_NAME=broker
+          --env KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+          --env KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=1
+          --env CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS=broker:9092
+          --env CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT=zookeeper:2181
+          --env CONFLUENT_METRICS_ENABLE=true
+          --env CONFLUENT_SUPPORT_CUSTOMER_ID=anonymous
+          --env GROUP_ID=ajax
+          --network mynetwork confluentinc/cp-kafka
+
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
