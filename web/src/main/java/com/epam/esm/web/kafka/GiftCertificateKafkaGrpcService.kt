@@ -31,8 +31,11 @@ class GiftCertificateKafkaGrpcService(
     }
 
     private fun getInitialCertificatesListMono(): Mono<InitialCertificatesList> {
-        val giftCertificateFlux = service.getAll(0, 1000).map { converter.entityToProto(it) }
-        val collectList = giftCertificateFlux.collectList()
-        return collectList.map { InitialCertificatesList.newBuilder().addAllGiftCertificates(it).build() }
+        return service.getAll(0, 1000)
+            .map { converter.entityToProto(it) }
+            .collectList()
+            .map {
+                InitialCertificatesList.newBuilder().addAllGiftCertificates(it).build()
+            }
     }
 }
