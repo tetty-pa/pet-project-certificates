@@ -6,9 +6,6 @@ import com.epam.esm.application.proto.converter.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.exception.InvalidDataException
-import com.epam.esm.model.entity.GiftCertificate
-import com.epam.esm.service.GiftCertificateService
-import com.epam.esm.web.converter.GiftCertificateConverter
 import com.google.protobuf.GeneratedMessageV3
 import com.mongodb.client.result.DeleteResult
 import jakarta.validation.Valid
@@ -35,11 +32,7 @@ class GiftCertificatesController(
     private val giftCertificateService: GiftCertificateServiceInPort,
     private val reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, GeneratedMessageV3>,
     private val giftCertificateConverter: GiftCertificateConverter
-<<<<<<< HEAD:web/src/main/java/com/epam/esm/web/controller/GiftCertificatesController.kt
- {
-=======
 ) {
->>>>>>> a98bf90 (Migrated to DDD(for tag-subdomain, gift-certificate, order)):gift-certificate-subdomain/src/main/kotlin/com/epam/esm/infrastructure/rest/GiftCertificatesController.kt
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAll(

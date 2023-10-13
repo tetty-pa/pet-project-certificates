@@ -2,6 +2,7 @@ package com.epam.esm.infrastructure.kafka
 
 import com.epam.esm.GiftCertificateOuterClass.StreamAllGiftCertificatesResponse
 import com.epam.esm.NatsSubject
+import com.epam.esm.web.kafka.StreamGiftCertificateUpdates
 import io.nats.client.Connection
 import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Component
