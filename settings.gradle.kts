@@ -6,7 +6,9 @@ plugins {
  */
 
 rootProject.name = "Rest-api-basics-task"
-include(":persistence")
-include(":service")
-include(":web")
 include("nats")
+include("tag-subdomain")
+include("gift-certificate-subdomain")
+include("order-subdomain")
+include("user-subdomain")
+include("shared-subdomain")

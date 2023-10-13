@@ -49,9 +49,21 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
       GROUP_ID: 'ajax'
 
+  schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    depends_on:
+      - kafka
+      - zookeeper
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+    ports:
+      - "8081:8081"
   sb-app:
     depends_on:
       - mongo
+
       - nats
       - kafka
     build:
