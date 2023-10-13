@@ -2,7 +2,6 @@ package com.epam.esm.service
 
 import com.epam.esm.GiftCertificateOuterClass
 import com.epam.esm.KafkaTopic
-import com.epam.esm.application.proto.converter.DateConverter
 import com.epam.esm.application.proto.converter.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateService
 import com.epam.esm.domain.GiftCertificate
@@ -27,8 +26,6 @@ import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
 class GiftCertificateServiceImplTest {
-
-    private lateinit var dateConverter: DateConverter
 
     @Mock
     private lateinit var giftCertificateRepository: GiftCertificateRepository
@@ -160,30 +157,34 @@ class GiftCertificateServiceImplTest {
 
         const val NOT_EXIST_ID: String = "100"
 
-        val FIRST_TEST_GIFT_CERTIFICATE = GiftCertificate(null,
+        val FIRST_TEST_GIFT_CERTIFICATE = GiftCertificate(
+            null,
             "1", "1", BigDecimal(1),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(), 1, mutableListOf()
         )
 
-        val SECOND_TEST_GIFT_CERTIFICATE = GiftCertificate(null,
+        val SECOND_TEST_GIFT_CERTIFICATE = GiftCertificate(
+            null,
             "2", "2", BigDecimal(2),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(), 2, mutableListOf()
         )
 
-        val THIRD_TEST_GIFT_CERTIFICATE = GiftCertificate(null,
+        val THIRD_TEST_GIFT_CERTIFICATE = GiftCertificate(
+            null,
             "3", "3", BigDecimal(3),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(), 3, mutableListOf()
         )
 
-        val GIFT_CERTIFICATE_TO_CREATE = GiftCertificate(null,
+        val GIFT_CERTIFICATE_TO_CREATE = GiftCertificate(
+            null,
             "1", "certificate new", BigDecimal("1.10"),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(), 1, mutableListOf()
         )
-        val GIFT_CERTIFICATE_TO_CREATE_PROTO = GiftCertificateOuterClass.GiftCertificate.newBuilder().apply {
+        val GIFT_CERTIFICATE_TO_CREATE_PROTO: GiftCertificateOuterClass.GiftCertificate = GiftCertificateOuterClass.GiftCertificate.newBuilder().apply {
             name = "1"
             description = "certificate new"
             duration = 1
