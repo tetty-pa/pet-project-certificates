@@ -1,6 +1,5 @@
 package com.epam.esm.service
 
-import com.epam.esm.GiftCertificateOuterClass
 import com.epam.esm.application.publisher.GiftCertificateEventPublisherOutPort
 import com.epam.esm.application.service.GiftCertificateService
 import com.epam.esm.domain.GiftCertificate
@@ -18,7 +17,6 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import java.math.BigDecimal
 import java.sql.Timestamp
-import java.time.ZoneOffset
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
