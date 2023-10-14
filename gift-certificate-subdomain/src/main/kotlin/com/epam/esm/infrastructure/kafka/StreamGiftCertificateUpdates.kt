@@ -1,4 +1,4 @@
-package com.epam.esm.web.kafka
+package com.epam.esm.infrastructure.kafka
 
 import com.epam.esm.GiftCertificateOuterClass.StreamAllGiftCertificatesResponse
 import org.springframework.stereotype.Component

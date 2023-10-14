@@ -1,9 +1,9 @@
-package com.epam.esm.service.impl
+package com.epam.esm.service
 
 import com.epam.esm.application.service.UserService
 import com.epam.esm.domain.Role
 import com.epam.esm.domain.User
-import com.epam.esm.repository.impl.UserRepository
+import com.epam.esm.infractucture.mongo.repository.UserRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -91,8 +91,6 @@ class UserServiceImplTest {
 
     companion object {
         const val TEST_ID: String = "1"
-
-        const val NOT_EXIST_ID: String = "100"
 
         val FIRST_TEST_USER = User("1", "1", "1", "", Role.USER)
 

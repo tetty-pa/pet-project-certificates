@@ -3,7 +3,7 @@ package com.epam.esm.infrastucture.nats
 import com.epam.esm.NatsSubject
 import com.epam.esm.TagOuterClass.GetByIdTagRequest
 import com.epam.esm.TagOuterClass.GetByIdTagResponse
-import com.epam.esm.application.proto.converter.TagConverter
+import com.epam.esm.infrastucture.converter.proto.TagConverter
 import com.epam.esm.application.service.TagService
 import com.epam.esm.nats.NatsController
 import com.google.protobuf.Parser

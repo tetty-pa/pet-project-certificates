@@ -2,10 +2,10 @@ package com.epam.esm.service
 
 import com.epam.esm.GiftCertificateOuterClass
 import com.epam.esm.KafkaTopic
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateService
 import com.epam.esm.domain.GiftCertificate
-import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
+import com.epam.esm.infrastructure.mongo.repository.GiftCertificateRepository
 import com.google.protobuf.GeneratedMessageV3
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -78,14 +78,14 @@ class GiftCertificateServiceImplTest {
         whenever(giftCertificateRepository.save(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(
             Mono.just(GIFT_CERTIFICATE_TO_CREATE)
         )
-        whenever(giftCertificateConverter.entityToProto(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(
+        whenever(giftCertificateConverter.domainToProto(GIFT_CERTIFICATE_TO_CREATE)).thenReturn(
             GIFT_CERTIFICATE_TO_CREATE_PROTO
         )
         whenever(
             reactiveKafkaProducerTemplate.send(
                 KafkaTopic.ADD_GIFT_CERTIFICATE_TOPIC,
                 GiftCertificateOuterClass.StreamAllGiftCertificatesResponse.newBuilder()
-                    .setNewGiftCertificate(giftCertificateConverter.entityToProto(GIFT_CERTIFICATE_TO_CREATE))
+                    .setNewGiftCertificate(giftCertificateConverter.domainToProto(GIFT_CERTIFICATE_TO_CREATE))
                     .build()
             )
         ).thenReturn(Mono.empty())

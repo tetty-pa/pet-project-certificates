@@ -4,11 +4,11 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.epam.esm.GiftCertificateOuterClass
 import com.epam.esm.WebApplication
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.grpcService.ReactorGiftCertificateServiceGrpc
-import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
+import com.epam.esm.infrastructure.mongo.repository.GiftCertificateRepository
 import io.grpc.ManagedChannel
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -55,7 +55,7 @@ class ReactorGiftCertificateGrpcServiceImplTest {
         val expected =
             GiftCertificateOuterClass.GetAllGiftCertificateResponse.newBuilder().addAllGiftCertificates(
                 giftCertificateService.getAll(page = PAGE.pageNumber, size = PAGE.pageSize).map {
-                    giftCertificateConverter.entityToProto(it)
+                    giftCertificateConverter.domainToProto(it)
                 }.collectList().block()
             ).build()
 
@@ -79,7 +79,7 @@ class ReactorGiftCertificateGrpcServiceImplTest {
 
         val expected =
             GiftCertificateOuterClass.GetByIdGiftCertificateResponse.newBuilder()
-                .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                .setGiftCertificate(giftCertificateConverter.domainToProto(TEST_GIFT_CERTIFICATE))
                 .build()
 
         val request =
@@ -102,13 +102,13 @@ class ReactorGiftCertificateGrpcServiceImplTest {
     fun create() {
         val expected =
             GiftCertificateOuterClass.CreateGiftCertificateResponse.newBuilder()
-                .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                .setGiftCertificate(giftCertificateConverter.domainToProto(TEST_GIFT_CERTIFICATE))
                 .build()
 
         val request =
             Mono.just(
                 GiftCertificateOuterClass.CreateGiftCertificateRequest.newBuilder()
-                    .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                    .setGiftCertificate(giftCertificateConverter.domainToProto(TEST_GIFT_CERTIFICATE))
                     .build()
             )
 
@@ -127,7 +127,7 @@ class ReactorGiftCertificateGrpcServiceImplTest {
         TEST_GIFT_CERTIFICATE.id = addedGiftCertificate.id
 
         val certificate = giftCertificateConverter
-            .entityToProto(TEST_GIFT_CERTIFICATE)
+            .domainToProto(TEST_GIFT_CERTIFICATE)
 
         val expected =
             GiftCertificateOuterClass.UpdateGiftCertificateResponse.newBuilder()

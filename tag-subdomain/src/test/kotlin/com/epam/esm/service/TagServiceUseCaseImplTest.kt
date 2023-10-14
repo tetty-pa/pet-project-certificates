@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl
+package com.epam.esm.service
 
 import com.epam.esm.application.repository.TagRepositoryOutPort
 import com.epam.esm.application.service.TagService

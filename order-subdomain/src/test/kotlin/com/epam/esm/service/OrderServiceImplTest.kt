@@ -2,9 +2,9 @@ package com.epam.esm.service
 
 import com.epam.esm.application.service.OrderService
 import com.epam.esm.domain.Order
-import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
-import com.epam.esm.repository.impl.OrderRepository
-import com.epam.esm.repository.impl.UserRepository
+import com.epam.esm.infrastructure.mongo.repository.GiftCertificateRepository
+import com.epam.esm.infrastucture.mongo.repository.OrderRepository
+import com.epam.esm.infractucture.mongo.repository.UserRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks

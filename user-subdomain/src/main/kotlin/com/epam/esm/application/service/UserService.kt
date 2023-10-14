@@ -1,10 +1,10 @@
 package com.epam.esm.application.service
 
+import com.epam.esm.application.repository.UserRepositoryOutPort
 import com.epam.esm.domain.User
 import com.epam.esm.exception.DuplicateEntityException
 import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.logger.Logging
-import com.epam.esm.repository.impl.UserRepository
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono
 @Service
 @Logging(isRequest = true)
 class UserService(
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepositoryOutPort,
     private val passwordEncoder: PasswordEncoder
 ) : UserServiceInPort {
 

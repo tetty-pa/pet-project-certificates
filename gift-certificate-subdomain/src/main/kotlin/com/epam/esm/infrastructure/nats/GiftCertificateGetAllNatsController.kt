@@ -3,7 +3,7 @@ package com.epam.esm.infrastructure.nats
 import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateResponse
 import com.epam.esm.NatsSubject
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.nats.NatsController
 import com.google.protobuf.Parser
@@ -27,7 +27,7 @@ class GiftCertificateGetAllNatsController(
     ): Mono<GetAllGiftCertificateResponse> {
 
         return service.getAll(page = request.page, size = request.size)
-            .map { giftCertificateConverter.entityToProto(it) }
+            .map { giftCertificateConverter.domainToProto(it) }
             .collectList()
             .map {
                 GetAllGiftCertificateResponse

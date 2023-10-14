@@ -3,7 +3,7 @@ package com.epam.esm.infrastructure.nats
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateResponse
 import com.epam.esm.NatsSubject
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.nats.NatsController
 import com.google.protobuf.Parser
@@ -28,14 +28,14 @@ class GiftCertificateUpdateNatsController(
     ): Mono<UpdateGiftCertificateResponse> {
         val giftCertificate =
             giftCertificateConverter
-                .protoToEntity(request.giftCertificate)
+                .protoToDomain(request.giftCertificate)
                 .apply { id = request.id }
 
         return service.update(giftCertificate)
             .map {
                 UpdateGiftCertificateResponse
                     .newBuilder()
-                    .setGiftCertificate(giftCertificateConverter.entityToProto(it))
+                    .setGiftCertificate(giftCertificateConverter.domainToProto(it))
                     .build()
             }
     }

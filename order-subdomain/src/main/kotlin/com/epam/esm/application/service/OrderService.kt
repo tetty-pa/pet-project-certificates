@@ -1,10 +1,10 @@
 package com.epam.esm.application.service
 
+import com.epam.esm.application.repository.OrderRepositoryOutPort
 import com.epam.esm.domain.Order
 import com.epam.esm.exception.EntityNotFoundException
-import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
-import com.epam.esm.repository.impl.OrderRepository
-import com.epam.esm.repository.impl.UserRepository
+import com.epam.esm.infractucture.mongo.repository.UserRepository
+import com.epam.esm.infrastructure.mongo.repository.GiftCertificateRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 
 @Service
 class OrderService(
-    private val orderRepository: OrderRepository,
+    private val orderRepository: OrderRepositoryOutPort,
     private val userRepository: UserRepository,
     private val giftCertificateRepository: GiftCertificateRepository
 ) : OrderServiceInPort {

@@ -1,6 +1,6 @@
 package com.epam.esm.config
 
-import com.epam.esm.infrastructure.persistence.entity.GiftCertificateEntity
+import com.epam.esm.infrastructure.mongo.entity.GiftCertificateEntity
 import io.grpc.BindableService
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder

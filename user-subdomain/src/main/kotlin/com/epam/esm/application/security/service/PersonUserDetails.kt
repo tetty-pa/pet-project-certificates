@@ -1,7 +1,7 @@
 package com.epam.esm.application.security.service
 
 import com.epam.esm.domain.User
-import com.epam.esm.infractucture.persistence.entity.RoleEntity
+import com.epam.esm.infractucture.mongo.entity.RoleEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

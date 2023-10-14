@@ -10,7 +10,7 @@ import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateResponse
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateResponse
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.grpcService.GiftCertificateServiceGrpc
 import io.grpc.stub.StreamObserver
@@ -28,7 +28,7 @@ class GiftCertificateGrpcService(
     ) {
         val giftCertificates =
             service.getAll(page = request.page, size = request.size)
-                .map { converter.entityToProto(it) }
+                .map { converter.domainToProto(it) }
                 .collectList()
                 .block()
 
@@ -43,7 +43,7 @@ class GiftCertificateGrpcService(
         responseObserver: StreamObserver<GetByIdGiftCertificateResponse>
     ) {
         val protoGiftCertificate =
-            converter.entityToProto(service.getById(request.giftCertificateId).block()!!)
+            converter.domainToProto(service.getById(request.giftCertificateId).block()!!)
 
         val build =
             GetByIdGiftCertificateResponse.newBuilder().setGiftCertificate(protoGiftCertificate).build()
@@ -55,10 +55,10 @@ class GiftCertificateGrpcService(
         request: CreateGiftCertificateRequest,
         responseObserver: StreamObserver<CreateGiftCertificateResponse>
     ) {
-        val giftCertificate = converter.protoToEntity(request.giftCertificate)
+        val giftCertificate = converter.protoToDomain(request.giftCertificate)
 
         val protoGiftCertificate =
-            converter.entityToProto(service.create(giftCertificate).block()!!)
+            converter.domainToProto(service.create(giftCertificate).block()!!)
 
         val build =
             CreateGiftCertificateResponse.newBuilder().setGiftCertificate(protoGiftCertificate).build()
@@ -72,10 +72,10 @@ class GiftCertificateGrpcService(
     ) {
         val giftCertificate =
             converter
-                .protoToEntity(request.giftCertificate)
+                .protoToDomain(request.giftCertificate)
                 .apply { id = request.id }
         val protoGiftCertificate =
-            converter.entityToProto(service.update(giftCertificate).block()!!)
+            converter.domainToProto(service.update(giftCertificate).block()!!)
 
         val build =
             UpdateGiftCertificateResponse.newBuilder().setGiftCertificate(protoGiftCertificate).build()

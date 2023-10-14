@@ -5,7 +5,7 @@ import com.epam.esm.TagOuterClass.DeleteByIdTagRequest
 import com.epam.esm.TagOuterClass.GetAllTagRequest
 import com.epam.esm.TagOuterClass.GetByIdTagRequest
 import com.epam.esm.WebApplication
-import com.epam.esm.application.proto.converter.TagConverter
+import com.epam.esm.infrastucture.converter.proto.TagConverter
 import com.epam.esm.application.repository.TagRepositoryOutPort
 import com.epam.esm.application.service.TagService
 import com.epam.esm.domain.Tag

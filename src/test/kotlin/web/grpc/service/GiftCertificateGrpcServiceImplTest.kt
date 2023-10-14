@@ -6,11 +6,11 @@ import com.epam.esm.GiftCertificateOuterClass.GetAllGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.GetByIdGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
 import com.epam.esm.WebApplication
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.grpcService.GiftCertificateServiceGrpc
-import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
+import com.epam.esm.infrastructure.mongo.repository.GiftCertificateRepository
 import io.grpc.ManagedChannel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -54,7 +54,7 @@ class GiftCertificateGrpcServiceImplTest {
     fun getAll() {
         val expected =
             giftCertificateService.getAll(page = PAGE.pageNumber, size = PAGE.pageSize).map {
-                giftCertificateConverter.entityToProto(it)
+                giftCertificateConverter.domainToProto(it)
             }.collectList().block()
 
         val request =
@@ -76,7 +76,7 @@ class GiftCertificateGrpcServiceImplTest {
                 .getById(addedGiftCertificate.id ?: "")
                 .map {
                     giftCertificateConverter
-                        .entityToProto(it)
+                        .domainToProto(it)
                 }.block()!!
 
         val request =
@@ -95,7 +95,7 @@ class GiftCertificateGrpcServiceImplTest {
         val expected =
             CreateGiftCertificateRequest
                 .newBuilder()
-                .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                .setGiftCertificate(giftCertificateConverter.domainToProto(TEST_GIFT_CERTIFICATE))
                 .build()
 
         val actual = stub.create(expected)
@@ -109,7 +109,7 @@ class GiftCertificateGrpcServiceImplTest {
         TEST_GIFT_CERTIFICATE.id = addedGiftCertificate.id
 
         val expected = giftCertificateConverter
-            .entityToProto(TEST_GIFT_CERTIFICATE)
+            .domainToProto(TEST_GIFT_CERTIFICATE)
 
         val request =
             UpdateGiftCertificateRequest.newBuilder()

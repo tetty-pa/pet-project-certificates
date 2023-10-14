@@ -11,9 +11,9 @@ import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateRequest
 import com.epam.esm.GiftCertificateOuterClass.UpdateGiftCertificateResponse
 import com.epam.esm.NatsSubject
 import com.epam.esm.WebApplication
-import com.epam.esm.application.proto.converter.GiftCertificateConverter
+import com.epam.esm.infrastructure.converter.proto.GiftCertificateConverter
 import com.epam.esm.domain.GiftCertificate
-import com.epam.esm.infrastructure.persistence.repository.mongo.GiftCertificateRepository
+import com.epam.esm.infrastructure.mongo.repository.GiftCertificateRepository
 import io.nats.client.Connection
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -41,7 +41,7 @@ class GiftCertificatesNatsControllerTest {
         val expected =
             CreateGiftCertificateRequest
                 .newBuilder()
-                .setGiftCertificate(giftCertificateConverter.entityToProto(TEST_GIFT_CERTIFICATE))
+                .setGiftCertificate(giftCertificateConverter.domainToProto(TEST_GIFT_CERTIFICATE))
                 .build()
 
         val future = natsConnection.requestWithTimeout(
@@ -65,7 +65,7 @@ class GiftCertificatesNatsControllerTest {
     fun getAllGiftCertificatesTest() {
         val protoList =
             giftCertificateRepository.findAll(PAGE)
-                .map { giftCertificate -> giftCertificateConverter.entityToProto(giftCertificate) }.collectList()
+                .map { giftCertificate -> giftCertificateConverter.domainToProto(giftCertificate) }.collectList()
                 .block()
         val expected = GetAllGiftCertificateResponse.newBuilder()
             .addAllGiftCertificates(protoList)
@@ -92,7 +92,7 @@ class GiftCertificatesNatsControllerTest {
 
         val protoGiftCertificate =
             giftCertificateConverter
-                .entityToProto(dbGiftCertificate)
+                .domainToProto(dbGiftCertificate)
 
         val expected =
             GetByIdGiftCertificateResponse.newBuilder()
@@ -144,7 +144,7 @@ class GiftCertificatesNatsControllerTest {
             UpdateGiftCertificateResponse.newBuilder()
                 .setGiftCertificate(
                     giftCertificateConverter
-                        .entityToProto(TEST_GIFT_CERTIFICATE_CHANGED)
+                        .domainToProto(TEST_GIFT_CERTIFICATE_CHANGED)
                 )
                 .build()
 
@@ -152,7 +152,7 @@ class GiftCertificatesNatsControllerTest {
             UpdateGiftCertificateRequest.newBuilder()
                 .setGiftCertificate(
                     giftCertificateConverter
-                        .entityToProto(TEST_GIFT_CERTIFICATE_CHANGED)
+                        .domainToProto(TEST_GIFT_CERTIFICATE_CHANGED)
                 )
                 .setId(addedGiftCertificate.id)
                 .build()
