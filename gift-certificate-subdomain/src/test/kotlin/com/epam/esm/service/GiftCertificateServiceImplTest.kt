@@ -170,22 +170,6 @@ class GiftCertificateServiceImplTest {
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(),
             Timestamp.valueOf("2023-01-04 12:07:19").toLocalDateTime(), 1, mutableListOf()
         )
-        val GIFT_CERTIFICATE_TO_CREATE_PROTO: GiftCertificateOuterClass.GiftCertificate =
-            GiftCertificateOuterClass.GiftCertificate.newBuilder().apply {
-                name = "1"
-                description = "certificate new"
-                duration = 1
-                price = BigDecimal("1.10").toDouble()
-                createDate = com.google.protobuf.Timestamp.newBuilder()
-                    .setSeconds(GIFT_CERTIFICATE_TO_CREATE.createDate.toInstant(ZoneOffset.UTC).epochSecond)
-                    .setNanos(GIFT_CERTIFICATE_TO_CREATE.createDate.nano)
-                    .build()
-                lastUpdatedDate = com.google.protobuf.Timestamp.newBuilder()
-                    .setSeconds(GIFT_CERTIFICATE_TO_CREATE.lastUpdatedDate.toInstant(ZoneOffset.UTC).epochSecond)
-                    .setNanos(GIFT_CERTIFICATE_TO_CREATE.lastUpdatedDate.nano)
-                    .build()
-                addAllTags(mutableListOf())
-            }.build()
 
         val PAGE: Pageable = PageRequest.of(0, 25)
 
