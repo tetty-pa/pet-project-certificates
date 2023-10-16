@@ -1,9 +1,9 @@
-package com.epam.esm.infrastucture.mongo.repository
+package com.epam.esm.infrastucture.database.mongo
 
 import com.epam.esm.application.repository.TagRepositoryOutPort
 import com.epam.esm.domain.Tag
-import com.epam.esm.infrastucture.mongo.entity.TagEntity
-import com.epam.esm.infrastucture.mongo.mapper.TagEntityMapper
+import com.epam.esm.infrastucture.database.entity.TagEntity
+import com.epam.esm.infrastucture.database.mapper.TagEntityMapper
 import com.epam.esm.persistence.util.findOne
 import com.mongodb.client.result.DeleteResult
 import org.springframework.data.domain.Pageable

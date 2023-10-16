@@ -58,6 +58,9 @@ jobs:
       - name: Start mongodb
         run: docker run -d --name mongo -p 27017:27017 mongo:latest
 
+      - name: Start redis container
+        run: docker run -d --name redis -p 6379:6379 redis:latest
+
       - name: Start nats
         run: docker run -d --name nats -p 4222:4222 nats:latest
 

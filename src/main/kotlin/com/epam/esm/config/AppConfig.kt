@@ -1,6 +1,6 @@
 package com.epam.esm.config
 
-import com.epam.esm.infrastructure.mongo.entity.GiftCertificateEntity
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.grpc.BindableService
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
@@ -54,23 +54,5 @@ class AppConfig(
 
     @Bean
     fun messageHandlerScheduler(): Scheduler = Schedulers.boundedElastic()
-
-
-    @Bean
-    fun reactiveRedisTemplate(
-        connectionFactory: ReactiveRedisConnectionFactory
-    ): ReactiveRedisTemplate<String, GiftCertificateEntity> {
-        val valueSerializer =
-            Jackson2JsonRedisSerializer(GiftCertificateEntity::class.java)
-
-        val serializationContext =
-            RedisSerializationContext.newSerializationContext<String, GiftCertificateEntity>(StringRedisSerializer())
-                .value(valueSerializer)
-                .hashValue(valueSerializer)
-                .build()
-
-        return ReactiveRedisTemplate(connectionFactory, serializationContext)
-
-    }
 
 }
