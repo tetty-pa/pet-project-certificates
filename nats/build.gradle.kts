@@ -7,7 +7,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.3"
     id("com.google.protobuf") version "0.9.4"
 
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.10"
     kotlin("plugin.spring") version "1.9.10"
     kotlin("plugin.allopen") version "1.9.10"
 }
