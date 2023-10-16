@@ -1,6 +1,5 @@
 package com.epam.esm.config
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.grpc.BindableService
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
@@ -12,11 +11,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
-import org.springframework.data.redis.core.ReactiveRedisTemplate
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
-import org.springframework.data.redis.serializer.RedisSerializationContext
-import org.springframework.data.redis.serializer.StringRedisSerializer
 import reactor.core.scheduler.Scheduler
 import reactor.core.scheduler.Schedulers
 
@@ -54,5 +48,4 @@ class AppConfig(
 
     @Bean
     fun messageHandlerScheduler(): Scheduler = Schedulers.boundedElastic()
-
 }
