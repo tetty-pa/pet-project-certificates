@@ -1,6 +1,6 @@
 package com.epam.esm.service
 
-import com.epam.esm.application.repository.TagRedisRepositoryOutPort
+import com.epam.esm.application.repository.TagCachingRepositoryOutPort
 import com.epam.esm.application.repository.TagRepositoryOutPort
 import com.epam.esm.application.service.TagService
 import com.epam.esm.domain.Tag
@@ -24,7 +24,7 @@ class TagServiceImplTest {
     private lateinit var tagRepositoryOutPort: TagRepositoryOutPort
 
     @Mock
-    private lateinit var tagRedisRepositoryOutPort: TagRedisRepositoryOutPort
+    private lateinit var tagCachingRepositoryOutPort: TagCachingRepositoryOutPort
 
     @InjectMocks
     private lateinit var tagService: TagService
@@ -66,8 +66,8 @@ class TagServiceImplTest {
     @Test
     fun getById() {
         whenever(tagRepositoryOutPort.findById(TEST_ID)).thenReturn(Mono.just(FIRST_TEST_TAG))
-        whenever(tagRedisRepositoryOutPort.findById(TEST_ID)).thenReturn(Mono.empty())
-        whenever(tagRedisRepositoryOutPort.save(FIRST_TEST_TAG)).thenReturn(Mono.just(FIRST_TEST_TAG))
+        whenever(tagCachingRepositoryOutPort.findById(TEST_ID)).thenReturn(Mono.empty())
+        whenever(tagCachingRepositoryOutPort.save(FIRST_TEST_TAG)).thenReturn(Mono.just(FIRST_TEST_TAG))
 
         val actual = tagService.getById(TEST_ID)
 
@@ -79,7 +79,7 @@ class TagServiceImplTest {
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
         whenever(tagRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
-        whenever(tagRedisRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
+        whenever(tagCachingRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
         val actual = tagService.getById(NOT_EXIST_ID)
 
         StepVerifier.create(actual)
@@ -90,7 +90,9 @@ class TagServiceImplTest {
     @Test
     fun deleteByIdShouldThrowEntityNotFoundException() {
         whenever(tagRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
-     val actual = tagService.deleteById(NOT_EXIST_ID)
+        whenever(tagCachingRepositoryOutPort.deleteById(NOT_EXIST_ID)).thenReturn(Mono.empty())
+
+        val actual = tagService.deleteById(NOT_EXIST_ID)
 
         StepVerifier.create(actual)
             .expectNext()

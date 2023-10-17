@@ -54,6 +54,6 @@ class ReactorGiftCertificateGrpcService(
     override fun deleteById(request: Mono<DeleteByIdGiftCertificateRequest>): Mono<DeleteByIdGiftCertificateResponse> {
         return request
             .flatMap { service.deleteById(it.giftCertificateId) }
-            .map { DeleteByIdGiftCertificateResponse.getDefaultInstance() }
+            .then(Mono.fromCallable { DeleteByIdGiftCertificateResponse.getDefaultInstance() })
     }
 }

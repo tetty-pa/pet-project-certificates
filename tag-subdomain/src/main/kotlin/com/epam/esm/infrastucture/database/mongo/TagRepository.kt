@@ -35,9 +35,9 @@ class TagRepository(
         mongoTemplate.findById(id, TagEntity::class.java)
             .map { mapper.mapToDomain(it) }
 
-    override fun deleteById(id: String): Mono<DeleteResult> {
+    override fun deleteById(id: String): Mono<Void> {
         val query = Query().addCriteria(Criteria.where("_id").`is`(id))
-        return mongoTemplate.remove(query, TagEntity::class.java)
+        return mongoTemplate.remove(query, TagEntity::class.java).then()
     }
 
     override fun findByName(name: String): Mono<Tag> =

@@ -69,7 +69,7 @@ class TagGrpcService(
         request: DeleteByIdTagRequest,
         responseObserver: StreamObserver<DeleteByIdTagResponse>
     ) {
-        service.deleteById(request.tagId).block()!!
+        service.deleteById(request.tagId).block()
 
         val build =
             DeleteByIdTagResponse.getDefaultInstance()

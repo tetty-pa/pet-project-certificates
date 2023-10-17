@@ -1,11 +1,10 @@
 package com.epam.esm.infrastucture.database.redis
 
-import com.epam.esm.application.repository.TagRedisRepositoryOutPort
+import com.epam.esm.application.repository.TagCachingRepositoryOutPort
 import com.epam.esm.domain.Tag
 import com.epam.esm.exception.EntityNotFoundException
 import com.epam.esm.infrastucture.database.entity.TagEntity
 import com.epam.esm.infrastucture.database.mapper.TagEntityMapper
-import com.mongodb.client.result.DeleteResult
 import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
@@ -14,7 +13,7 @@ import reactor.core.publisher.Mono
 class TagRedisRepository(
     private val reactiveRedisTemplate: ReactiveRedisTemplate<String, TagEntity>,
     private val mapper: TagEntityMapper
-) : TagRedisRepositoryOutPort {
+) : TagCachingRepositoryOutPort {
     override fun findById(id: String): Mono<Tag> =
         reactiveRedisTemplate.opsForValue()
             .get(id)
@@ -27,8 +26,8 @@ class TagRedisRepository(
             .map { tag }
     }
 
-    override fun deleteById(id: String): Mono<DeleteResult> =
+    override fun deleteById(id: String): Mono<Void> =
         reactiveRedisTemplate.opsForValue()
             .delete(id)
-            .map { DeleteResult.acknowledged(1) }
+            .then()
 }

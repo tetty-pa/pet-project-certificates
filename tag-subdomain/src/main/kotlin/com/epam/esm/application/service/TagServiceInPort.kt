@@ -35,7 +35,7 @@ interface TagServiceInPort {
      * Deletes Tag
      *
      * @param id Tag id to delete
-     * @return Mono<DeleteResult>
+     * @return Mono<Void>
      */
-    fun deleteById(id: String): Mono<DeleteResult>
+    fun deleteById(id: String): Mono<Void>
 }
