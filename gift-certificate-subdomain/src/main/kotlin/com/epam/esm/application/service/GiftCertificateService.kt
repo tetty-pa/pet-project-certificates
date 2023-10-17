@@ -5,7 +5,6 @@ import com.epam.esm.application.repository.GiftCertificateRepositoryOutPort
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.exception.DuplicateEntityException
 import com.epam.esm.exception.EntityNotFoundException
-import com.mongodb.client.result.DeleteResult
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service

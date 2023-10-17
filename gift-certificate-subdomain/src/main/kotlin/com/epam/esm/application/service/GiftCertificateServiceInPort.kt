@@ -1,7 +1,6 @@
 package com.epam.esm.application.service
 
 import com.epam.esm.domain.GiftCertificate
-import com.mongodb.client.result.DeleteResult
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 

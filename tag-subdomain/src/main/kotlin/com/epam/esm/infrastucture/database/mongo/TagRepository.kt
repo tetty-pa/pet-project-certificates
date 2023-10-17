@@ -5,7 +5,6 @@ import com.epam.esm.domain.Tag
 import com.epam.esm.infrastucture.database.entity.TagEntity
 import com.epam.esm.infrastucture.database.mapper.TagEntityMapper
 import com.epam.esm.persistence.util.findOne
-import com.mongodb.client.result.DeleteResult
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
