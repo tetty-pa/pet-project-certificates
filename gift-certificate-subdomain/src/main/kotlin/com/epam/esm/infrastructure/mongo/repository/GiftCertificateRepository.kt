@@ -40,8 +40,8 @@ class GiftCertificateRepository(
             .map { giftCertificateMapper.mapToDomain(it) }
 
 
-    override fun deleteById(id: String): Mono<Void> {
+    override fun deleteById(id: String): Mono<Unit> {
         val query = Query().addCriteria(Criteria.where("_id").`is`(id))
-        return mongoTemplate.remove(query, GiftCertificateEntity::class.java).then()
+        return mongoTemplate.remove(query, GiftCertificateEntity::class.java).map {  }
     }
 }

@@ -52,7 +52,7 @@ class GiftCertificatesController(
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: String): Mono<Void> =
+    fun deleteById(@PathVariable("id") id: String): Mono<Unit> =
         giftCertificateService.deleteById(id)
 
     @PatchMapping("/{id}")

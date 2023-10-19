@@ -14,5 +14,5 @@ interface GiftCertificateRepositoryOutPort {
 
     fun save(giftCertificate: GiftCertificate): Mono<GiftCertificate>
 
-    fun deleteById(id: String): Mono<Void>
+    fun deleteById(id: String): Mono<Unit>
 }

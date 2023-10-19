@@ -50,7 +50,7 @@ class GiftCertificateService(
             }
     }
 
-    override fun deleteById(id: String): Mono<Void> {
+    override fun deleteById(id: String): Mono<Unit> {
         return giftCertificateRepository.findById(id)
             .switchIfEmpty(Mono.error(EntityNotFoundException("gift-certificate.notfoundById"))).flatMap {
                 giftCertificateRepository.deleteById(id)

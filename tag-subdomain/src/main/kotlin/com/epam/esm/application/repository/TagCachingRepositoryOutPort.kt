@@ -8,5 +8,5 @@ interface TagCachingRepositoryOutPort {
 
     fun save(tag: Tag): Mono<Tag>
 
-    fun deleteById(id: String): Mono<Void>
+    fun deleteById(id: String): Mono<Unit>
 }

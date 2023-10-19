@@ -45,7 +45,7 @@ interface GiftCertificateServiceInPort {
      * Deletes Gift Certificates.
      *
      * @param id Gift Certificate id to delete
-     * @return Mono<Void>
+     * @return Mono<Unit>
      */
-    fun deleteById(id: String): Mono<Void>
+    fun deleteById(id: String): Mono<Unit>
 }

@@ -12,7 +12,7 @@ interface TagRepositoryOutPort {
 
     fun findById(id: String): Mono<Tag>
 
-    fun deleteById(id: String): Mono<Void>
+    fun deleteById(id: String): Mono<Unit>
 
     fun findByName(name: String): Mono<Tag>
 }

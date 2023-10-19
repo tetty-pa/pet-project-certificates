@@ -35,7 +35,7 @@ class TagService(
             ).switchIfEmpty(Mono.error(EntityNotFoundException("tag.notfoundById")))
     }
 
-    override fun deleteById(id: String): Mono<Void> {
+    override fun deleteById(id: String): Mono<Unit> {
         return tagRepository.findById(id)
             .switchIfEmpty(Mono.error(EntityNotFoundException("gift-certificate.notfoundById")))
             .flatMap { tagRepository.deleteById(id) }

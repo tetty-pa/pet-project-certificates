@@ -46,6 +46,6 @@ class TagsController(private val tagService: TagService) {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: String): Mono<Void> =
-        tagService.deleteById(id)
+    fun deleteById(@PathVariable("id") id: String): Mono<Unit> =
+        tagService.deleteById(id).map {  }
 }
