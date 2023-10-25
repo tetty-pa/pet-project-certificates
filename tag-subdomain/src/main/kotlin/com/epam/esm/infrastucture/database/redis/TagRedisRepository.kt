@@ -29,5 +29,5 @@ class TagRedisRepository(
     override fun deleteById(id: String): Mono<Unit> =
         reactiveRedisTemplate.opsForValue()
             .delete(id)
-            .map { }
+            .thenReturn(Unit)
 }
