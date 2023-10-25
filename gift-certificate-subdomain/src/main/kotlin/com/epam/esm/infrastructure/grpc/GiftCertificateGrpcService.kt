@@ -87,7 +87,7 @@ class GiftCertificateGrpcService(
         request: DeleteByIdGiftCertificateRequest,
         responseObserver: StreamObserver<DeleteByIdGiftCertificateResponse>
     ) {
-        service.deleteById(request.giftCertificateId).block()!!
+        service.deleteById(request.giftCertificateId).block()
 
         val build =
             DeleteByIdGiftCertificateResponse.getDefaultInstance()

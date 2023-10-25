@@ -1,7 +1,6 @@
 package com.epam.esm.application.repository
 
 import com.epam.esm.domain.Tag
-import com.mongodb.client.result.DeleteResult
 import org.springframework.data.domain.Pageable
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -13,7 +12,7 @@ interface TagRepositoryOutPort {
 
     fun findById(id: String): Mono<Tag>
 
-    fun deleteById(id: String): Mono<DeleteResult>
+    fun deleteById(id: String): Mono<Unit>
 
     fun findByName(name: String): Mono<Tag>
 }

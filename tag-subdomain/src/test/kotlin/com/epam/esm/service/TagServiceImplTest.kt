@@ -1,5 +1,6 @@
 package com.epam.esm.service
 
+import com.epam.esm.application.repository.TagCachingRepositoryOutPort
 import com.epam.esm.application.repository.TagRepositoryOutPort
 import com.epam.esm.application.service.TagService
 import com.epam.esm.domain.Tag
@@ -17,10 +18,13 @@ import reactor.test.StepVerifier
 import org.mockito.Mockito.`when` as whenever
 
 @ExtendWith(MockitoExtension::class)
-class TagServiceUseCaseImplTest {
+class TagServiceImplTest {
 
     @Mock
     private lateinit var tagRepositoryOutPort: TagRepositoryOutPort
+
+    @Mock
+    private lateinit var tagCachingRepositoryOutPort: TagCachingRepositoryOutPort
 
     @InjectMocks
     private lateinit var tagService: TagService
@@ -62,6 +66,9 @@ class TagServiceUseCaseImplTest {
     @Test
     fun getById() {
         whenever(tagRepositoryOutPort.findById(TEST_ID)).thenReturn(Mono.just(FIRST_TEST_TAG))
+        whenever(tagCachingRepositoryOutPort.findById(TEST_ID)).thenReturn(Mono.empty())
+        whenever(tagCachingRepositoryOutPort.save(FIRST_TEST_TAG)).thenReturn(Mono.just(FIRST_TEST_TAG))
+
         val actual = tagService.getById(TEST_ID)
 
         StepVerifier.create(actual)
@@ -72,6 +79,7 @@ class TagServiceUseCaseImplTest {
     @Test
     fun getByIdShouldThrowEntityNotFoundException() {
         whenever(tagRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
+        whenever(tagCachingRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
         val actual = tagService.getById(NOT_EXIST_ID)
 
         StepVerifier.create(actual)
@@ -82,6 +90,7 @@ class TagServiceUseCaseImplTest {
     @Test
     fun deleteByIdShouldThrowEntityNotFoundException() {
         whenever(tagRepositoryOutPort.findById(NOT_EXIST_ID)).thenReturn(Mono.empty())
+        whenever(tagCachingRepositoryOutPort.deleteById(NOT_EXIST_ID)).thenReturn(Mono.empty())
 
         val actual = tagService.deleteById(NOT_EXIST_ID)
 

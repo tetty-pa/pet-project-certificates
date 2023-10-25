@@ -3,7 +3,6 @@ package com.epam.esm.infrastucture.rest
 import com.epam.esm.application.service.TagService
 import com.epam.esm.domain.Tag
 import com.epam.esm.exception.InvalidDataException
-import com.mongodb.client.result.DeleteResult
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -47,6 +46,6 @@ class TagsController(private val tagService: TagService) {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: String): Mono<DeleteResult> =
-        tagService.deleteById(id)
+    fun deleteById(@PathVariable("id") id: String): Mono<Unit> =
+        tagService.deleteById(id).map {  }
 }

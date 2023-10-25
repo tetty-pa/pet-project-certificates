@@ -26,8 +26,6 @@ class GiftCertificateDeleteByIdNatsController(
     ): Mono<DeleteByIdGiftCertificateResponse> {
 
         return service.deleteById(request.giftCertificateId)
-            .map {
-                DeleteByIdGiftCertificateResponse.getDefaultInstance()
-            }
+            .then(Mono.fromCallable { DeleteByIdGiftCertificateResponse.getDefaultInstance() })
     }
 }

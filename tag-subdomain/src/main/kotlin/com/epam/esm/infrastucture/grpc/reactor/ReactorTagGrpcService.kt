@@ -45,6 +45,6 @@ class ReactorTagGrpcService(
     override fun deleteById(request: Mono<DeleteByIdTagRequest>): Mono<DeleteByIdTagResponse> {
         return request
             .flatMap { service.deleteById(it.tagId) }
-            .map { DeleteByIdTagResponse.getDefaultInstance() }
+            .then(Mono.fromCallable { DeleteByIdTagResponse.getDefaultInstance() })
     }
 }

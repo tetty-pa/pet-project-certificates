@@ -8,6 +8,12 @@ services:
     volumes:
       - mongo:/data
 
+  redis:
+    image: redis:latest
+    container_name: my-redis-container
+    ports:
+      - "6379:6379"
+
   nats:
     image: nats:latest
     ports:
@@ -49,21 +55,10 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
       GROUP_ID: 'ajax'
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:latest
-    depends_on:
-      - kafka
-      - zookeeper
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
-      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
-    ports:
-      - "8081:8081"
   sb-app:
     depends_on:
       - mongo
-
+      - redis
       - nats
       - kafka
     build:
@@ -75,7 +70,8 @@ services:
               "spring.data.mongodb.port":"27017",
               "spring.data.mongodb.host":"mongo",
               "nats.connection.url":"nats://nats:4222",
-              "spring.kafka.bootstrap-servers":"kafka:29092"
+              "spring.kafka.bootstrap-servers":"kafka:29092",
+              "spring.data.redis.host":"redis"
       }'
     container_name: "docker-app"
     ports:

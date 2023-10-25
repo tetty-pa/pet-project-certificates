@@ -3,7 +3,6 @@ package com.epam.esm.infrastructure.rest
 import com.epam.esm.application.service.GiftCertificateServiceInPort
 import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.exception.InvalidDataException
-import com.mongodb.client.result.DeleteResult
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
@@ -53,7 +52,7 @@ class GiftCertificatesController(
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteById(@PathVariable("id") id: String): Mono<DeleteResult> =
+    fun deleteById(@PathVariable("id") id: String): Mono<Unit> =
         giftCertificateService.deleteById(id)
 
     @PatchMapping("/{id}")

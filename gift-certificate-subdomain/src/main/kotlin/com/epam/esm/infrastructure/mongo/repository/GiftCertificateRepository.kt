@@ -5,7 +5,6 @@ import com.epam.esm.domain.GiftCertificate
 import com.epam.esm.infrastructure.mongo.entity.GiftCertificateEntity
 import com.epam.esm.infrastructure.mongo.mapper.GiftCertificateMapper
 import com.epam.esm.persistence.util.findOne
-import com.mongodb.client.result.DeleteResult
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -41,8 +40,8 @@ class GiftCertificateRepository(
             .map { giftCertificateMapper.mapToDomain(it) }
 
 
-    override fun deleteById(id: String): Mono<DeleteResult> {
+    override fun deleteById(id: String): Mono<Unit> {
         val query = Query().addCriteria(Criteria.where("_id").`is`(id))
-        return mongoTemplate.remove(query, GiftCertificateEntity::class.java)
+        return mongoTemplate.remove(query, GiftCertificateEntity::class.java).map {  }
     }
 }

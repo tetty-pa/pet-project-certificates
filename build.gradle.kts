@@ -87,7 +87,7 @@ kotlin {
 }
 
 springBoot {
-    mainClass.set("com.epam.esm.web.WebApplicationKt")
+    mainClass.set("com.epam.esm.WebApplicationKt")
 }
 
 

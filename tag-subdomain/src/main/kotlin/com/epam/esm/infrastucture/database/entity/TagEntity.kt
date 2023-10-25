@@ -1,4 +1,4 @@
-package com.epam.esm.infrastucture.mongo.entity
+package com.epam.esm.infrastucture.database.entity
 
 import com.epam.esm.entity.audit.EntityAuditListener
 import jakarta.persistence.EntityListeners

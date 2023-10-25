@@ -24,6 +24,7 @@ dependencies {
 
     api("io.jsonwebtoken:jjwt:0.9.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.1.3")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive:3.1.4")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-webflux:3.1.4")
     implementation("org.springframework.boot:spring-boot-devtools")

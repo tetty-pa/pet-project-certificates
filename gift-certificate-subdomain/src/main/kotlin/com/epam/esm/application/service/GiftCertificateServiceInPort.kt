@@ -1,7 +1,6 @@
 package com.epam.esm.application.service
 
 import com.epam.esm.domain.GiftCertificate
-import com.mongodb.client.result.DeleteResult
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -46,7 +45,7 @@ interface GiftCertificateServiceInPort {
      * Deletes Gift Certificates.
      *
      * @param id Gift Certificate id to delete
-     * @return Mono<DeleteResult>
+     * @return Mono<Unit>
      */
-    fun deleteById(id: String): Mono<DeleteResult>
+    fun deleteById(id: String): Mono<Unit>
 }
